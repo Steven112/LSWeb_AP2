@@ -12,4 +12,6 @@ namespace LibraryServicesWeb_AP2.Data
 
         public string Summary { get; set; }
     }
+
+    // wather cosft
 }
