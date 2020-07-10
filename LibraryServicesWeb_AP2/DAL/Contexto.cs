@@ -14,6 +14,12 @@ namespace LibraryServicesWeb_AP2.DAL
         public DbSet<Libro> Libros { get; set; }
         public DbSet<Prestamo> Prestamos { get; set; }
 
+        public DbSet<Estudiante> Estudiantes { get; set; }
+        public DbSet<Usuarios> Usuarios { get; set; }
+        public DbSet<Devoluciones> Devoluciones { get; set; }
+        public DbSet<DevolucionDetalles> DevolucionDetalles { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source= Data\TeacherControl.db");
