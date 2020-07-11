@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LibraryServicesWeb_AP2.Data;
+using Blazored.Toast;
 
 namespace LibraryServicesWeb_AP2
 {
@@ -28,6 +29,7 @@ namespace LibraryServicesWeb_AP2
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredToast();
             services.AddSingleton<WeatherForecastService>();
         }
 

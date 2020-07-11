@@ -10,15 +10,21 @@ namespace LibraryServicesWeb_AP2.Models
     {
 
         [Key]
+        [Required(ErrorMessage = "El campo Id no puede estar vacio")]
+        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int CategoriaId { get; set; }
+
+        [Required(ErrorMessage = "El campo Descripcion no puede estar vacio")]
+        [MaxLength(40, ErrorMessage = "La Descripcion excede la cantidad de caracteres")]
+        [MinLength(3, ErrorMessage = "La Descripcion es muy corta")]
         public string Descripcion { get; set; }
+
         public int UsuarioId { get; set; }
 
         public Categoria()
         {
             CategoriaId = 0;
             Descripcion = string.Empty;
-            UsuarioId = 0;
         }
 
         public Categoria(int categoriaId, string descripcion, int usuarioId)

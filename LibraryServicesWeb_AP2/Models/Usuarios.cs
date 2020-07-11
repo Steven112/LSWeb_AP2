@@ -8,21 +8,37 @@ namespace LibraryServicesWeb_AP2.Models
 {
     public class Usuarios
     {
-
-        [Required(ErrorMessage = "Debe ingresar ID Estudiante")]
+        [Key]
+        [Required(ErrorMessage = "El campo Id no puede estar vacio")]
+        [Range(1,1000,ErrorMessage ="El Id debe de estar entre 1 y 100")]
         public int UsuarioId { get; set; }
 
-        [Required(ErrorMessage = "Es obligatorio Introducir el nombre ")]
+        [Required(ErrorMessage = "El campo nombre no puede estar vacio ")]
+        [MaxLength(40,ErrorMessage ="El nombre es muy largo")]
+        [MinLength(3,ErrorMessage ="El nombre es muy corto")]
         public string Nombres { get; set; }
 
-        [Required(ErrorMessage = "Es obligatorio Introducir el celular ")]
+        [Required(ErrorMessage = "El campo Celular no puede estar vacio ")]
+        [MaxLength(11, ErrorMessage = "El telefono excede la cantidad de digitos")]
+        [MinLength(10, ErrorMessage = "Telefono incorecto")]
         public string Celular { get; set; }
 
-        [Required(ErrorMessage = "Es obligatorio Introducir el Email")]
+        [Required(ErrorMessage = "El campo Email no puede estar vacio")]
+        [MaxLength(30, ErrorMessage = "El Email excede la cantidad de caracteres")]
+        [MinLength(8, ErrorMessage = "El Email es muy corto")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Es obligatorio Introducir la Contraseña ")]
+
+        [Required(ErrorMessage = "El campo Contraseña no puede estar vacio")]
+        [MaxLength(40, ErrorMessage = "La Contraseña excede la cantidad de caracteres")]
+        [MinLength(7, ErrorMessage = "Contraseña Inseguro")]
         public string Contraseña { get; set; }
+
+        [Required(ErrorMessage = "El campo Fecha Insercion no puede estar vacio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaInsercion { get; set; }
+
+        [Required(ErrorMessage = "El campo Nivel no puede estar vacio")]
         public string Nivel { get; set; }
 
         public Usuarios()

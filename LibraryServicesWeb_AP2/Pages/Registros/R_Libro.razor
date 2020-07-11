@@ -1,0 +1,229 @@
+﻿@page "/Libro"
+@using Models
+@using LibraryServicesWeb_AP2.BLL
+@inject IToastService toast
+
+<EditForm Model="libro" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card bg-dark text-white">
+        <div class="card-header">
+            <h3> Registro Libros</h3>
+        </div>
+        <div class="card-body">
+            <form>
+                @*LibroId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>LibroId</label>
+                            <div class=" input-group">
+                                <InputNumber @bind-Value="libro.LibroId" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Nombres*@
+                <div class="form-group">
+                    <label>Titulo Libro</label>
+                    <InputText @bind-Value="libro.NombreLibro" class="form-control " />
+                    <ValidationMessage For="@(()=> libro.NombreLibro)" />
+
+                </div>
+                @*ISBN*@
+                <div class="form-group">
+                    <label>ISBN</label>
+                    <InputText @bind-Value="libro.ISBN" class="form-control " />
+                    <ValidationMessage For="@(()=> libro.ISBN)" />
+
+                </div>
+                @*Categoria*@
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <div class="form-group">
+                        <select class="form-control" @bind="@libro.CategoriaId" @onclick="CargarCategorias">
+                            <option value="" disabled selected>Seleccione una Categoria</option>
+                            @foreach (var item in CargarBoxCategory())
+                            {
+                                <option value="@item.CategoriaId">@item.Descripcion </option>
+                            }
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(()=>libro.CategoriaId)" />
+                </div>
+                @*Editorial*@
+                <div class="form-group">
+                    <label>Editorial</label>
+                    <div class="form-group">
+                        <select class="form-control" @bind="@libro.EditorialId" @onclick="CargarEditorial">
+                            <option value="" disabled selected>Seleccione una Categoria</option>
+                            @foreach (var item in CargarBoxEditorial())
+                            {
+                                <option value="@item.EditorialId">@item.Nombre </option>
+                            }
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(()=>libro.CategoriaId)" />
+                </div>
+
+
+                @*FechaImpresion*@
+                <div class="form-group">
+                    <label>Fecha de Impresion</label>
+                    <InputDate @bind-Value="libro.FechaImpresion" class="form-control " />
+                    <ValidationMessage For="@(()=> libro.FechaImpresion)" />
+                </div>
+                @*Disponibilidad*@
+            <div class="form-group">
+                <InputCheckbox @bind-Value="libro.Disponibilidad" class="form-control " />
+                <ValidationMessage For="@(()=> libro.Disponibilidad)" />
+            </div>
+                
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    Libro libro = new Libro();
+    Categoria categoria = new Categoria();
+    Editorial editorial = new Editorial();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+    }
+    public void Nuevo()
+    {
+        libro = new Libro();
+    }
+
+
+    public void Buscar()
+    {
+
+
+        if (libro.LibroId > 0)
+        {
+            var encontrado =LibroBLL.Buscar(libro.LibroId);
+
+            if (encontrado != null)
+            {
+                this.libro = encontrado;
+            }
+
+        }
+        else
+        {
+            this.libro = new Libro();
+        }
+
+
+
+    }
+
+    public void Guardar()
+    {
+        bool guardo;
+
+        guardo = LibroBLL.Guardar(libro);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    public void Eliminar()
+    {
+        bool elimino;
+
+        elimino = LibroBLL.Eliminar(libro.LibroId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Categoria> CargarBoxCategory()
+    {
+        List<Categoria> lista = new List<Categoria>();
+        try
+        {
+            lista = CategoriaBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+    private void CargarCategorias()
+    {
+        if (categoria.CategoriaId > 0)
+        {
+            try
+            {
+                categoria = CategoriaBLL.Buscar(Convert.ToInt32(categoria.CategoriaId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+    private List<Editorial> CargarBoxEditorial()
+    {
+        List<Editorial> lista = new List<Editorial>();
+        try
+        {
+            lista = EditorialBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+    private void CargarEditorial()
+    {
+        if (editorial.EditorialId> 0)
+        {
+            try
+            {
+                editorial = EditorialBLL.Buscar(Convert.ToInt32(editorial.EditorialId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+    public void disponiblility()
+    {
+        libro.Disponibilidad = true;
+    }
+
+    }

@@ -1,0 +1,128 @@
+﻿@page "/Editorial"
+
+@using Models
+@using LibraryServicesWeb_AP2.BLL
+@inject IToastService toast
+
+
+<EditForm Model="editorial" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3> Registro Editorial</h3>
+        </div>
+        <div class="card-body">
+            <form>
+                @*EditorialId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>EditorialId</label>
+                            <div class=" input-group">
+                                <InputNumber @bind-Value="editorial.EditorialId" class="form-control col-4" />
+                                <ValidationMessage For="@(()=> editorial.EditorialId)" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Nombre Editorial*@
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <InputText @bind-Value="editorial.Nombre" class="form-control " />
+                    <ValidationMessage For="@(()=> editorial.Nombre)" />
+
+                </div>
+                @*Direccion*@
+                <div class="form-group">
+                    <label>Direccion</label>
+                    <InputText @bind-Value="editorial.Dirrecion" class="form-control " />
+                    <ValidationMessage For="@(()=> editorial.Dirrecion)" />
+
+                </div>
+               
+
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    Editorial editorial = new Editorial();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+    }
+    public void Nuevo()
+    {
+        editorial = new Editorial();
+    }
+
+
+    public void Buscar()
+    {
+
+
+        if (editorial.EditorialId > 0)
+        {
+            var encontrado = EditorialBLL.Buscar(editorial.EditorialId);
+
+            if (encontrado != null)
+            {
+                this.editorial = encontrado;
+            }
+
+        }
+        else
+        {
+            this.editorial = new Editorial();
+        }
+
+
+
+    }
+
+    public void Guardar()
+    {
+        bool guardo;
+
+        guardo = EditorialBLL.Guardar(editorial);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    public void Eliminar()
+    {
+        bool elimino;
+
+        elimino = EditorialBLL.Eliminar(editorial.EditorialId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+}

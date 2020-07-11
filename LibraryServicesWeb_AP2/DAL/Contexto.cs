@@ -17,8 +17,6 @@ namespace LibraryServicesWeb_AP2.DAL
         public DbSet<Estudiante> Estudiantes { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Devoluciones> Devoluciones { get; set; }
-        public DbSet<DevolucionDetalles> DevolucionDetalles { get; set; }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
