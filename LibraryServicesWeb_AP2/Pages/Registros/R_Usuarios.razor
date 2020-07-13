@@ -10,8 +10,8 @@
 <EditForm Model="usuarios" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <div class="card w-75">
-        <div class="card-header">
+    <div class="card ">
+        <div class="card-header bg-dark text-white">
             <h3>Registro de Usuario</h3>
         </div>
 
@@ -69,7 +69,7 @@
                     <InputSelect @bind-Value="@usuarios.Nivel" class="form-control">
                         <option value="" disabled selected>Seleccione Su Nivel</option>
                         <option value="Administrador">Administrador</option>
-                        <option value="Empleado">Empleado</option>
+                        <option value="Empleado">Usuario</option>
                     </InputSelect>
                     <ValidationMessage For="@(() => usuarios.Nivel)" />
                 </div>

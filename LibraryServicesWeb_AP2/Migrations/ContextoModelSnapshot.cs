@@ -33,6 +33,14 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoriaId = 1,
+                            Descripcion = "Accion",
+                            UsuarioId = 0
+                        });
                 });
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.DevolucionDetalles", b =>
@@ -112,6 +120,15 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.HasKey("EditorialId");
 
                     b.ToTable("Editorials");
+
+                    b.HasData(
+                        new
+                        {
+                            EditorialId = 1,
+                            Dirrecion = "Calle Mella",
+                            Nombre = "StevenLibrary",
+                            UsuarioId = 0
+                        });
                 });
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.Estudiante", b =>
@@ -195,6 +212,19 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.HasKey("LibroId");
 
                     b.ToTable("Libros");
+
+                    b.HasData(
+                        new
+                        {
+                            LibroId = 1,
+                            CategoriaId = 1,
+                            Disponibilidad = true,
+                            EditorialId = 1,
+                            FechaImpresion = new DateTime(2020, 7, 13, 2, 4, 21, 179, DateTimeKind.Local).AddTicks(476),
+                            ISBN = "789653266",
+                            NombreLibro = "Odisea",
+                            UsuarioId = 0
+                        });
                 });
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.Prestamo", b =>
@@ -206,6 +236,20 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.Property<int>("EstudianteId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PrestamoId");
+
+                    b.ToTable("Prestamos");
+                });
+
+            modelBuilder.Entity("LibraryServicesWeb_AP2.Models.PrestamosDetalle", b =>
+                {
+                    b.Property<int>("DetalleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("FechaDevolucion")
                         .HasColumnType("TEXT");
 
@@ -215,12 +259,19 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.Property<int>("LibroId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("PrestamoId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("PrestamoId");
+                    b.Property<string>("TituloLibro")
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("Prestamos");
+                    b.HasKey("DetalleId");
+
+                    b.HasIndex("LibroId");
+
+                    b.HasIndex("PrestamoId");
+
+                    b.ToTable("PrestamosDetalle");
                 });
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.Usuarios", b =>
@@ -271,6 +322,21 @@ namespace LibraryServicesWeb_AP2.Migrations
 
                     b.HasOne("LibraryServicesWeb_AP2.Models.Prestamo", "prestamo")
                         .WithMany()
+                        .HasForeignKey("PrestamoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LibraryServicesWeb_AP2.Models.PrestamosDetalle", b =>
+                {
+                    b.HasOne("LibraryServicesWeb_AP2.Models.Libro", "libro")
+                        .WithMany()
+                        .HasForeignKey("LibroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryServicesWeb_AP2.Models.Prestamo", null)
+                        .WithMany("PrestamosDetalles")
                         .HasForeignKey("PrestamoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

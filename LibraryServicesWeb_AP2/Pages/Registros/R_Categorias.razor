@@ -1,4 +1,5 @@
 ﻿@page "/Categorias"
+@page "/Categorias/{CategoriaId:int}"
 
 @using Models
 @using LibraryServicesWeb_AP2.BLL
@@ -7,7 +8,7 @@
 
 <EditForm Model="categoria" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-    <div class="card">
+    <div class="card bg-dark text-white">
         <div class="card-header">
             <h3> Registro Categorias</h3>
         </div>
@@ -35,8 +36,8 @@
                     <ValidationMessage For="@(()=> categoria.Descripcion)" />
 
                 </div>
-           
-               
+
+
             </form>
         </div>
         <div class="card-footer">
@@ -51,6 +52,8 @@
 
 @code {
 
+    [Parameter]
+    public int CategoriaId { get; set; }
     Categoria categoria = new Categoria();
 
     protected override void OnInitialized()

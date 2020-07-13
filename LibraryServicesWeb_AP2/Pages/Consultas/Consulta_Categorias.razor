@@ -1,0 +1,202 @@
+﻿@page "/ConsultaCategorias"
+@using LibraryServicesWeb_AP2.BLL
+@using LibraryServicesWeb_AP2.DAL
+@using LibraryServicesWeb_AP2.Models
+
+
+
+    <EditForm Model="Listado" >
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                <h1>Consulta de Categorias</h1>
+            </div>
+
+
+            <div class="card-body">
+                <form>
+
+                <div class="form-group col-4">
+                    <label for="Filtro">Filtro: </label>
+                    <select class="form-control " @bind="Filtro">
+                        <option value="0">Todo</option>
+                        <option value="1">Id</option>
+                        <option value="2">Descripcion</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group col-4">
+                    <label for="Criterio">Criterio: </label>
+                    <div class="input-group">
+                        <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
+                        <p class="validation-message"> @mensaje </p>
+                        <div class="input-group-append ">
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        </div>
+                    </div>
+                       
+                </div>
+
+
+               
+
+
+
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Descripcion</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class=text-white>
+                        @if (ListadoPaginado.Count == 0)
+                        {
+                            <tr>
+                                <th colspan="12" style="color:black; text-align: center">"No hay datos"</th>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in ListadoPaginado)
+                            {
+                                <tr>
+                                    <th>@item.CategoriaId</th>
+                                    <th>@item.Descripcion</th>
+                                    <td><a class="btn btn-light" href="Categorias/@item.CategoriaId">Ver</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                    </form>
+            </div>
+            <div class="form-row col-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip"> Anterior</span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class="page-item disabled"><a class="page-link">@i</a></li>
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip"> Siguiente</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                </div>
+            </div>
+
+</EditForm>
+
+@code {
+    private List<Categoria> Listado { get; set; }
+    private List<Categoria> ListadoPaginado { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+    private string mensaje = string.Empty;
+
+    public bool BuscarFecha { get; set; }
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    Contexto contexto = new Contexto();
+    Paginacion paginacion = new Paginacion();
+
+    protected override void OnInitialized()
+    {
+        Listado = CategoriaBLL.GetList(e => true);
+        Filtro = "0";
+
+        IniciarPaginacion();
+    }
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = Listado.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            ListadoPaginado = Listado
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            ListadoPaginado = Listado
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+   
+    private void Buscar()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            if (Filtro == "0")
+            {
+                Listado = CategoriaBLL.GetList(e => true);
+            }
+            else
+            {
+                if (Criterio == "")
+                {
+                    mensaje = "Agregue el criterio de busqueda.";
+                }
+                else
+                {
+                    Listado = CategoriaBLL.GetList(e => true);
+
+                    switch (Filtro)
+                    {
+                        case "1":
+                            Listado = Listado.Where(e => e.CategoriaId.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "2":
+                            Listado = Listado.Where(e => e.Descripcion.ToUpper().Contains(Criterio.ToUpper())).ToList();
+                            break;
+                      
+                    }
+
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+
+}

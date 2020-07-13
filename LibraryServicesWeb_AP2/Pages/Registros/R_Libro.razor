@@ -59,7 +59,7 @@
                     <label>Editorial</label>
                     <div class="form-group">
                         <select class="form-control" @bind="@libro.EditorialId" @onclick="CargarEditorial">
-                            <option value="" disabled selected>Seleccione una Categoria</option>
+                            <option value="" disabled selected>Seleccione una Editorial</option>
                             @foreach (var item in CargarBoxEditorial())
                             {
                                 <option value="@item.EditorialId">@item.Nombre </option>
@@ -121,6 +121,10 @@
             if (encontrado != null)
             {
                 this.libro = encontrado;
+            }
+            else
+            {
+                toast.ShowWarning("No encontrado");
             }
 
         }

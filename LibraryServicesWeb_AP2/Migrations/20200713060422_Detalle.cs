@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class LSWeb : Migration
+    public partial class Detalle : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,9 +97,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                     PrestamoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     EstudianteId = table.Column<int>(nullable: false),
-                    LibroId = table.Column<int>(nullable: false),
-                    FechaPrestamo = table.Column<DateTime>(nullable: false),
-                    FechaDevolucion = table.Column<DateTime>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -155,6 +152,50 @@ namespace LibraryServicesWeb_AP2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PrestamosDetalle",
+                columns: table => new
+                {
+                    DetalleId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PrestamoId = table.Column<int>(nullable: false),
+                    LibroId = table.Column<int>(nullable: false),
+                    TituloLibro = table.Column<string>(nullable: true),
+                    FechaPrestamo = table.Column<DateTime>(nullable: false),
+                    FechaDevolucion = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrestamosDetalle", x => x.DetalleId);
+                    table.ForeignKey(
+                        name: "FK_PrestamosDetalle_Libros_LibroId",
+                        column: x => x.LibroId,
+                        principalTable: "Libros",
+                        principalColumn: "LibroId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PrestamosDetalle_Prestamos_PrestamoId",
+                        column: x => x.PrestamoId,
+                        principalTable: "Prestamos",
+                        principalColumn: "PrestamoId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categorias",
+                columns: new[] { "CategoriaId", "Descripcion", "UsuarioId" },
+                values: new object[] { 1, "Accion", 0 });
+
+            migrationBuilder.InsertData(
+                table: "Editorials",
+                columns: new[] { "EditorialId", "Dirrecion", "Nombre", "UsuarioId" },
+                values: new object[] { 1, "Calle Mella", "StevenLibrary", 0 });
+
+            migrationBuilder.InsertData(
+                table: "Libros",
+                columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro", "UsuarioId" },
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 13, 2, 4, 21, 179, DateTimeKind.Local).AddTicks(476), "789653266", "Odisea", 0 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",
                 table: "DevolucionDetalles",
@@ -163,6 +204,16 @@ namespace LibraryServicesWeb_AP2.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_PrestamoId",
                 table: "DevolucionDetalles",
+                column: "PrestamoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrestamosDetalle_LibroId",
+                table: "PrestamosDetalle",
+                column: "LibroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrestamosDetalle_PrestamoId",
+                table: "PrestamosDetalle",
                 column: "PrestamoId");
         }
 
@@ -181,13 +232,16 @@ namespace LibraryServicesWeb_AP2.Migrations
                 name: "Estudiantes");
 
             migrationBuilder.DropTable(
-                name: "Libros");
+                name: "PrestamosDetalle");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Devoluciones");
+
+            migrationBuilder.DropTable(
+                name: "Libros");
 
             migrationBuilder.DropTable(
                 name: "Prestamos");
