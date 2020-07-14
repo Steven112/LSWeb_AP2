@@ -1,7 +1,93 @@
 ﻿@page "/"
+@using System.Web;
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<style>
+    body {
+        background-image: url('https://i.ytimg.com/vi/c5k0X899UHc/maxresdefault.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+</style>
+
+<AuthorizeView>
+
+
+
+    <NotAuthorized>
+        <div class="container">
+
+            <div style="        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 500px;
+        background-image: url('https://i.ytimg.com/vi/c5k0X899UHc/maxresdefault.jpg');
+        box-shadow: 7px 13px 37px #93baea;
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+    ">
+                <style>
+
+                    .titulo {
+                        font-size: 2.9vw;
+                        margin-bottom: 10%;
+                        margin-bottom: 10%;
+                        text-align: center;
+                        color: black;
+                        font-style: normal;
+                    }
+                </style>
+
+                <h1 class="titulo">Inicio de Sesion</h1>
+
+                <form class="form-group">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Usuario</label>
+                        <input type="text" class="form-control" @bind="Username" id="Usuario" aria-describedby="Usuario">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Contraseña</label>
+                        <input type="password" class="form-control" @bind="Password" id="exampleInputPassword1">
+                    </div>
+                    <div class="form-group-">
+                        <a class=" font-weight-bold btn btn-primary btn-block"
+                           href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
+                           target="_top">Iniciar Sesion</a>
+
+
+                        <a class=" font-weight-bold  btn btn-danger btn-block"
+                           href="Usuarios"
+                           target="_top">Registrarse</a>
+
+
+
+
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
+@code {
+    string Username = "";
+
+    string Password = "";
+
+
+    private string encode(string param)
+
+    {
+
+        return HttpUtility.UrlEncode(param);
+
+    }
+
+}

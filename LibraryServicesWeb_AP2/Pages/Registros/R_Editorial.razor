@@ -4,57 +4,76 @@
 @using LibraryServicesWeb_AP2.BLL
 @inject IToastService toast
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<style>
+    body {
+        background-color: dimgrey;
+    }
+</style>
 
 <EditForm Model="editorial" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
-    <div class="card bg-dark text-white">
-        <div class="card-header">
-            <h3> Registro Editorial</h3>
-        </div>
-        <div class="card-body">
-            <form>
-                @*EditorialId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>EditorialId</label>
-                            <div class=" input-group">
-                                <InputNumber @bind-Value="editorial.EditorialId" class="form-control col-4" />
-                                <ValidationMessage For="@(()=> editorial.EditorialId)" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+.Result.User.Identity.IsAuthenticated)
+    {
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                <h3> Registro Editorial</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    @*EditorialId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>EditorialId</label>
+                                <div class=" input-group">
+                                    <InputNumber @bind-Value="editorial.EditorialId" class="form-control col-4" />
+                                    <ValidationMessage For="@(()=> editorial.EditorialId)" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    @*Nombre Editorial*@
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <InputText @bind-Value="editorial.Nombre" class="form-control " />
+                        <ValidationMessage For="@(()=> editorial.Nombre)" />
+
+                    </div>
+                    @*Direccion*@
+                    <div class="form-group">
+                        <label>Direccion</label>
+                        <InputText @bind-Value="editorial.Dirrecion" class="form-control " />
+                        <ValidationMessage For="@(()=> editorial.Dirrecion)" />
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
                 </div>
-
-                @*Nombre Editorial*@
-                <div class="form-group">
-                    <label>Nombre</label>
-                    <InputText @bind-Value="editorial.Nombre" class="form-control " />
-                    <ValidationMessage For="@(()=> editorial.Nombre)" />
-
-                </div>
-                @*Direccion*@
-                <div class="form-group">
-                    <label>Direccion</label>
-                    <InputText @bind-Value="editorial.Dirrecion" class="form-control " />
-                    <ValidationMessage For="@(()=> editorial.Dirrecion)" />
-
-                </div>
-               
-
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
             </div>
         </div>
-    </div>
+
+    }
+    else
+    {
+        <h1>No esta registrado</h1>
+        <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
+    }
+
+
 </EditForm>
 
 @code {

@@ -31,7 +31,9 @@ namespace LibraryServicesWeb_AP2.Pages.Login
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, paramUsername),
-                new Claim(ClaimTypes.Role, "Administrator"),
+                new Claim(ClaimTypes.Role, "Administrator"), 
+                new Claim(ClaimTypes.Role, "User"),
+
             };
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);

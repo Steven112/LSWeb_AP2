@@ -1,61 +1,67 @@
-﻿<div class="top-row pl-4 navbar bg-dark navbar-dark">
-    <a class="navbar-brand bg-dark " href="">LibraryServicesWeb_AP2</a>
+﻿
+
+<div class="top-row pl-4 navbar bg-dark navbar-dark" style="height:125px;">
+    <AuthorizeView>
+        <img src="https://previews.123rf.com/images/igoror/igoror1709/igoror170900094/86918405-logotipo-de-librer%C3%ADa-o-librer%C3%ADa-para-dise%C3%B1o-web.jpg" als="Login" style=" width:215px;height:90px;">
+        <a class="navbar-brand bg-dark " href="">Hola, @context.User.Identity.Name!</a>
+    </AuthorizeView>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class=" navbar-toggler-icon"></span>
     </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-   
+<div class="@NavMenuCssClass bg-dark" @onclick="ToggleNavMenu">
+
     <ul class="nav  flex-column  ">
 
 
         <li class="nav-item  bg-dark text-white">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Prestamos">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Prestamos
-            </NavLink>
-        </li>
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Estudiantes">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Estudiantes
-            </NavLink>
-        </li>
+                @using System.Web;
+            <span class="oi oi-home" aria-hidden="true"></span> Home
+        </NavLink>
+    </li>
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Prestamos">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Prestamos
+        </NavLink>
+    </li>
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Estudiantes">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Estudiantes
+        </NavLink>
+    </li>
 
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Libro">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Libro
-            </NavLink>
-        </li>
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Libro">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Libro
+        </NavLink>
+    </li>
 
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Categorias">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Categorias
-            </NavLink>
-        </li>
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Editorial">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Editorial
-            </NavLink>
-        </li>
-        <li class="nav-item  bg-dark text-white">
-            <NavLink class="nav-link" href="Usuarios">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Usuarios
-            </NavLink>
-        </li>
-        <li class="nav-item  bg-dark text-white">
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Categorias">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Categorias
+        </NavLink>
+    </li>
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Editorial">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Editorial
+        </NavLink>
+    </li>
+    <li class="nav-item  bg-dark text-white">
+        <NavLink class="nav-link" href="Usuarios">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Registro Usuarios
+        </NavLink>
+    </li>
+    <li class="nav-item  bg-dark text-white">
         <NavLink class="nav-link" href="ConsultaCategorias">
             <span class="oi oi-list-rich" aria-hidden="true"></span> Cosulta Categorias
         </NavLink>
-        </li>
+    </li>
 
-    </ul>
-    
-    
+</ul>
+
+
 </div>
 
 @code {
