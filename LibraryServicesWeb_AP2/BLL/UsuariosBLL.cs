@@ -39,6 +39,26 @@ namespace LibraryServicesWeb_AP2.BLL
 
             return paso;
         }
+        public static bool InicioSesion(string Usuario, string psw)
+        {
+
+            bool paso = false;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+
+                paso = contexto.Usuarios.Any(A => A.NombreUsuario.Equals(Usuario) && A.Contraseña.Equals(psw));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return paso;
+
+        }
         public static bool Modificar(Usuarios usuarios)
         {
             bool paso = false;

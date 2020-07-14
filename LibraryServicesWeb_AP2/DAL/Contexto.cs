@@ -51,6 +51,17 @@ namespace LibraryServicesWeb_AP2.DAL
 
 
             });
+            modelBuilder.Entity<Usuarios>().HasData(new Usuarios
+            {
+                UsuarioId = 1,
+                Nombres = "Steven Nunez",
+                Celular = "8499866985",
+                Email="stivennunez@gmail.com",
+                NombreUsuario="Admin",
+                Contraseña="Admin",
+                Nivel="Administrador",
+                FechaInsercion=DateTime.Now
+            });
         }
     }
 }

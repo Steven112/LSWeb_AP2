@@ -220,7 +220,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 7, 13, 2, 4, 21, 179, DateTimeKind.Local).AddTicks(476),
+                            FechaImpresion = new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(1361),
                             ISBN = "789653266",
                             NombreLibro = "Odisea",
                             UsuarioId = 0
@@ -302,6 +302,11 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NombreUsuario")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(25);
+
                     b.Property<string>("Nombres")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -310,6 +315,19 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            UsuarioId = 1,
+                            Celular = "8499866985",
+                            Contraseña = "Admin",
+                            Email = "stivennunez@gmail.com",
+                            FechaInsercion = new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(8529),
+                            Nivel = "Administrador",
+                            NombreUsuario = "Admin",
+                            Nombres = "Steven Nunez"
+                        });
                 });
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.DevolucionDetalles", b =>

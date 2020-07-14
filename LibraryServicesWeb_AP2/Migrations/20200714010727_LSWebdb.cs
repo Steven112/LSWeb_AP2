@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class Detalle : Migration
+    public partial class LSWebdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -113,6 +113,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     Nombres = table.Column<string>(maxLength: 40, nullable: false),
                     Celular = table.Column<string>(maxLength: 11, nullable: false),
                     Email = table.Column<string>(maxLength: 30, nullable: false),
+                    NombreUsuario = table.Column<string>(maxLength: 25, nullable: false),
                     Contraseña = table.Column<string>(maxLength: 40, nullable: false),
                     FechaInsercion = table.Column<DateTime>(nullable: false),
                     Nivel = table.Column<string>(nullable: false)
@@ -194,7 +195,12 @@ namespace LibraryServicesWeb_AP2.Migrations
             migrationBuilder.InsertData(
                 table: "Libros",
                 columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro", "UsuarioId" },
-                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 13, 2, 4, 21, 179, DateTimeKind.Local).AddTicks(476), "789653266", "Odisea", 0 });
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(1361), "789653266", "Odisea", 0 });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
+                values: new object[] { 1, "8499866985", "Admin", "stivennunez@gmail.com", new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(8529), "Administrador", "Admin", "Steven Nunez" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",

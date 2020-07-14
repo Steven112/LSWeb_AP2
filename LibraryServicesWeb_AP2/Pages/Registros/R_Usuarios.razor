@@ -55,18 +55,32 @@
                     <ValidationMessage For="@(() => usuarios.Email)" />
                 </div>
 
+                @*Usuario*@
+                <div class="form-group">
+                    <label>Email:</label>
+                    <InputText @bind-Value="usuarios.NombreUsuario" class="form-control " />
+                    <ValidationMessage For="@(() => usuarios.NombreUsuario)" />
+                </div>
+
                 @*Clave*@
                 <div class="form-group">
-                    <label>Clave</label>
+                    <label>Contraseña</label>
                     <InputText type="password" class="form-control " @bind-Value="usuarios.Contraseña"></InputText>
                     <ValidationMessage For="@(() => usuarios.Contraseña)" />
+                </div>
+
+                @*ConfirmarClave*@
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <InputText type="password" class="form-control " @bind-Value="ConfirmarClave"></InputText>
+
                 </div>
 
 
                 @*Nivel*@
                 <div class="form-group">
                     <label>Nivel</label>
-                    <InputSelect @bind-Value="@usuarios.Nivel" class="form-control">
+                    <InputSelect @bind-Value="usuarios.Nivel" class="form-control" >
                         <option value="" disabled selected>Seleccione Su Nivel</option>
                         <option value="Administrador">Administrador</option>
                         <option value="Empleado">Usuario</option>
@@ -105,6 +119,9 @@
     public int Id { get; set; }
 
     public string direccion { get; set; }
+    public string NivelSeleccionado = string.Empty;
+
+    public string ConfirmarClave= string.Empty;
 
     protected override void OnInitialized()
     {
@@ -118,7 +135,10 @@
                 toast.ShowWarning("No encontrado.");
         }
     }
-
+    private void SeleccionarNivel()
+    {
+        NivelSeleccionado = usuarios.Nivel;
+    }
     private void Nuevo()
     {
         this.usuarios = new Usuarios();
@@ -129,7 +149,26 @@
 
 
         bool guardo;
+
+        if (ExisteEmail())
+        {
+            toast.ShowWarning("Existe un usuario con ese Email");
+            return;
+        }
+        if (ExisteUsuario())
+        {
+            toast.ShowWarning("Existe un usuario con ese nombre");
+            return;
+        }
+        if (usuarios.Contraseña == ConfirmarClave == false)
+        {
+            toast.ShowWarning("Contraseña no coincide");
+            return;
+        }
+
         guardo = UsuariosBLL.Guardar(usuarios);
+
+        SeleccionarNivel();
 
         if (guardo)
         {
@@ -140,7 +179,7 @@
             toast.ShowError("No fue posible guardar");
 
 
-        
+
 
     }
 
@@ -150,6 +189,7 @@
         if (encontrado != null)
         {
 
+            NivelSeleccionado = usuarios.Nivel;
             this.usuarios = encontrado;
         }
         else
@@ -174,4 +214,57 @@
             toast.ShowError("No fue posible eliminar");
         }
     }
+    public bool ExisteUsuario()
+    {
+        bool paso = false;
+        var Listado = new List<Usuarios>();
+
+        Listado = UsuariosBLL.GetList(p => p.NombreUsuario == usuarios.NombreUsuario);
+
+        if (Listado.Count == 1)
+        {
+            if (usuarios.UsuarioId == 0)
+                return paso = true;
+
+            Usuarios UsuarioTemporal = new Usuarios();
+            UsuarioTemporal = Listado[0];
+            if (UsuarioTemporal.UsuarioId!= usuarios.UsuarioId)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
+    public bool ExisteEmail()
+    {
+        bool paso = false;
+        var Listado = new List<Usuarios>();
+
+        Listado = UsuariosBLL.GetList(p => p.Email == usuarios.Email);
+
+        if (Listado.Count == 1)
+        {
+            if (usuarios.UsuarioId == 0)
+                return paso = true;
+
+            Usuarios UsuarioTemporal = new Usuarios();
+            UsuarioTemporal = Listado[0];
+            if (UsuarioTemporal.UsuarioId != usuarios.UsuarioId)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
+
 }

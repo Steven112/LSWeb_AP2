@@ -165,6 +165,32 @@
         else
             toast.ShowError("No fue posible eliminar");
     }
+    public bool ExisteMatricula()
+    {
+        bool paso = false;
+        var Listado = new List<Estudiante>();
+
+        Listado = EstudiantesBLL.GetList(p => p.Matricula == estudiante.Matricula);
+
+        if (Listado.Count == 1)
+        {
+            if (estudiante.EstudianteId == 0)
+                return paso = true;
+
+            Estudiante MatriculaTemporal = new Estudiante();
+            MatriculaTemporal = Listado[0];
+            if (MatriculaTemporal.EstudianteId != estudiante.EstudianteId)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
 
 
 }

@@ -28,6 +28,11 @@ namespace LibraryServicesWeb_AP2.Models
         [MinLength(8, ErrorMessage = "El Email es muy corto")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "El campo Nombre Usuario no puede estar vacio")]
+        [MaxLength(25, ErrorMessage = "El Nombre Usuario excede la cantidad de caracteres")]
+        [MinLength(3, ErrorMessage = "El Nombre Usuario es muy corto")]
+        public string NombreUsuario { get; set; }
+
         [Required(ErrorMessage = "El campo Contraseña no puede estar vacio")]
         [MaxLength(40, ErrorMessage = "La Contraseña excede la cantidad de caracteres")]
         [MinLength(7, ErrorMessage = "Contraseña Inseguro")]
@@ -45,12 +50,13 @@ namespace LibraryServicesWeb_AP2.Models
         {
         }
 
-        public Usuarios(int usuarioId, string nombres, string celular, string email, string contraseña, DateTime fechaInsercion, string nivel)
+        public Usuarios(int usuarioId, string nombres, string celular, string email, string nombreUsuario, string contraseña, DateTime fechaInsercion, string nivel)
         {
             UsuarioId = usuarioId;
             Nombres = nombres;
             Celular = celular;
             Email = email;
+            NombreUsuario = nombreUsuario;
             Contraseña = contraseña;
             FechaInsercion = fechaInsercion;
             Nivel = nivel;
