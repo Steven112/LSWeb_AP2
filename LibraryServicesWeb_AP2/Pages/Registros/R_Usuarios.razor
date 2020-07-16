@@ -17,8 +17,8 @@
     <EditForm Model="usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
 
-        <div class="card ">
-            <div class="card-header bg-dark text-white">
+        <div class="card bg-dark text-white ">
+            <div class="card-header ">
                 <h3>Registro de Usuario</h3>
             </div>
 
@@ -28,7 +28,7 @@
                     <div class="form-row align-items-center">
                         <div class="col">
                             <div class="form-group">
-                                <label>ID:</label>
+                                <label>Id</label>
                                 <div class="input-group">
                                     <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control col-4" />
                                     <ValidationMessage For="@(() => usuarios.UsuarioId)"></ValidationMessage>
@@ -42,7 +42,7 @@
 
                     @*Nombres*@
                     <div class="form-group">
-                        <label>Nombre:</label>
+                        <label>Nombre</label>
                         <InputText @bind-Value="usuarios.Nombres" class="form-control " />
                         <ValidationMessage For="@(() => usuarios.Nombres)" />
                     </div>
@@ -57,14 +57,14 @@
 
                     @*Email*@
                     <div class="form-group">
-                        <label>Email:</label>
+                        <label>Emai</label>
                         <InputText @bind-Value="usuarios.Email" class="form-control " />
                         <ValidationMessage For="@(() => usuarios.Email)" />
                     </div>
 
                     @*Usuario*@
                     <div class="form-group">
-                        <label>Email:</label>
+                        <label>Usuario</label>
                         <InputText @bind-Value="usuarios.NombreUsuario" class="form-control " />
                         <ValidationMessage For="@(() => usuarios.NombreUsuario)" />
                     </div>
