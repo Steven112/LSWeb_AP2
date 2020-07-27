@@ -77,6 +77,12 @@
     {
         Nuevo();
         Buscar();
+        if (CategoriaId != 0)
+        {
+
+            categoria.CategoriaId = CategoriaId;
+            Buscar();
+        }
     }
     public void Nuevo()
     {

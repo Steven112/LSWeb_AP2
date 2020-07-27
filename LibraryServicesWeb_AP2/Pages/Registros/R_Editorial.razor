@@ -1,4 +1,5 @@
-﻿@page "/Editorial"
+﻿@page "/REditorial"
+@page "/REditorial/{EditorialId:int}"
 
 @using Models
 @using LibraryServicesWeb_AP2.BLL
@@ -77,6 +78,8 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public int EditorialId { get; set; }
 
     Editorial editorial = new Editorial();
 
@@ -84,6 +87,12 @@
     {
         Nuevo();
         Buscar();
+        if (EditorialId != 0)
+        {
+           
+            editorial.EditorialId = EditorialId;
+            Buscar();
+        }
     }
     public void Nuevo()
     {

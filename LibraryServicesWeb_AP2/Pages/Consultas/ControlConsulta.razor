@@ -1,0 +1,72 @@
+﻿
+@page "/ContConsulta"
+@using LibraryServicesWeb_AP2.Pages
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+
+
+    <NotAuthorized>
+        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="container">
+        <div class="form-group">
+            <div class=" form-row">
+
+                <div class="text-center col-md-6 col-sm-12  col-lg-3">
+
+                    <div class="card" style="width: auto;">
+                        <div class="border border-info">
+                            <h5 class="card-title">Consulta Categorias</h5>
+                            <p class="card-text">Consulta .</p>
+                            <a href="ConsultaCategorias" class="btn btn-primary">Ir a la Consulta</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" text-center col-md-6 col-sm-12  col-lg-3">
+
+                    <div class="card" style="width: auto;">
+                        <div class="border border-info">
+                            <h5 class="card-title">Consulta Libros</h5>
+                            <p class="card-text">Consulta .</p>
+                            <a href="ConsultaLibros" class="btn btn-primary">Ir a la Consulta</a>
+                        </div>
+                    </div>
+                </div>
+                <div class=" text-center col-md-6 col-sm-12  col-lg-3">
+
+                    <div class="card" style="width: auto;">
+                        <div class="border border-info">
+                            <h5 class="card-title">Consulta Editorial</h5>
+                            <p class="card-text">Consulta .</p>
+                            <a href="consultaeditorial" class="btn btn-primary">Ir a la Consulta</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+}
+
+
+
+
+@code {
+
+}

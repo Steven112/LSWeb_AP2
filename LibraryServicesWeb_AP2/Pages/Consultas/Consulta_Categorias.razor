@@ -1,202 +1,186 @@
 ﻿@page "/ConsultaCategorias"
-@using LibraryServicesWeb_AP2.BLL
-@using LibraryServicesWeb_AP2.DAL
-@using LibraryServicesWeb_AP2.Models
+
+@using Models
+@using BLL
+@inject IToastService toast
+@inject IJSRuntime js
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="card bg-dark text-white">
+        <div class="card-header">
+            <h3><strong>Consulta Categorias</strong></h3>
+        </div>
+        <div class="card-body">
 
-    <EditForm Model="Listado" >
-        <div class="card bg-dark text-white">
             <div class="card-header">
-                <h1>Consulta de Categorias</h1>
-            </div>
+                <div class="row">
+                    <div class="input-group col-12">
+                        <div class="form-group col-3">
+                            <label><strong>Filtro: </strong></label>
+                            <select class="form-control" @bind="Filtro">
+                                <option value=0>Todos</option>
+                                <option value=1>Id</option>
+                                <option value=3>Descripcion</option>
 
 
-            <div class="card-body">
-                <form>
-
-                <div class="form-group col-4">
-                    <label for="Filtro">Filtro: </label>
-                    <select class="form-control " @bind="Filtro">
-                        <option value="0">Todo</option>
-                        <option value="1">Id</option>
-                        <option value="2">Descripcion</option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group col-4">
-                    <label for="Criterio">Criterio: </label>
-                    <div class="input-group">
-                        <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
-                        <p class="validation-message"> @mensaje </p>
-                        <div class="input-group-append ">
-                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label><strong>Criterio: </strong></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" @bind="Criterio" placeholder="Criterio" />
+                                <button type="button" class="btn btn-primary input-group-append" @onclick="@(c => Consultar(0))">Consultar</button>
+                            </div>
                         </div>
                     </div>
-                       
-                </div>
-
-
-               
-
-
-
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Id</th>
-                            <th>Descripcion</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody class=text-white>
-                        @if (ListadoPaginado.Count == 0)
-                        {
-                            <tr>
-                                <th colspan="12" style="color:black; text-align: center">"No hay datos"</th>
-                            </tr>
-                        }
-                        else
-                        {
-                            @foreach (var item in ListadoPaginado)
-                            {
-                                <tr>
-                                    <th>@item.CategoriaId</th>
-                                    <th>@item.Descripcion</th>
-                                    <td><a class="btn btn-light" href="Categorias/@item.CategoriaId">Ver</a></td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-                    </form>
-            </div>
-            <div class="form-row col-12 justify-content-center">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" @onclick="PaginaAnterior">
-                                <span class="oi oi-media-skip"> Anterior</span>
-                            </a>
-                        </li>
-
-                        @for (int i = 1; i <= Paginas; i++)
-                        {
-                            <li class="page-item disabled"><a class="page-link">@i</a></li>
-                        }
-
-                        <li class="page-item">
-                            <a class="page-link" @onclick="PaginaSiguiente">
-                                <span class="oi oi-media-skip"> Siguiente</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
                 </div>
             </div>
+        </div>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Descripcion</th>
 
-</EditForm>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class=text-white>
+                @foreach (var item in Lista)
+                {
+                    <tr>
+                        <td>@item.CategoriaId</td>
+                        <td>@item.Descripcion</td>
+                        <td><a class="btn btn-dark" href="@($"Categorias/{item.CategoriaId}")">Editar</a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="bg-dark text-white">
+        <div class="row">
+            <div class="form-group col-2 col-md-2 ml-auto">
+                <label><strong>Imprimir </strong></label>
+                <button type="button" class="btn btn-primary btn-block"><span class="oi oi-print"></span> Consulta</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="card-footer">
+        <div class="form-group text-center" display: inline-block>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <button class="page-link btn btn-success"
+                                @onclick="@(e => NavegateTo("Previous"))" tabindex="-1">
+                            Previous
+                        </button>
+                    </li>
+
+                    @for (int i = 0; i < Paginas; i++)
+                    {
+                        var pageNumber = i;
+                        <li class="page-item">
+                            <button class="@(CurrentPage == pageNumber ? "page-link btn btn-dark" : "page-link btn btn-danger")"
+                                    @onclick="@(u => Consultar(pageNumber))">
+                                @(i + 1)
+                            </button>
+                        </li>
+                    }
+
+                    <li class="page-item">
+                        <button type="button" class="page-link btn btn-danger" @onclick="@(e => NavegateTo("Next"))" tabindex="-1">Next</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+}
+else
+{
+    <h1>No esta registrado</h1>
+    <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
+}
 
 @code {
-    private List<Categoria> Listado { get; set; }
-    private List<Categoria> ListadoPaginado { get; set; }
+    public List<Categoria> Lista { get; set; } = new List<Categoria>();
+    public List<Categoria> Items { get; set; } = new List<Categoria>();
 
-    private string Filtro { get; set; }
-    private string Criterio { get; set; }
-    private string mensaje = string.Empty;
+    public string Criterio { get; set; } = string.Empty;
+    public int Tamañopagina { get; set; }
+    public int Paginas{ get; set; }
+    public int CurrentPage { get; set; }
+    public int Filtro { get; set; }
 
-    public bool BuscarFecha { get; set; }
 
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
-
-    Contexto contexto = new Contexto();
-    Paginacion paginacion = new Paginacion();
 
     protected override void OnInitialized()
     {
-        Listado = CategoriaBLL.GetList(e => true);
-        Filtro = "0";
+        Tamañopagina = 4;
 
-        IniciarPaginacion();
+        base.OnInitialized();
     }
 
-    public void IniciarPaginacion()
+    public void Consultar(int nulo)
     {
-        PaginaActual = 1;
-        Elementos = Listado.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
+        if (Criterio != string.Empty)
         {
-            PaginaActual++;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-   
-    private void Buscar()
-    {
-        mensaje = string.Empty;
-
-        try
-        {
-            if (Filtro == "0")
+            switch (Filtro)
             {
-                Listado = CategoriaBLL.GetList(e => true);
-            }
-            else
-            {
-                if (Criterio == "")
-                {
-                    mensaje = "Agregue el criterio de busqueda.";
-                }
-                else
-                {
-                    Listado = CategoriaBLL.GetList(e => true);
+                case 0:
+                    Items = CategoriaBLL.GetList(p => true);
+                    Paginas = (int)Math.Ceiling(Items.Count() / (decimal)Tamañopagina);
+                    UpdateList(nulo);
+                    break;
+                case 1:
+                    int id = Convert.ToInt32(Criterio);
+                    Items = CategoriaBLL.GetList(a => a.CategoriaId == id);
+                    Paginas = (int)Math.Ceiling(Items.Count() / (decimal)Tamañopagina);
+                    UpdateList(nulo);
+                    break;
+                case 2:
+                    Items = CategoriaBLL.GetList(a => a.Descripcion.Contains(Criterio));
+                    Paginas = (int)Math.Ceiling(Items.Count() / (decimal)Tamañopagina);
+                    UpdateList(nulo);
+                    break;
 
-                    switch (Filtro)
-                    {
-                        case "1":
-                            Listado = Listado.Where(e => e.CategoriaId.ToString().Contains(Criterio.ToString())).ToList();
-                            break;
-                        case "2":
-                            Listado = Listado.Where(e => e.Descripcion.ToUpper().Contains(Criterio.ToUpper())).ToList();
-                            break;
-                      
-                    }
 
-                }
             }
         }
-        catch (Exception)
+        else
         {
-            throw;
+            Items = CategoriaBLL.GetList(a => true);
+            Paginas = (int)Math.Ceiling(Items.Count() / (decimal)Tamañopagina);
+            UpdateList(nulo);
         }
     }
+
+    private void UpdateList(int pageNumber)
+    {
+        Lista = Items.Skip(pageNumber * Tamañopagina).Take(Tamañopagina).ToList();
+        CurrentPage = pageNumber;
+    }
+
+    private void NavegateTo(string direction)
+    {
+        if (direction == "Previous" && CurrentPage != 0)
+            CurrentPage -= 1;
+        if (direction == "Next" && CurrentPage != Paginas)
+            CurrentPage += 1;
+
+        UpdateList(CurrentPage);
+    }
+
+
+
+
 
 
 }
