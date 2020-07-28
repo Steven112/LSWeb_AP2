@@ -21,7 +21,7 @@
                             <div class="form-group col-3">
                                 <label><strong>Filtro: </strong></label>
                                 <select class="form-control" @bind="Filtro">
-                                    <option value=0>Eliga un filtro</option>
+                                    <option value=0>Todo</option>
                                     <option value=1>Id</option>
                                     <option value=2>Nombre</option>
                                     <option value=3>Direccion</option>
@@ -57,7 +57,7 @@
                                 <td>@item.EditorialId</td>
                                 <td>@item.Nombre</td>
                                 <td>@item.Dirrecion</td>
-                                <td><a class="btn btn-dark" href="@($"REditorial/{item.EditorialId}")">Editar</a></td>
+                                <td><a class="btn btn-dark" href="@($"REditorial/{item.EditorialId}")">Ver</a></td>
                             </tr>
                             }
 
