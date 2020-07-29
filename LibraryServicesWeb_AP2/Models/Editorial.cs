@@ -23,8 +23,6 @@ namespace LibraryServicesWeb_AP2.Models
         [MinLength(8, ErrorMessage = "La Direccion es muy corta")]
         public string Dirrecion { get; set; }
 
-        public int UsuarioId { get; set; }
-
         public Editorial()
         {
             EditorialId = 0;
@@ -32,12 +30,12 @@ namespace LibraryServicesWeb_AP2.Models
             Dirrecion = string.Empty;
         }
 
-        public Editorial(int editorialId, string nombre, string dirrecion, int usuarioId)
+        public Editorial(int editorialId, string nombre, string dirrecion)
         {
             EditorialId = editorialId;
             Nombre = nombre;
             Dirrecion = dirrecion;
-            UsuarioId = usuarioId;
+
         }
     }
 }

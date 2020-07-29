@@ -18,23 +18,36 @@ namespace LibraryServicesWeb_AP2.Models
         [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int EstudianteId { get; set; }
 
-        public int UsuarioId { get; set; }
+        [Required(ErrorMessage = "El campo Fecha Prestamo no puede estar vacio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
+        public DateTime FechaPrestamo { get; set; }
+
+        [Required(ErrorMessage = "El campo Fecha Devuelta no puede estar vacio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
+        public DateTime FechaDevolucion { get; set; }
+
+
 
         [ForeignKey("PrestamoId")]
         public virtual List<PrestamosDetalle> PrestamosDetalles { get; set; } = new List<PrestamosDetalle>();
 
+        public Prestamo(int prestamoId, int estudianteId, DateTime fechaPrestamo, DateTime fechaDevolucion)
+        {
+            PrestamoId = prestamoId;
+            EstudianteId = estudianteId;
+            FechaPrestamo = fechaPrestamo;
+            FechaDevolucion = fechaDevolucion;
+        }
         public Prestamo()
         {
             PrestamoId = 0;
             EstudianteId = 0;
+            FechaPrestamo = DateTime.Now;
+            FechaDevolucion = DateTime.Now;
         }
 
-        public Prestamo(int prestamoId, int estudianteId, int usuarioId)
-        {
-            PrestamoId = prestamoId;
-            EstudianteId = estudianteId;
-            UsuarioId = usuarioId;
-        }
     }
 
     public class PrestamosDetalle
@@ -54,18 +67,10 @@ namespace LibraryServicesWeb_AP2.Models
         public Libro libro { get; set; }
 
         public string TituloLibro { get; set; }
-
-        [Required(ErrorMessage = "El campo Fecha Prestamo no puede estar vacio")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaPrestamo { get; set; }
-
-        [Required(ErrorMessage = "El campo Fecha Devuelta no puede estar vacio")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaDevolucion { get; set; }
 
-        public PrestamosDetalle(int detalleId, int prestamoId,  int libroId, Libro libro, string tituloLibro, DateTime fechaPrestamo, DateTime fechaDevolucion)
+        public PrestamosDetalle(int detalleId, int prestamoId, int libroId, Libro libro, string tituloLibro, DateTime fechaPrestamo, DateTime fechaDevolucion)
         {
             DetalleId = detalleId;
             PrestamoId = prestamoId;

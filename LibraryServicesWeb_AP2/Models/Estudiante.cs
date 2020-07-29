@@ -51,8 +51,6 @@ namespace LibraryServicesWeb_AP2.Models
         [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaInsercion { get; set; }
 
-        public int UsuarioId { get; set; }
-
 
         public Estudiante()
         {
@@ -67,7 +65,7 @@ namespace LibraryServicesWeb_AP2.Models
         }
     
 
-        public Estudiante(int estudianteId, string nombres, string apellidos, string matricula, string celular, string direccion, string email, DateTime fechaInsercion, int usuarioId, Usuarios usuarios)
+        public Estudiante(int estudianteId, string nombres, string apellidos, string matricula, string celular, string direccion, string email, DateTime fechaInsercion)
         {
             EstudianteId = estudianteId;
             Nombres = nombres;
@@ -77,7 +75,6 @@ namespace LibraryServicesWeb_AP2.Models
             Direccion = direccion;
             Email = email;
             FechaInsercion = fechaInsercion;
-            UsuarioId = usuarioId;
         }
     }
 }

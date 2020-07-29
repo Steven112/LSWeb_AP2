@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class LSWebdb : Migration
+    public partial class Library : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                 {
                     CategoriaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Descripcion = table.Column<string>(maxLength: 40, nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    Descripcion = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,8 +27,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     DevolucionId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Disponible = table.Column<bool>(nullable: false),
-                    FechaDevueltaLibro = table.Column<DateTime>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    FechaDevueltaLibro = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,8 +41,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     EditorialId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(maxLength: 40, nullable: false),
-                    Dirrecion = table.Column<string>(maxLength: 40, nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    Dirrecion = table.Column<string>(maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,8 +60,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     Celular = table.Column<string>(maxLength: 11, nullable: false),
                     Direccion = table.Column<string>(maxLength: 40, nullable: false),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
-                    FechaInsercion = table.Column<DateTime>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    FechaInsercion = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,8 +78,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     CategoriaId = table.Column<int>(nullable: false),
                     EditorialId = table.Column<int>(nullable: false),
                     FechaImpresion = table.Column<DateTime>(nullable: false),
-                    Disponibilidad = table.Column<bool>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    Disponibilidad = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,7 +92,8 @@ namespace LibraryServicesWeb_AP2.Migrations
                     PrestamoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     EstudianteId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    FechaPrestamo = table.Column<DateTime>(nullable: false),
+                    FechaDevolucion = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,23 +180,28 @@ namespace LibraryServicesWeb_AP2.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categorias",
-                columns: new[] { "CategoriaId", "Descripcion", "UsuarioId" },
-                values: new object[] { 1, "Accion", 0 });
+                columns: new[] { "CategoriaId", "Descripcion" },
+                values: new object[] { 1, "Accion" });
 
             migrationBuilder.InsertData(
                 table: "Editorials",
-                columns: new[] { "EditorialId", "Dirrecion", "Nombre", "UsuarioId" },
-                values: new object[] { 1, "Calle Mella", "StevenLibrary", 0 });
+                columns: new[] { "EditorialId", "Dirrecion", "Nombre" },
+                values: new object[] { 1, "Calle Mella", "StevenLibrary" });
 
             migrationBuilder.InsertData(
                 table: "Libros",
-                columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro", "UsuarioId" },
-                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(1361), "789653266", "Odisea", 0 });
+                columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro" },
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 29, 11, 54, 11, 888, DateTimeKind.Local).AddTicks(6254), "789653266", "Odisea" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 1, "8499866985", "Admin", "stivennunez@gmail.com", new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(8529), "Administrador", "Admin", "Steven Nunez" });
+                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 7, 29, 11, 54, 11, 889, DateTimeKind.Local).AddTicks(4443), "Administrador", "admin", "Enel Almonte" });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
+                values: new object[] { 2, "8499866985", "Admin", "stivennunez@gmail.com", new DateTime(2020, 7, 29, 11, 54, 11, 889, DateTimeKind.Local).AddTicks(5961), "Administrador", "Admin", "Steven Nunez" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",

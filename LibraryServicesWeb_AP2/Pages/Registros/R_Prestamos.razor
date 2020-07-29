@@ -1,288 +1,296 @@
 ﻿@page "/Prestamos"
-
+@page "/Prestamos/{PrestamoId:int}"
 @using LibraryServicesWeb_AP2.Models
 @using LibraryServicesWeb_AP2.BLL
 @using LibraryServicesWeb_AP2.DAL
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
-    <style>
-        body {
-            background-color: dimgrey;
-        }
-    </style>
+<style>
+    body {
+        background-color: dimgrey;
+    }
+</style>
 
 
-    <EditForm Model="prestamos" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-   .Result.User.Identity.IsAuthenticated)
-        {
-            <div class="card bg-dark text-white">
-                <div class="card-header">
-                    <h3>Registro de Prestamos</h3>
-                </div>
-                <div class="card-body">
-                    <form>
-                        @*PrestamoId*@
-                        <div class="form-row align-items-center">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>PrestamoId</label>
-                                    <div class="input-group">
-                                        <InputNumber @bind-Value="prestamos.PrestamoId" class="form-control col-4" />
-                                        <ValidationMessage For="@(() => prestamos.PrestamoId)" />
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @*Estudiante*@
-                        <div class="form-group">
-                            <label>Estudiante</label>
+<EditForm Model="prestamos" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+.Result.User.Identity.IsAuthenticated)
+    {
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                <h3>Registro de Prestamos</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    @*PrestamoId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
                             <div class="form-group">
-                                <select class="form-control" @bind="@prestamos.EstudianteId" @onclick="CargarEtudent">
-                                    <option value="" disabled selected>Seleccione un Estudiante</option>
-                                    @foreach (var item in CargarBoxEstudetn())
-                                    {
-                                        <option value="@item.EstudianteId">@item.Matricula </option>
-                                    }
-                                </select>
-                            </div>
-                            <ValidationMessage For="@(()=>prestamos.EstudianteId)" />
-                        </div>
-
-
-
-                        @*Detalle*@
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label>Tirulo Libro</label>
-                                <select class="form-control" @bind="libroSeleccionado" @onclick="Cargarlibro">
-                                    <option value="" disabled selected>Seleccione un libro</option>
-                                    @foreach (var item in CargarBoxlibros())
-                                    {
-                                        <option value="@item.LibroId">@item.NombreLibro</option>
-
-                                    }
-                                </select>
-
-                                <ValidationMessage For="@(()=>PrestamosDetalle.LibroId)" />
-                            </div>
-
-                            @*FechaPrestamo*@
-                            <div class="form-group col">
-                                <label>Fecha de Prestamos</label>
-                                <InputDate @bind-Value="PrestamosDetalle.FechaPrestamo" class="form-control" />
-                                <ValidationMessage For="@(() => PrestamosDetalle.FechaPrestamo)" />
-                            </div>
-
-                            @*FechaPrestamo*@
-                            <div class="form-group col">
-                                <label>Fecha de Devolucion</label>
+                                <label>PrestamoId</label>
                                 <div class="input-group">
-                                    <InputDate @bind-Value="PrestamosDetalle.FechaDevolucion" class="form-control" />
-                                    <ValidationMessage For="@(() => PrestamosDetalle.FechaDevolucion)" />
+                                    <InputNumber @bind-Value="prestamos.PrestamoId" class="form-control col-4" />
+                                    <ValidationMessage For="@(() => prestamos.PrestamoId)" />
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
-                                            <i class="oi oi-plus" aria-hidden="true" /> Agregar
-                                        </button>
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        @*TablaDetalle*@
-                        <table class="table">
-                            <thead class="thead-light ">
-                                <tr>
-                                    <th scope="col">DetalleId</th>
-                                    <th scope="col">EstudianteId</th>
-                                    <th scope="col">Libro Id</th>
-                                    <th scope="col">Titulo Libro</th>
-                                    <th scope="col">Fecha de Prestamo</th>
-                                    <th scope="col">Fecha de Devolucion</th>
-
-
-                                </tr>
-                            </thead>
-                            <tbody class=text-white>
-                                @foreach (var item in prestamos.PrestamosDetalles)
-                                {
-                                    <tr>
-                                        <td>@item.DetalleId</td>
-                                        <td>@prestamos.EstudianteId</td>
-                                        <td>@item.LibroId</td>
-                                        <td>@item.TituloLibro</td>
-                                        <td>@item.FechaPrestamo</td>
-                                        <td>@item.FechaDevolucion</td>
-                                    </tr>
-                                }
-
-                            </tbody>
-                        </table>
-
-
-                    </form>
-                </div>
-                <div class="card-footer">
-                    <div class="form-group text-center" display: inline-block>
-                        <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
-                        <button type="submit" class="btn btn-lg btn-success">Guardar</button>
-                        <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
                     </div>
+                    @*Estudiante*@
+                    <div class="form-group">
+                        <label>Estudiante</label>
+                        <div class="form-group">
+                            <select class="form-control" @bind="@prestamos.EstudianteId" @onclick="CargarEtudent">
+                                <option value="" disabled selected>Seleccione un Estudiante</option>
+                                @foreach (var item in CargarBoxEstudetn())
+                                {
+                                    <option value="@item.EstudianteId">@item.Matricula </option>
+                                }
+                            </select>
+                        </div>
+                        <ValidationMessage For="@(()=>prestamos.EstudianteId)" />
+                    </div>
+
+
+
+                    @*Detalle*@
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Tirulo Libro</label>
+                            <select class="form-control" @bind="libroSeleccionado" @onclick="Cargarlibro">
+                                <option value="" disabled selected>Seleccione un libro</option>
+                                @foreach (var item in CargarBoxlibros())
+                                {
+                                    <option value="@item.LibroId">@item.NombreLibro</option>
+
+                                }
+                            </select>
+
+                            <ValidationMessage For="@(()=>PrestamosDetalle.LibroId)" />
+                        </div>
+
+                        @*FechaPrestamo*@
+                        <div class="form-group col">
+                            <label>Fecha de Prestamos</label>
+                            <InputDate @bind-Value="prestamos.FechaPrestamo" class="form-control" />
+                            <ValidationMessage For="@(() => prestamos.FechaPrestamo)" />
+                        </div>
+
+                        @*FechaPrestamo*@
+                        <div class="form-group col">
+                            <label>Fecha de Devolucion</label>
+                            <div class="input-group">
+                                <InputDate @bind-Value="prestamos.FechaDevolucion" class="form-control" />
+                                <ValidationMessage For="@(() => prestamos.FechaDevolucion)" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
+                                        <i class="oi oi-plus" aria-hidden="true" /> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*TablaDetalle*@
+                    <table class="table">
+                        <thead class="thead-light ">
+                            <tr>
+                                <th scope="col">DetalleId</th>
+                                <th scope="col">EstudianteId</th>
+                                <th scope="col">Libro Id</th>
+                                <th scope="col">Titulo Libro</th>
+                                <th scope="col">Fecha de Prestamo</th>
+                                <th scope="col">Fecha de Devolucion</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody class=text-white>
+                            @foreach (var item in prestamos.PrestamosDetalles)
+                            {
+                                <tr>
+                                    <td>@item.DetalleId</td>
+                                    <td>@prestamos.EstudianteId</td>
+                                    <td>@item.LibroId</td>
+                                    <td>@item.TituloLibro</td>
+                                    <td>@prestamos.FechaPrestamo</td>
+                                    <td>@prestamos.FechaDevolucion</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
                 </div>
             </div>
-
-        }
-        else
-        {
-            <h1>No esta registrado</h1>
-            <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
-        }
-
-    </EditForm>
-
-    @code {
-
-        Prestamo prestamos = new Prestamo();
-        PrestamosDetalle PrestamosDetalle = new PrestamosDetalle();
-        Libro libro = new Libro();
-        Estudiante estudiante = new Estudiante();
-        Contexto contexto = new Contexto();
-
-        private string libroSeleccionado = "0";
-
-
-        protected override void OnInitialized()
-        {
-            Nuevo();
-            Buscar();
-            Cargarlibro();
-            CargarEtudent();
-        }
-        private void Buscar()
-        {
-            if (prestamos.PrestamoId > 0)
-            {
-                var encontrado = PrestamosBLL.Buscar(prestamos.PrestamoId);
-
-                if (encontrado != null)
-                    this.prestamos = encontrado;
-                else
-                    toast.ShowError("No encontrado");
-            }
-        }
-
-        public void Nuevo()
-        {
-            prestamos = new Prestamo();
-        }
-
-        private void AgregarDetalle()
-        {
-            prestamos.PrestamosDetalles.Add(new PrestamosDetalle
-            {
-                LibroId = Convert.ToInt32(libroSeleccionado),
-                TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
-                FechaPrestamo = PrestamosDetalle.FechaPrestamo,
-                FechaDevolucion = PrestamosDetalle.FechaDevolucion
-
-
-            });
-
-        }
-        public void Guardar()
-        {
-            bool guardo;
-
-            guardo = PrestamosBLL.Guardar(prestamos);
-
-            if (guardo)
-            {
-                Nuevo();
-                toast.ShowSuccess("Guardado correctamente");
-            }
-            else
-                toast.ShowError("No fue posible guardar");
-        }
-
-        public void Eliminar()
-        {
-            bool elimino;
-
-            elimino = PrestamosBLL.Eliminar(prestamos.PrestamoId);
-
-            if (elimino)
-            {
-                Nuevo();
-                toast.ShowSuccess("Eliminado correctamente");
-            }
-            else
-                toast.ShowError("No fue posible eliminar");
-        }
-
-        private List<Libro> CargarBoxlibros()
-        {
-            List<Libro> lista = new List<Libro>();
-            try
-            {
-                lista = LibroBLL.GetList(P => true);
-
-            }
-            catch (Exception ex)
-            {
-                toast.ShowError(ex.ToString(), "Error");
-            }
-            return lista;
-        }
-
-
-        private void Cargarlibro()
-        {
-            if (PrestamosDetalle.LibroId > 0)
-            {
-                try
-                {
-                    libro = LibroBLL.Buscar(Convert.ToInt32(libro.LibroId));
-                }
-                catch (Exception ex)
-                {
-                    toast.ShowError(ex.ToString(), "Error");
-                }
-            }
-        }
-        private List<Estudiante> CargarBoxEstudetn()
-        {
-            List<Estudiante> lista = new List<Estudiante>();
-            try
-            {
-                lista = EstudiantesBLL.GetList(P => true);
-
-            }
-            catch (Exception ex)
-            {
-                toast.ShowError(ex.ToString(), "Error");
-            }
-            return lista;
-        }
-
-
-        private void CargarEtudent()
-        {
-            if (prestamos.EstudianteId > 0)
-            {
-                try
-                {
-                    estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudiante.EstudianteId));
-                }
-                catch (Exception ex)
-                {
-                    toast.ShowError(ex.ToString(), "Error");
-                }
-            }
-        }
-
+        </div>
 
     }
+    else
+    {
+        <h1>No esta registrado</h1>
+        <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
+    }
+
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int PrestamoId { get; set; }
+    Prestamo prestamos = new Prestamo();
+    PrestamosDetalle PrestamosDetalle = new PrestamosDetalle();
+    Libro libro = new Libro();
+    Estudiante estudiante = new Estudiante();
+    Contexto contexto = new Contexto();
+
+    private string libroSeleccionado = "0";
+
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        Cargarlibro();
+        CargarEtudent();
+        if (PrestamoId != 0)
+        {
+
+            prestamos.PrestamoId = PrestamoId;
+            Buscar();
+        }
+    }
+    private void Buscar()
+    {
+        if (prestamos.PrestamoId > 0)
+        {
+            var encontrado = PrestamosBLL.Buscar(prestamos.PrestamoId);
+
+            if (encontrado != null)
+                this.prestamos = encontrado;
+            else
+                toast.ShowError("No encontrado");
+        }
+    }
+
+    public void Nuevo()
+    {
+        prestamos = new Prestamo();
+    }
+
+    private void AgregarDetalle()
+    {
+        prestamos.PrestamosDetalles.Add(new PrestamosDetalle
+        {
+            LibroId = Convert.ToInt32(libroSeleccionado),
+            TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
+            FechaPrestamo = prestamos.FechaPrestamo,
+            FechaDevolucion = prestamos.FechaDevolucion,
+
+
+        });
+
+    }
+    public void Guardar()
+    {
+        bool guardo;
+
+        guardo = PrestamosBLL.Guardar(prestamos);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    public void Eliminar()
+    {
+        bool elimino;
+
+        elimino = PrestamosBLL.Eliminar(prestamos.PrestamoId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Libro> CargarBoxlibros()
+    {
+        List<Libro> lista = new List<Libro>();
+        try
+        {
+            lista = LibroBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+
+    private void Cargarlibro()
+    {
+        if (PrestamosDetalle.LibroId > 0)
+        {
+            try
+            {
+                libro = LibroBLL.Buscar(Convert.ToInt32(libro.LibroId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+    private List<Estudiante> CargarBoxEstudetn()
+    {
+        List<Estudiante> lista = new List<Estudiante>();
+        try
+        {
+            lista = EstudiantesBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+
+    private void CargarEtudent()
+    {
+        if (prestamos.EstudianteId > 0)
+        {
+            try
+            {
+                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudiante.EstudianteId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+
+
+}

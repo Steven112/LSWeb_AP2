@@ -40,8 +40,6 @@ namespace LibraryServicesWeb_AP2.Models
 
         public bool Disponibilidad { get; set; }
 
-        public int UsuarioId { get; set; }
-
         public Libro()
         {
             LibroId = 0;
@@ -53,7 +51,7 @@ namespace LibraryServicesWeb_AP2.Models
             Disponibilidad=false;
         }
 
-        public Libro(int libroId, string nombreLibro, string iSBN, int categoriaId, int editorialId, DateTime fechaImpresion, bool disponibilidad, int usuarioId)
+        public Libro(int libroId, string nombreLibro, string iSBN, int categoriaId, int editorialId, DateTime fechaImpresion, bool disponibilidad)
         {
             LibroId = libroId;
             NombreLibro = nombreLibro;
@@ -62,7 +60,6 @@ namespace LibraryServicesWeb_AP2.Models
             EditorialId = editorialId;
             FechaImpresion = fechaImpresion;
             Disponibilidad = disponibilidad;
-            UsuarioId = usuarioId;
         }
     }
 }

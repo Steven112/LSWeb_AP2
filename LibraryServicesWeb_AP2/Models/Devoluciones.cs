@@ -25,15 +25,13 @@ namespace LibraryServicesWeb_AP2.Models
         [ForeignKey("DevolucionId")]
         public virtual List<DevolucionDetalles> devolucionDetalles { get; set; } = new List<DevolucionDetalles>();
 
-        public int UsuarioId { get; set; }
 
-        public Devoluciones(int devolucionId, bool disponible, DateTime fechaDevueltaLibro, List<DevolucionDetalles> devolucionDetalles, int usuarioId)
+        public Devoluciones(int devolucionId, bool disponible, DateTime fechaDevueltaLibro, List<DevolucionDetalles> devolucionDetalles)
         {
             DevolucionId = devolucionId;
             Disponible = disponible;
             FechaDevueltaLibro = fechaDevueltaLibro;
             this.devolucionDetalles = devolucionDetalles;
-            UsuarioId = usuarioId;
         }
 
         public Devoluciones()

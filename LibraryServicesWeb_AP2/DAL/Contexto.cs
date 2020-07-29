@@ -54,6 +54,17 @@ namespace LibraryServicesWeb_AP2.DAL
             modelBuilder.Entity<Usuarios>().HasData(new Usuarios
             {
                 UsuarioId = 1,
+                Nombres = "Enel Almonte",
+                Celular = "8499866985",
+                Email = "Enel@gmail.com",
+                NombreUsuario = "admin",
+                Contraseña = "admin",
+                Nivel = "Administrador",
+                FechaInsercion = DateTime.Now
+            });
+            modelBuilder.Entity<Usuarios>().HasData(new Usuarios
+            {
+                UsuarioId = 2,
                 Nombres = "Steven Nunez",
                 Celular = "8499866985",
                 Email="stivennunez@gmail.com",

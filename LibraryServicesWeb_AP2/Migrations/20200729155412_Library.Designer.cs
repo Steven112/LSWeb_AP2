@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryServicesWeb_AP2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200714010727_LSWebdb")]
-    partial class LSWebdb
+    [Migration("20200729155412_Library")]
+    partial class Library
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias");
@@ -40,8 +37,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                         new
                         {
                             CategoriaId = 1,
-                            Descripcion = "Accion",
-                            UsuarioId = 0
+                            Descripcion = "Accion"
                         });
                 });
 
@@ -92,9 +88,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.Property<DateTime>("FechaDevueltaLibro")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("DevolucionId");
 
                     b.ToTable("Devoluciones");
@@ -116,9 +109,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("EditorialId");
 
                     b.ToTable("Editorials");
@@ -128,8 +118,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                         {
                             EditorialId = 1,
                             Dirrecion = "Calle Mella",
-                            Nombre = "StevenLibrary",
-                            UsuarioId = 0
+                            Nombre = "StevenLibrary"
                         });
                 });
 
@@ -172,9 +161,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("EstudianteId");
 
                     b.ToTable("Estudiantes");
@@ -208,9 +194,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("LibroId");
 
                     b.ToTable("Libros");
@@ -222,10 +205,9 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(1361),
+                            FechaImpresion = new DateTime(2020, 7, 29, 11, 54, 11, 888, DateTimeKind.Local).AddTicks(6254),
                             ISBN = "789653266",
-                            NombreLibro = "Odisea",
-                            UsuarioId = 0
+                            NombreLibro = "Odisea"
                         });
                 });
 
@@ -238,8 +220,11 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.Property<int>("EstudianteId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTime>("FechaDevolucion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaPrestamo")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PrestamoId");
 
@@ -323,9 +308,20 @@ namespace LibraryServicesWeb_AP2.Migrations
                         {
                             UsuarioId = 1,
                             Celular = "8499866985",
+                            Contraseña = "admin",
+                            Email = "Enel@gmail.com",
+                            FechaInsercion = new DateTime(2020, 7, 29, 11, 54, 11, 889, DateTimeKind.Local).AddTicks(4443),
+                            Nivel = "Administrador",
+                            NombreUsuario = "admin",
+                            Nombres = "Enel Almonte"
+                        },
+                        new
+                        {
+                            UsuarioId = 2,
+                            Celular = "8499866985",
                             Contraseña = "Admin",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 13, 21, 7, 26, 820, DateTimeKind.Local).AddTicks(8529),
+                            FechaInsercion = new DateTime(2020, 7, 29, 11, 54, 11, 889, DateTimeKind.Local).AddTicks(5961),
                             Nivel = "Administrador",
                             NombreUsuario = "Admin",
                             Nombres = "Steven Nunez"

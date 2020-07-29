@@ -19,8 +19,7 @@ namespace LibraryServicesWeb_AP2.Models
         [MinLength(3, ErrorMessage = "La Descripcion es muy corta")]
         public string Descripcion { get; set; }
 
-        public int UsuarioId { get; set; }
-
+    
         public Categoria()
         {
             CategoriaId = 0;
@@ -31,7 +30,7 @@ namespace LibraryServicesWeb_AP2.Models
         {
             CategoriaId = categoriaId;
             Descripcion = descripcion;
-            UsuarioId = usuarioId;
+
         }
     }
 }
