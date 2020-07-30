@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LibraryServicesWeb_AP2.Pages.Reportes;
+using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -48,7 +50,7 @@ namespace LibraryServicesWeb_AP2.Models
             CategoriaId = 0;
             EditorialId = 0;
             FechaImpresion = DateTime.Now;
-            Disponibilidad=false;
+            Disponibilidad=true;
         }
 
         public Libro(int libroId, string nombreLibro, string iSBN, int categoriaId, int editorialId, DateTime fechaImpresion, bool disponibilidad)
@@ -60,6 +62,17 @@ namespace LibraryServicesWeb_AP2.Models
             EditorialId = editorialId;
             FechaImpresion = fechaImpresion;
             Disponibilidad = disponibilidad;
+        }
+
+        public void GeneratePDF( IJSRuntime jSRuntime)
+        {
+            List<Libro> libro = new List<Libro>();
+            ReporteLibros reporteLibros = new ReporteLibros();
+            jSRuntime.InvokeAsync<Libro>(
+                "saveAsFile",
+                "LibroList.pdf",
+                Convert.ToBase64String(reporteLibros.Report(libro))
+                );
         }
     }
 }

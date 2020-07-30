@@ -67,7 +67,15 @@ namespace LibraryServicesWeb_AP2.Models
         public Libro libro { get; set; }
 
         public string TituloLibro { get; set; }
+
+        [Required(ErrorMessage = "El campo Fecha Prestamo no puede estar vacio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaPrestamo { get; set; }
+
+        [Required(ErrorMessage = "El campo Fecha Devoluciones no puede estar vacio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaDevolucion { get; set; }
 
         public PrestamosDetalle(int detalleId, int prestamoId, int libroId, Libro libro, string tituloLibro, DateTime fechaPrestamo, DateTime fechaDevolucion)

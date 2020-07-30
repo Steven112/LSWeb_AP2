@@ -63,7 +63,13 @@
                                 <option value="" disabled selected>Seleccione un libro</option>
                                 @foreach (var item in CargarBoxlibros())
                                 {
-                                    <option value="@item.LibroId">@item.NombreLibro</option>
+                                    if (item.Disponibilidad ==true)
+                                    {
+                                        <option value="@item.LibroId">@item.NombreLibro</option>
+                                    }
+
+
+
 
                                 }
                             </select>
@@ -110,14 +116,19 @@
                         <tbody class=text-white>
                             @foreach (var item in prestamos.PrestamosDetalles)
                             {
-                                <tr>
-                                    <td>@item.DetalleId</td>
-                                    <td>@prestamos.EstudianteId</td>
-                                    <td>@item.LibroId</td>
-                                    <td>@item.TituloLibro</td>
-                                    <td>@prestamos.FechaPrestamo</td>
-                                    <td>@prestamos.FechaDevolucion</td>
-                                </tr>
+                            <tr>
+                                <td>@item.DetalleId</td>
+                                <td>@prestamos.EstudianteId</td>
+                                <td>@item.LibroId</td>
+                                <td>@item.TituloLibro</td>
+                                <td>@prestamos.FechaPrestamo</td>
+                                <td>@prestamos.FechaDevolucion</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" @onclick="@(() => EliminarDetalle(item))">
+                                        <span class="oi oi-x"></span>
+                                    </button>
+                                </td>
+                            </tr>
                             }
 
                         </tbody>
@@ -201,6 +212,11 @@
         });
 
     }
+    public void EliminarDetalle(PrestamosDetalle prestamosDetalle)
+    {
+        prestamos.PrestamosDetalles.Remove(prestamosDetalle);
+    }
+
     public void Guardar()
     {
         bool guardo;
@@ -236,7 +252,8 @@
         List<Libro> lista = new List<Libro>();
         try
         {
-            lista = LibroBLL.GetList(P => true);
+            
+            lista = LibroBLL.GetList(P => true );
 
         }
         catch (Exception ex)

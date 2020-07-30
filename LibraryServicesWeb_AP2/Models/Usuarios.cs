@@ -10,7 +10,7 @@ namespace LibraryServicesWeb_AP2.Models
     {
         [Key]
         [Required(ErrorMessage = "El campo Id no puede estar vacio")]
-        [Range(1,1000,ErrorMessage ="El Id debe de estar entre 1 y 100")]
+        [Range(0,1000,ErrorMessage ="El Id debe de estar entre 1 y 100")]
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo nombre no puede estar vacio ")]
@@ -25,7 +25,7 @@ namespace LibraryServicesWeb_AP2.Models
 
         [Required(ErrorMessage = "El campo Email no puede estar vacio")]
         [MaxLength(30, ErrorMessage = "El Email excede la cantidad de caracteres")]
-        [MinLength(8, ErrorMessage = "El Email es muy corto")]
+        [EmailAddress(ErrorMessage = "Introduzca una direccion valida")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "El campo Nombre Usuario no puede estar vacio")]
@@ -48,6 +48,14 @@ namespace LibraryServicesWeb_AP2.Models
 
         public Usuarios()
         {
+            UsuarioId = 0;
+            Nombres = string.Empty;
+            Celular = string.Empty;
+            Email = string.Empty;
+            NombreUsuario = string.Empty;
+            Contraseña = string.Empty;
+            FechaInsercion = DateTime.Now;
+            Nivel = string.Empty;
         }
 
         public Usuarios(int usuarioId, string nombres, string celular, string email, string nombreUsuario, string contraseña, DateTime fechaInsercion, string nivel)

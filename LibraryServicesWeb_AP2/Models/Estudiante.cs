@@ -43,7 +43,7 @@ namespace LibraryServicesWeb_AP2.Models
 
         [Required(ErrorMessage = "El campo Email no puede estar vacio")]
         [MaxLength(40, ErrorMessage = "El Email excede la cantidad de caracteres")]
-        [MinLength(7, ErrorMessage = "El Email es muy corto")]
+        [EmailAddress(ErrorMessage = "Introduzca una direccion valida")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "El campo Fecha Insercion no puede estar vacio")]

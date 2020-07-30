@@ -117,6 +117,7 @@ namespace LibraryServicesWeb_AP2.BLL
 
                 if (envio != null)
                 {
+
                     foreach (var item in prestamo.PrestamosDetalles)
                     {
                         var aux = contexto.Libros.Find(item.LibroId);
@@ -126,7 +127,6 @@ namespace LibraryServicesWeb_AP2.BLL
                             {
                                 aux.Disponibilidad = true;
                             }
-
                             contexto.Entry(item).State = EntityState.Deleted;
                         }
                     }

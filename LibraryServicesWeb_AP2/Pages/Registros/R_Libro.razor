@@ -4,6 +4,11 @@
 @using LibraryServicesWeb_AP2.BLL
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
 
 
 <EditForm Model="libro" OnValidSubmit="Guardar">
