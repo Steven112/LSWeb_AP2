@@ -105,7 +105,7 @@
                     <thead class="thead-light ">
                         <tr>
                             <th scope="col">DetalleId</th>
-                            <th scope="col">EstudianteId</th>
+                            <th scope="col">Estudiante</th>
                             <th scope="col">Libro Id</th>
                             <th scope="col">Titulo Libro</th>
                             <th scope="col">Fecha de Prestamo</th>
@@ -119,7 +119,7 @@
                         {
                             <tr>
                                 <td>@item.DetalleId</td>
-                                <td>@prestamos.EstudianteId</td>
+                                <td>@contexto.Estudiantes.Find(prestamos.EstudianteId).Matricula</td>
                                 <td>@item.LibroId</td>
                                 <td>@item.TituloLibro</td>
                                 <td>@prestamos.FechaPrestamo</td>

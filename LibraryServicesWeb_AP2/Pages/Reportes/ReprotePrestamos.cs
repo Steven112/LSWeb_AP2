@@ -158,7 +158,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             pdfPCell.BackgroundColor = BaseColor.Gray;
             pdfPTable.AddCell(pdfPCell);
 
-            pdfPCell = new PdfPCell(new Phrase("EstudianteId", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Estudiante", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.Gray;

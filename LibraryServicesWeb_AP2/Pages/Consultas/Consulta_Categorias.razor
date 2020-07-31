@@ -7,7 +7,7 @@
 
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-{
+{<a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
     <div class="card bg-dark text-white">
         <div class="card-header">
             <h3><strong>Consulta Categorias</strong></h3>

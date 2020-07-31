@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using LibraryServicesWeb_AP2.DAL;
 using LibraryServicesWeb_AP2.Models;
 using System;
 using System.Collections.Generic;
@@ -164,13 +165,13 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             pdfPCell.BackgroundColor = BaseColor.Gray;
             pdfPTable.AddCell(pdfPCell);
 
-            pdfPCell = new PdfPCell(new Phrase("CaategoriaId", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Caategoria", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.Gray;
             pdfPTable.AddCell(pdfPCell);
 
-            pdfPCell = new PdfPCell(new Phrase("EditorialId", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Editorial", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.Gray;
@@ -190,6 +191,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             pdfPCell.BackgroundColor = BaseColor.Gray;
             pdfPTable.AddCell(pdfPCell);
 
+            Contexto contexto = new Contexto();
             pdfPTable.CompleteRow();
             int acum = 0;
             foreach ( var item in lista)
@@ -213,13 +215,15 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.CategoriaId.ToString(), fontStyle));
+                string categoria = contexto.Categorias.Find(item.CategoriaId).Descripcion;
+                pdfPCell = new PdfPCell(new Phrase(categoria, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.EditorialId.ToString(), fontStyle));
+                string editorial = contexto.Editorials.Find(item.EditorialId).Nombre;
+                pdfPCell = new PdfPCell(new Phrase(editorial, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;

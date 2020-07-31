@@ -8,103 +8,104 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
+    <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
     <div class="card bg-dark text-white">
         <div class="card-header">
             <h3><strong>Consulta Editorial</strong></h3>
         </div>
         <div class="card-body">
-           
-                <div class="card-header">
-                    <div class="row">
-                        <div class="input-group col-12">
-                            <div class="form-group col-3">
-                                <label><strong>Filtro: </strong></label>
-                                <select class="form-control" @bind="Filtro">
-                                    <option value=0>Todo</option>
-                                    <option value=1>Id</option>
-                                    <option value=2>Nombre</option>
-                                    <option value=3>Direccion</option>
+
+            <div class="card-header">
+                <div class="row">
+                    <div class="input-group col-12">
+                        <div class="form-group col-3">
+                            <label><strong>Filtro: </strong></label>
+                            <select class="form-control" @bind="Filtro">
+                                <option value=0>Todo</option>
+                                <option value=1>Id</option>
+                                <option value=2>Nombre</option>
+                                <option value=3>Direccion</option>
 
 
-                                </select>
-                            </div>
-                            <div class="form-group col-4">
-                                <label><strong>Criterio: </strong></label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" @bind="Criterio" placeholder="Criterio" />
-                                    <button type="button" class="btn btn-primary input-group-append" @onclick="@(c => Consultar(0))">Consultar</button>
-                                </div>
-                            </div>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label><strong>Criterio: </strong></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" @bind="Criterio" placeholder="Criterio" />
+                                <button type="button" class="btn btn-primary input-group-append" @onclick="@(c => Consultar(0))">Consultar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                    <table class="table">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Direccion</th>
-
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody class=text-white>
-                            @foreach (var item in Lista)
-                            {
-                            <tr>
-                                <td>@item.EditorialId</td>
-                                <td>@item.Nombre</td>
-                                <td>@item.Dirrecion</td>
-                                <td><a class="btn btn-dark" href="@($"REditorial/{item.EditorialId}")">Ver</a></td>
-                            </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="bg-dark text-white" >
-                    <div class="row">
-                        
-                        <div class="form-group col-2 col-md-2 ml-auto">
-                            <label><strong>Imprimir </strong></label>
-                            <button type="button" class="btn btn-primary btn-block" ><span class="oi oi-print"></span> Consulta</button>
-                        </div>
-                    </div>
-                </div>
-         
-
-        
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <button class="page-link btn btn-success"
-                                    @onclick="@(e => NavegateTo("Previous"))" tabindex="-1">
-                                Previous
-                            </button>
-                        </li>
-
-                        @for (int i = 0; i < Paginas; i++)
-                        {
-                            var pageNumber = i;
-                            <li class="page-item">
-                                <button class="@(NumPagina == pageNumber ? "page-link btn btn-dark" : "page-link btn btn-danger")"
-                                        @onclick="@(u => Consultar(pageNumber))">
-                                    @(i + 1)
-                                </button>
-                            </li>
-                        }
-
-                        <li class="page-item">
-                            <button type="button" class="page-link btn btn-danger" @onclick="@(e => NavegateTo("Next"))" tabindex="-1">Next</button>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
-    
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Direccion</th>
+
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class=text-white>
+                @foreach (var item in Lista)
+                {
+                    <tr>
+                        <td>@item.EditorialId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Dirrecion</td>
+                        <td><a class="btn btn-dark" href="@($"REditorial/{item.EditorialId}")">Ver</a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="bg-dark text-white">
+        <div class="row">
+
+            <div class="form-group col-2 col-md-2 ml-auto">
+                <label><strong>Imprimir </strong></label>
+                <button type="button" class="btn btn-primary btn-block"><span class="oi oi-print"></span> Consulta</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="card-footer">
+        <div class="form-group text-center" display: inline-block>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <button class="page-link btn btn-success"
+                                @onclick="@(e => NavegateTo("Previous"))" tabindex="-1">
+                            Previous
+                        </button>
+                    </li>
+
+                    @for (int i = 0; i < Paginas; i++)
+                    {
+                        var pageNumber = i;
+                        <li class="page-item">
+                            <button class="@(NumPagina == pageNumber ? "page-link btn btn-dark" : "page-link btn btn-danger")"
+                                    @onclick="@(u => Consultar(pageNumber))">
+                                @(i + 1)
+                            </button>
+                        </li>
+                    }
+
+                    <li class="page-item">
+                        <button type="button" class="page-link btn btn-danger" @onclick="@(e => NavegateTo("Next"))" tabindex="-1">Next</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
 }
 else
 {
