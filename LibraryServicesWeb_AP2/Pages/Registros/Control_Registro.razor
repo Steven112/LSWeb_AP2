@@ -1,102 +1,97 @@
-﻿
-@page "/ContConsulta"
+﻿@page "/ContRegistros"
 @using LibraryServicesWeb_AP2.Pages
 
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+
     <style>
         body {
-            background-color: #b1b1b1;
-        
+            
+            background-image: url('images/lir.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
         }
     </style>
-<AuthorizeView>
-
-
-    <NotAuthorized>
-        <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
-    </NotAuthorized>
-
-</AuthorizeView>
-
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-
-    <div class="container ">
+    <div class="container">
         <div class="form-group">
             <div class=" form-row">
-                
+
 
                 <div class="text-center col-md-3 col-sm-6  col-lg-3">
                     <div class="card" style="width:auto">
-                        <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
+                        <img class="card-img-top" src="../Images/Prest.jpg" alt="Card image">
                         <div class="card-body bg-dark">
-                            <p class=" text-center text-white font-weight-bold ">Prestamos</p>
-                            <a href="consultaPrestamos" class="btn btn-warning">Ir a la Consulta</a>
+                            <p></p>
+                            <a href="Prestamos" class="btn btn-warning">Ir al registro</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center col-md-3 col-sm-6   col-lg-3">
                     <div class="card" style="width:auto">
-                        <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
+                        <img class="card-img-top" src="../Images/Estudiantes.jpg" alt="Card image">
                         <div class="card-body bg-dark">
-                            <p class=" text-center text-white font-weight-bold ">Estudiantes</p>
-                            <a href="Estudiantes" class="btn btn-warning">Ir a la Consulta</a>
+                            <p></p>
+                            <a href="Estudiantes" class="btn btn-warning">Ir al registro</a>
                         </div>
                     </div>
                 </div>
                 <div class="text-center col-md-3 col-sm-6   col-lg-3">
                     <div class="card" style="width:auto">
-                        <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
+                        <img class="card-img-top" src="../Images/Libros.jpg" alt="Card image">
                         <div class="card-body bg-dark">
-                            <p class=" text-center text-white font-weight-bold ">Libros</p>
-                            <a href="consultalibros" class="btn btn-warning">Ir a la Consulta</a>
+                            <p></p>
+                            <a href="Libro" class="btn btn-warning">Ir al registro</a>
                         </div>
                     </div>
                 </div>
                 <div class="text-center col-md-3 col-sm-6   col-lg-3">
                     <div class="card" style="width:auto">
-                        <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
-                        <div class="card-body bg-dark ">
-                            <p class=" text-center text-white font-weight-bold ">Categorias</p>
-                            <a href="ConsultaCategorias" class="btn btn-warning">Ir a la Consulta</a>
+                        <img class="card-img-top" src="../Images/Cate.jpg" alt="Card image">
+                        <div class="card-body bg-dark">
+                            <p></p>
+                            <a href="Categorias" class="btn btn-warning">Ir al registro</a>
                         </div>
                     </div>
                 </div>
-                <p>                                              </p>
+                <p>"    "</p>
                 <div class="row justify-content-center">
                     <div class="text-center col-md-3 col-sm-6   col-lg-3">
                         <div class="card" style="width:auto">
-                            <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
-                            <div class="card-body bg-dark ">
-                                <p class=" text-center text-white font-weight-bold  ">Editorial</p>
-                                <a href="consultaeditorial" class="btn btn-warning">Ir a la Consulta</a>
+                            <img class="card-img-top" src="../Images/Editoriales.jpg" alt="Card image">
+                            <div class="card-body bg-dark">
+                                <p></p>
+                                <a href="REditorial" class="btn btn-warning">Ir al registro</a>
                             </div>
                         </div>
                     </div>
                     <div class="text-center col-md-3 col-sm-6 col-lg-3">
                         <div class="card" style="width:auto">
-                            <img class="card-img-top" src="../Images/444.jpg" alt="Card image">
-                            <div class="card-body bg-dark ">
-                                <p class=" text-center text-white font-weight-bold">Devoluciones</p>
+                            <img class="card-img-top" src="../Images/Dev.jpg" alt="Card image">
+                            <div class="card-body bg-dark">
+                                <p></p>
                                 <a href="Prestamos" class="btn btn-warning">Ir al registro</a>
                             </div>
                         </div>
                     </div>
                     <div class="text-center col-md-3 col-sm-6  col-lg-3">
                         <div class="card" style="width:auto">
-                            <img class="card-img " src="../Images/444.jpg" alt="Card image">
+                            <img class="card-img-top" src="../Images/Usuarios.jpg" alt="Card image">
                             <div class="card-body bg-dark">
-                                <p class=" text-center font-weight-bold text-white">Usuarios</p>
+                                <p></p>
                                 <a href="Usuarios" class="btn btn-warning">Ir al registro</a>
                             </div>
                         </div>
                     </div>
 
                 </div>
-
+                
 
 
             </div>
@@ -105,6 +100,7 @@
         </div>
 
     </div>
+
 
 }
 

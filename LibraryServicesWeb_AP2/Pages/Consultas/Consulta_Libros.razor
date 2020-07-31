@@ -2,7 +2,7 @@
 @using LibraryServicesWeb_AP2.BLL
 @using LibraryServicesWeb_AP2.Models
 @using LibraryServicesWeb_AP2.Pages.Reportes
-@inject IJSRuntime iJSRutine
+@inject IJSRuntime js
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -127,7 +127,7 @@
             
             <div class="form-group col-2 col-md-2 ml-auto">
                 <label><strong>Imprimir </strong></label>
-                <button type="button" class="btn btn-danger btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Consulta</button>
+                <button type="button" class="btn btn-danger btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
             </div>
         </div>
         <div class="form-row col-12 justify-content-center">
@@ -163,9 +163,8 @@
 
 @code {
     public LibroBLL libroBLL = new LibroBLL();
-    private List<Libro> Listado { get; set; }
+    private List<Libro> Listado { get; set; }=new List<Libro>();
     private List<Libro> ListadoPaginado { get; set; }
-    private List<Libro> item { get; set; } = new List<Libro>();
 
     private string Criterio = string.Empty;
     private string Filtro = string.Empty;
@@ -232,19 +231,19 @@
         }
         IniciarPaginacion();
     }
-    public void GeneratePdf()
+
+
+    
+    public async void GeneratePdf()
     {
         ReporteLibros reporteLibros = new ReporteLibros();
-        Libro libro = new Libro();
+        await js.InvokeVoidAsync(
+            "saveAsFile",
+            "LibroList.pdf",
+            Convert.ToBase64String(reporteLibros.Report(Listado))
+            );
 
-        if (Listado.Count > 0)
-        {
-            libro.GeneratePDF(iJSRutine);
-        }
-        else
-        {
-            toast.ShowWarning("No hay datos para imprimir, debe hacer una consulta");
-        }
+
     }
 
 

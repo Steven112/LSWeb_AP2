@@ -68,8 +68,8 @@ namespace LibraryServicesWeb_AP2.DAL
                 Nombres = "Steven Nunez",
                 Celular = "8499866985",
                 Email="stivennunez@gmail.com",
-                NombreUsuario="Admin",
-                Contraseña="Admin",
+                NombreUsuario="StevenN",
+                Contraseña="Natael123",
                 Nivel="Administrador",
                 FechaInsercion=DateTime.Now
             });

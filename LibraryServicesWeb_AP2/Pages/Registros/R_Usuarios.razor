@@ -16,7 +16,7 @@
 
     <EditForm Model="usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
-
+        <a href="ContRegistros" class="  btn btn-warning justify-content-lg-start">Menu Principal</a>
         <div class="card bg-dark text-white ">
             <div class="card-header ">
                 <h3>Registro de Usuario</h3>
@@ -161,7 +161,7 @@
         {
 
 
-            bool guardo;
+            bool guardo= UsuariosBLL.Guardar(usuarios);
 
             if (ExisteEmail())
             {
@@ -173,13 +173,16 @@
                 toast.ShowWarning("Existe un usuario con ese nombre");
                 return;
             }
-            if (usuarios.Contraseña == ConfirmarClave == false)
+            if (usuarios.Contraseña == ConfirmarClave)
+            {
+                return;
+            }
+            else
             {
                 toast.ShowWarning("Contraseña no coincide");
                 return;
             }
 
-            guardo = UsuariosBLL.Guardar(usuarios);
 
             SeleccionarNivel();
 

@@ -11,98 +11,98 @@
     </style>
 
 
-<EditForm Model="libro" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-
-    <div class="card bg-dark text-white">
-        <div class="card-header">
-            <h3> Registro Libros</h3>
-        </div>
-        <div class="card-body">
-            <form>
-                @*LibroId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>LibroId</label>
-                            <div class=" input-group">
-                                <InputNumber @bind-Value="libro.LibroId" class="form-control col-4" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+    <EditForm Model="libro" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <a href="ContRegistros" class="btn btn-warning justify-content-lg-start">Menu Principal</a>
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                <h3> Registro Libros</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    @*LibroId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>LibroId</label>
+                                <div class=" input-group">
+                                    <InputNumber @bind-Value="libro.LibroId" class="form-control col-4" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @*Nombres*@
-                <div class="form-group">
-                    <label>Titulo Libro</label>
-                    <InputText @bind-Value="libro.NombreLibro" class="form-control " />
-                    <ValidationMessage For="@(()=> libro.NombreLibro)" />
-
-                </div>
-                @*ISBN*@
-                <div class="form-group">
-                    <label>ISBN</label>
-                    <InputText @bind-Value="libro.ISBN" class="form-control " />
-                    <ValidationMessage For="@(()=> libro.ISBN)" />
-
-                </div>
-                @*Categoria*@
-                <div class="form-group">
-                    <label>Categoria</label>
+                    @*Nombres*@
                     <div class="form-group">
-                        <select class="form-control" @bind="@libro.CategoriaId" @onclick="CargarCategorias">
-                            <option value="" disabled selected>Seleccione una Categoria</option>
-                            @foreach (var item in CargarBoxCategory())
-                            {
-                                <option value="@item.CategoriaId">@item.Descripcion </option>
-                            }
-                        </select>
+                        <label>Titulo Libro</label>
+                        <InputText @bind-Value="libro.NombreLibro" class="form-control " />
+                        <ValidationMessage For="@(()=> libro.NombreLibro)" />
+
                     </div>
-                    <ValidationMessage For="@(()=>libro.CategoriaId)" />
-                </div>
-                @*Editorial*@
-                <div class="form-group">
-                    <label>Editorial</label>
+                    @*ISBN*@
                     <div class="form-group">
-                        <select class="form-control" @bind="@libro.EditorialId" @onclick="CargarEditorial">
-                            <option value="" disabled selected>Seleccione una Editorial</option>
-                            @foreach (var item in CargarBoxEditorial())
-                            {
-                                <option value="@item.EditorialId">@item.Nombre </option>
-                            }
-                        </select>
+                        <label>ISBN</label>
+                        <InputText @bind-Value="libro.ISBN" class="form-control " />
+                        <ValidationMessage For="@(()=> libro.ISBN)" />
+
                     </div>
-                    <ValidationMessage For="@(()=>libro.CategoriaId)" />
+                    @*Categoria*@
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <div class="form-group">
+                            <select class="form-control" @bind="@libro.CategoriaId" @onclick="CargarCategorias">
+                                <option value="" disabled selected>Seleccione una Categoria</option>
+                                @foreach (var item in CargarBoxCategory())
+                                {
+                                    <option value="@item.CategoriaId">@item.Descripcion </option>
+                                }
+                            </select>
+                        </div>
+                        <ValidationMessage For="@(()=>libro.CategoriaId)" />
+                    </div>
+                    @*Editorial*@
+                    <div class="form-group">
+                        <label>Editorial</label>
+                        <div class="form-group">
+                            <select class="form-control" @bind="@libro.EditorialId" @onclick="CargarEditorial">
+                                <option value="" disabled selected>Seleccione una Editorial</option>
+                                @foreach (var item in CargarBoxEditorial())
+                                {
+                                    <option value="@item.EditorialId">@item.Nombre </option>
+                                }
+                            </select>
+                        </div>
+                        <ValidationMessage For="@(()=>libro.CategoriaId)" />
+                    </div>
+
+
+                    @*FechaImpresion*@
+                    <div class="form-group">
+                        <label>Fecha de Impresion</label>
+                        <InputDate @bind-Value="libro.FechaImpresion" class="form-control " />
+                        <ValidationMessage For="@(()=> libro.FechaImpresion)" />
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                    @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+                    {
+                        <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+
+                    }
+
                 </div>
-
-
-                @*FechaImpresion*@
-                <div class="form-group">
-                    <label>Fecha de Impresion</label>
-                    <InputDate @bind-Value="libro.FechaImpresion" class="form-control " />
-                    <ValidationMessage For="@(()=> libro.FechaImpresion)" />
-                </div>
-              
-
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
-                @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-                {
-                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
-
-                }
-
             </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
 
 @code {
     [Parameter]

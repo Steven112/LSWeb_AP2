@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class DB : Migration
+    public partial class LibraryServicesOne : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,7 +57,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     Nombres = table.Column<string>(maxLength: 40, nullable: false),
                     Apellidos = table.Column<string>(maxLength: 40, nullable: false),
                     Matricula = table.Column<string>(maxLength: 9, nullable: false),
-                    Celular = table.Column<string>(maxLength: 11, nullable: false),
+                    Celular = table.Column<string>(nullable: false),
                     Direccion = table.Column<string>(maxLength: 40, nullable: false),
                     Email = table.Column<string>(maxLength: 40, nullable: false),
                     FechaInsercion = table.Column<DateTime>(nullable: false)
@@ -191,17 +191,17 @@ namespace LibraryServicesWeb_AP2.Migrations
             migrationBuilder.InsertData(
                 table: "Libros",
                 columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro" },
-                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 30, 2, 23, 15, 422, DateTimeKind.Local).AddTicks(4473), "789653266", "Odisea" });
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 30, 17, 24, 39, 407, DateTimeKind.Local).AddTicks(5444), "789653266", "Odisea" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 7, 30, 2, 23, 15, 423, DateTimeKind.Local).AddTicks(4546), "Administrador", "admin", "Enel Almonte" });
+                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(6427), "Administrador", "admin", "Enel Almonte" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 2, "8499866985", "Admin", "stivennunez@gmail.com", new DateTime(2020, 7, 30, 2, 23, 15, 423, DateTimeKind.Local).AddTicks(5120), "Administrador", "Admin", "Steven Nunez" });
+                values: new object[] { 2, "8499866985", "Natael123", "stivennunez@gmail.com", new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(7001), "Administrador", "StevenN", "Steven Nunez" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",

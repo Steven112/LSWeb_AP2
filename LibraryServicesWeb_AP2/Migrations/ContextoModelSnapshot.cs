@@ -133,8 +133,7 @@ namespace LibraryServicesWeb_AP2.Migrations
 
                     b.Property<string>("Celular")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(11);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
@@ -203,7 +202,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 7, 30, 2, 23, 15, 422, DateTimeKind.Local).AddTicks(4473),
+                            FechaImpresion = new DateTime(2020, 7, 30, 17, 24, 39, 407, DateTimeKind.Local).AddTicks(5444),
                             ISBN = "789653266",
                             NombreLibro = "Odisea"
                         });
@@ -308,7 +307,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "admin",
                             Email = "Enel@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 30, 2, 23, 15, 423, DateTimeKind.Local).AddTicks(4546),
+                            FechaInsercion = new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(6427),
                             Nivel = "Administrador",
                             NombreUsuario = "admin",
                             Nombres = "Enel Almonte"
@@ -317,11 +316,11 @@ namespace LibraryServicesWeb_AP2.Migrations
                         {
                             UsuarioId = 2,
                             Celular = "8499866985",
-                            Contraseña = "Admin",
+                            Contraseña = "Natael123",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 30, 2, 23, 15, 423, DateTimeKind.Local).AddTicks(5120),
+                            FechaInsercion = new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(7001),
                             Nivel = "Administrador",
-                            NombreUsuario = "Admin",
+                            NombreUsuario = "StevenN",
                             Nombres = "Steven Nunez"
                         });
                 });

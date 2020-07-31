@@ -32,8 +32,7 @@ namespace LibraryServicesWeb_AP2.Models
         public string Matricula { get; set; }
 
         [Required(ErrorMessage = "El campo Celular no puede estar vacio")]
-        [MaxLength(11, ErrorMessage = "El Celular excede la cantidad de caracteres")]
-        [MinLength(10, ErrorMessage = "El telefono esta incompleto")]
+        [Phone(ErrorMessage="El telefono es incorecto")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "El campo Direccion no puede estar vacio")]

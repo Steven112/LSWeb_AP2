@@ -19,8 +19,8 @@ namespace LibraryServicesWeb_AP2.Models
         public string Nombres { get; set; }
 
         [Required(ErrorMessage = "El campo Celular no puede estar vacio ")]
-        [MaxLength(11, ErrorMessage = "El telefono excede la cantidad de digitos")]
-        [MinLength(10, ErrorMessage = "Telefono incorecto")]
+        [MaxLength(11, ErrorMessage = "El nombre es muy largo")]
+        [Phone(ErrorMessage = "El telefono es incorecto")]
         public string Celular { get; set; }
 
         [Required(ErrorMessage = "El campo Email no puede estar vacio")]
