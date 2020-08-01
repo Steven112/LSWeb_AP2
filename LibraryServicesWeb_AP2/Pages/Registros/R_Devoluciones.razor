@@ -1,0 +1,151 @@
+﻿@using Models
+@using BLL
+
+<h3>R_Devoluciones</h3>
+
+
+@code {
+    [Parameter]
+    public int DevolucionesId{ get; set; }
+    Devoluciones devoluciones = new Devoluciones();
+    Libro libro = new Libro();
+
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        Buscar();
+        if (DevolucionesId != 0)
+        {
+
+            libro.LibroId = DevolucionesId;
+            Buscar();
+        }
+    }
+    public void Nuevo()
+    {
+        devoluciones = new Devoluciones();
+    }
+
+
+    public void Buscar()
+    {
+
+
+        if (devoluciones.DevolucionId > 0)
+        {
+            var encontrado = LibroBLL.Buscar(devoluciones.DevolucionId);
+
+            if (encontrado != null)
+            {
+                this.devoluciones = encontrado;
+            }
+            else
+            {
+                toast.ShowWarning("No encontrado");
+            }
+
+        }
+        else
+        {
+            this.devoluciones = new Devoluciones();
+        }
+
+
+
+    }
+
+    public void Guardar()
+    {
+        bool guardo;
+
+        guardo = DevolucionesBLL.Guardar(devoluciones);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    public void Eliminar()
+    {
+        bool elimino;
+
+        elimino = DevolucionesBLL.Eliminar(devoluciones.DevolucionId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Estudiante> CargarBoxCategory()
+    {
+        List<Estudiante> lista = new List<Estudiante>();
+        try
+        {
+            lista = EstudiantesBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+    private void CargarCategorias()
+    {
+        if (categoria.CategoriaId > 0)
+        {
+            try
+            {
+                categoria = CategoriaBLL.Buscar(Convert.ToInt32(categoria.CategoriaId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+    private List<Editorial> CargarBoxEditorial()
+    {
+        List<Editorial> lista = new List<Editorial>();
+        try
+        {
+            lista = EditorialBLL.GetList(P => true);
+
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.ToString(), "Error");
+        }
+        return lista;
+    }
+
+    private void CargarEditorial()
+    {
+        if (editorial.EditorialId > 0)
+        {
+            try
+            {
+                editorial = EditorialBLL.Buscar(Convert.ToInt32(editorial.EditorialId));
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.ToString(), "Error");
+            }
+        }
+    }
+    public void disponiblility()
+    {
+        libro.Disponibilidad = true;
+    }
+
+}
