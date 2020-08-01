@@ -11,7 +11,7 @@ namespace LibraryServicesWeb_AP2.Models
     {
         [Key]
         [Required(ErrorMessage = "El campo Id no puede estar vacio")]
-        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
+        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 0 y 100")]
         public int DevolucionId { get; set; }
 
         [Required(ErrorMessage = "El campo Fecha Devuelta no puede estar vacio")]
@@ -42,15 +42,19 @@ namespace LibraryServicesWeb_AP2.Models
     {
 
         [Key]
-        [Required(ErrorMessage = "El campo Id no puede estar vacio")]
-        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int DetalleId { get; set; }
 
-        [Required(ErrorMessage = "El campo Prestamo no puede estar vacio")]
-        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
+        [Required(ErrorMessage = "El campo Devolucion no puede estar vacio")]
+        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 0 y 100")]
         public int DevolucionId { get; set; }
 
-  
+        [Required(ErrorMessage = "El campo Estudiante no puede estar vacio")]
+        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 0 y 100")]
+        public int EstudianteId { get; set; }
+        [ForeignKey("EstudianteId")]
+        public Estudiante estudiante  { get; set; }
+
+
         [Required(ErrorMessage = "El campo Libro no puede estar vacio")]
         [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int LibroId { get; set; }

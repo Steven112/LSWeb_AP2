@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryServicesWeb_AP2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200730212440_LibraryServicesOne")]
-    partial class LibraryServicesOne
+    [Migration("20200801021803_DB")]
+    partial class DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace LibraryServicesWeb_AP2.Migrations
                     b.Property<int>("DevolucionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FechaDevolucionLibro")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("EstudianteId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaDevueltaLibro")
                         .HasColumnType("TEXT");
@@ -64,14 +64,13 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
-                    b.Property<int>("PrestamoId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("DetalleId");
 
                     b.HasIndex("DevolucionId");
 
-                    b.HasIndex("PrestamoId");
+                    b.HasIndex("EstudianteId");
+
+                    b.HasIndex("LibroId");
 
                     b.ToTable("DevolucionDetalles");
                 });
@@ -80,9 +79,6 @@ namespace LibraryServicesWeb_AP2.Migrations
                 {
                     b.Property<int>("DevolucionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Disponible")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaDevueltaLibro")
@@ -204,7 +200,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 7, 30, 17, 24, 39, 407, DateTimeKind.Local).AddTicks(5444),
+                            FechaImpresion = new DateTime(2020, 7, 31, 22, 18, 1, 626, DateTimeKind.Local).AddTicks(4391),
                             ISBN = "789653266",
                             NombreLibro = "Odisea"
                         });
@@ -309,7 +305,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "admin",
                             Email = "Enel@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(6427),
+                            FechaInsercion = new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(5139),
                             Nivel = "Administrador",
                             NombreUsuario = "admin",
                             Nombres = "Enel Almonte"
@@ -320,7 +316,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "Natael123",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 30, 17, 24, 39, 408, DateTimeKind.Local).AddTicks(7001),
+                            FechaInsercion = new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(6197),
                             Nivel = "Administrador",
                             NombreUsuario = "StevenN",
                             Nombres = "Steven Nunez"
@@ -335,9 +331,15 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LibraryServicesWeb_AP2.Models.Prestamo", "prestamo")
+                    b.HasOne("LibraryServicesWeb_AP2.Models.Estudiante", "estudiante")
                         .WithMany()
-                        .HasForeignKey("PrestamoId")
+                        .HasForeignKey("EstudianteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryServicesWeb_AP2.Models.Libro", "libro")
+                        .WithMany()
+                        .HasForeignKey("LibroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

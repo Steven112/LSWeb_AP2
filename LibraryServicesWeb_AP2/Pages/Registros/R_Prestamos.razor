@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label>Estudiante</label>
                     <div class="form-group">
-                        <select class="form-control" @bind="@prestamos.EstudianteId" @onclick="CargarEtudent">
+                        <select class="form-control" @bind="prestamos.EstudianteId" @onclick="CargarEtudent">
                             <option value="" disabled selected>Seleccione un Estudiante</option>
                             @foreach (var item in CargarBoxEstudetn())
                             {
@@ -54,7 +54,7 @@
                     <ValidationMessage For="@(()=>prestamos.EstudianteId)" />
                 </div>
 
-
+                
 
                 @*Detalle*@
                 <div class="form-row">
@@ -166,7 +166,9 @@ else
     Estudiante estudiante = new Estudiante();
     Contexto contexto = new Contexto();
 
+
     private string libroSeleccionado = "0";
+    private string estudianteSeleccionado = "0";
 
 
     protected override void OnInitialized()
@@ -202,15 +204,24 @@ else
 
     private void AgregarDetalle()
     {
-        prestamos.PrestamosDetalles.Add(new PrestamosDetalle
+        estudianteSeleccionado =Convert.ToString( prestamos.EstudianteId);
+        if (libroSeleccionado!="0" && estudianteSeleccionado!="0")
         {
-            LibroId = Convert.ToInt32(libroSeleccionado),
-            TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
-            FechaPrestamo = prestamos.FechaPrestamo,
-            FechaDevolucion = prestamos.FechaDevolucion,
+            prestamos.PrestamosDetalles.Add(new PrestamosDetalle
+            {
+                LibroId = Convert.ToInt32(libroSeleccionado),
+                TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
+                FechaPrestamo = prestamos.FechaPrestamo,
+                FechaDevolucion = prestamos.FechaDevolucion,
 
 
-        });
+            });
+
+        }
+        else
+        {
+            toast.ShowError("Debe llenar los campos anteriores");
+        }
 
     }
     public void EliminarDetalle(PrestamosDetalle prestamosDetalle)
@@ -222,15 +233,28 @@ else
     {
         bool guardo;
 
-        guardo = PrestamosBLL.Guardar(prestamos);
 
-        if (guardo)
+
+
+        if (prestamos.PrestamosDetalles.Count>0)
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            guardo = PrestamosBLL.Guardar(prestamos);
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No fue posible guardar");
+
         }
         else
-            toast.ShowError("No fue posible guardar");
+        {
+            toast.ShowError("No fue posible guardar, debe agregar un detalle");
+        }
+
+
     }
 
     public void Eliminar()
