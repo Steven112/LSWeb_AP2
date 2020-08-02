@@ -60,6 +60,12 @@ namespace LibraryServicesWeb_AP2.Models
         [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int PrestamoId { get; set; }
 
+        [Required(ErrorMessage = "El campo Id no puede estar vacio")]
+        [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
+        public int EstudianteId { get; set; }
+        [ForeignKey("EstudianteId")]
+        public Estudiante estudiante { get; set; }
+
         [Required(ErrorMessage = "El campo LibroId no puede estar vacio")]
         [Range(0, 1000, ErrorMessage = "El Id debe estar entre 1 y 100")]
         public int LibroId { get; set; }
@@ -78,12 +84,12 @@ namespace LibraryServicesWeb_AP2.Models
         [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]
         public DateTime FechaDevolucion { get; set; }
 
-        public PrestamosDetalle(int detalleId, int prestamoId, int libroId, Libro libro, string tituloLibro, DateTime fechaPrestamo, DateTime fechaDevolucion)
+        public PrestamosDetalle(int detalleId, int prestamoId, int estudianteId, int libroId, string tituloLibro, DateTime fechaPrestamo, DateTime fechaDevolucion)
         {
             DetalleId = detalleId;
             PrestamoId = prestamoId;
+            EstudianteId = estudianteId;
             LibroId = libroId;
-            this.libro = libro;
             TituloLibro = tituloLibro;
             FechaPrestamo = fechaPrestamo;
             FechaDevolucion = fechaDevolucion;
@@ -93,6 +99,7 @@ namespace LibraryServicesWeb_AP2.Models
         {
             DetalleId = 0;
             PrestamoId = 0;
+            EstudianteId = 0;
             LibroId = 0;
             TituloLibro = string.Empty;
             FechaPrestamo = DateTime.Now;

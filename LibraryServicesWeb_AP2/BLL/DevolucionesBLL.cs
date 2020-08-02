@@ -25,8 +25,19 @@ namespace LibraryServicesWeb_AP2.BLL
 
             try
             {
+
+                foreach (var item in devoluciones.devolucionDetalles)
+                {
+                    var book = contexto.Libros.Find(item.LibroId);
+                    if (book != null)
+                    {
+                        book.Disponibilidad = true;
+                    }
+
+                }
                 contexto.Devoluciones.Add(devoluciones);
                 paso = contexto.SaveChanges() > 0;
+
             }
             catch (Exception)
             {
@@ -43,11 +54,40 @@ namespace LibraryServicesWeb_AP2.BLL
         {
             bool paso = false;
             Contexto contexto = new Contexto();
-
+            var anterior = Buscar(devoluciones.DevolucionId);
             try
             {
+
+                foreach (var item in anterior.devolucionDetalles)
+                {
+                    var aux = contexto.Libros.Find(item.LibroId);
+                    if (!devoluciones.devolucionDetalles.Exists(d => d.DevolucionId == item.DevolucionId))
+                    {
+                        var libro = LibroBLL.Buscar(item.LibroId);
+                        libro.Disponibilidad = true;
+                        LibroBLL.Modificar(libro);
+                        contexto.Entry(item).State = EntityState.Deleted;
+                    }
+                }
+                foreach (var item in devoluciones.devolucionDetalles)
+                {
+
+                    var aux = contexto.Libros.Find(item.LibroId);
+                    if (item.DevolucionId == 0)
+                    {
+                        var libro = LibroBLL.Buscar(item.LibroId);
+                        libro.Disponibilidad = false;
+                        LibroBLL.Modificar(libro);
+
+                    }
+                    else
+
+                        contexto.Entry(item).State = EntityState.Modified;
+
+                }
                 contexto.Entry(devoluciones).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
+
             }
             catch (Exception)
             {
@@ -59,19 +99,27 @@ namespace LibraryServicesWeb_AP2.BLL
             }
             return paso;
         }
+
         public static bool Eliminar(int id)
         {
-            bool paso = false;
             Contexto contexto = new Contexto();
+            bool paso = false;
+
             try
             {
-                var devoluciones = contexto.Devoluciones.Find(id);
+                Devoluciones devoluciones= DevolucionesBLL.Buscar(id);
 
-                if (devoluciones != null)
+
+
+                foreach (var item in devoluciones.devolucionDetalles) //Afecta el inventario
                 {
-                    contexto.Devoluciones.Remove(devoluciones);
-                    paso = contexto.SaveChanges() > 0;
+                    var libro = LibroBLL.Buscar(item.LibroId);
+                    libro.Disponibilidad = false;
+                    LibroBLL.Modificar(libro);
                 }
+
+                contexto.Devoluciones.Remove(devoluciones);
+                paso = (contexto.SaveChanges() > 0);
             }
             catch (Exception)
             {
@@ -92,7 +140,7 @@ namespace LibraryServicesWeb_AP2.BLL
 
             try
             {
-                devoluciones = contexto.Devoluciones.Find(id);
+                devoluciones = contexto.Devoluciones.Where(e => e.DevolucionId == id).Include(e => e.devolucionDetalles).FirstOrDefault();
             }
             catch (Exception)
             {
@@ -105,6 +153,7 @@ namespace LibraryServicesWeb_AP2.BLL
 
             return devoluciones;
         }
+
 
         public static List<Devoluciones> GetList(Expression<Func<Devoluciones, bool>> criterio)
         {

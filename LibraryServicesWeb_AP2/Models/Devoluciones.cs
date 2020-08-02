@@ -14,6 +14,8 @@ namespace LibraryServicesWeb_AP2.Models
         [Range(0, 1000, ErrorMessage = "El Id debe estar entre 0 y 100")]
         public int DevolucionId { get; set; }
 
+        
+
         [Required(ErrorMessage = "El campo Fecha Devuelta no puede estar vacio")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "0:MM/dd/yyyy", ApplyFormatInEditMode = true)]

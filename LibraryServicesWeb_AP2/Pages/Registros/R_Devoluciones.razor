@@ -32,7 +32,7 @@
                 <div class="form-row">
                     @*FechaDevolucion*@
                     <div class="form-group col">
-                        <label>Fecha Devolucion</label>
+                        <label>Fecha de Devuelta</label>
                         <InputDate @bind-Value="devoluciones.FechaDevueltaLibro" class="form-control " />
                         <ValidationMessage For="@(()=> devoluciones.FechaDevueltaLibro)" />
                     </div>
@@ -41,7 +41,7 @@
                 <div class="form-group col ">
                     <label>Estudiante</label>
                     <div class="input-group">
-                        <select class="form-control" @bind="@devolucionDetalles.EstudianteId" @onclick="CargarEstudiante">
+                        <select class="form-control" @bind="estudianteSeleccionado" @onclick="CargarEstudiante">
                             <option value="" disabled selected>Seleccione un Estudiante</option>
                             @foreach (var item in CargarBoxEstudiante())
                             {
@@ -56,15 +56,19 @@
                     <div class="form-group col ">
                         <label>Libro</label>
                         <div class="input-group">
-                            <select class="form-control" @bind="@devolucionDetalles.LibroId" @onclick="CargarLibro">
+                            <select class="form-control" @bind="libroSeleccionado" @onclick="CargarLibro">
 
                                 <option value="" disabled selected>Seleccione una Editorial</option>
 
 
                                 @foreach (var item in CargarBoxLibro())
                                 {
-                                    <option value="@item.LibroId">@item.NombreLibro </option>
+                                    if (item.Disponibilidad == false)
+                                    {
+                                        <option value="@item.LibroId">@item.NombreLibro</option>
+                                    }
                                 }
+
                             </select>
 
 
@@ -94,8 +98,8 @@
                             @foreach (var item in devoluciones.devolucionDetalles)
                             {
                                 <tr>
-                                    <td>@item.LibroId</td>
-                                    <td>@contexto.Estudiantes.Find(devolucionDetalles.EstudianteId).Matricula</td>
+                                    <td>@item.DevolucionId</td>
+                                    <td>@item.EstudianteId</td>
                                     <td>@item.LibroId</td>
                                     <td>@item.NombreLibro</td>
                                     <td>@devoluciones.FechaDevueltaLibro</td>
@@ -162,67 +166,63 @@
     }
 
 
-    public void Buscar()
+    private void Buscar()
     {
-
-
         if (devoluciones.DevolucionId > 0)
         {
             var encontrado = DevolucionesBLL.Buscar(devoluciones.DevolucionId);
 
             if (encontrado != null)
-            {
                 this.devoluciones = encontrado;
-            }
             else
-            {
-                toast.ShowWarning("No encontrado");
-            }
-
+                toast.ShowError("No encontrado");
         }
-        else
-        {
-            this.devoluciones = new Devoluciones();
-        }
-
-
-
     }
 
     public void Guardar()
     {
         bool guardo;
-
-        guardo = DevolucionesBLL.Guardar(devoluciones);
-
-        if (guardo)
+        if (devoluciones.devolucionDetalles.Count > 0)
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            guardo = DevolucionesBLL.Guardar(devoluciones);
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No fue posible guardar");
+
         }
         else
-            toast.ShowError("No fue posible guardar");
+        {
+            toast.ShowError("No fue posible guardar, debe agregar un detalle");
+        }
+
     }
     private void AgregarDetalle()
     {
-       // estudianteSeleccionado = Convert.ToString(devolucionDetalles.EstudianteId);
-       // if (libroSeleccionado != "0" && estudianteSeleccionado != "0")
-    //    {
+
+        if (libroSeleccionado != "0" && estudianteSeleccionado != "0")
+        {
             devoluciones.devolucionDetalles.Add(new DevolucionDetalles
             {
+                DevolucionId=devoluciones.DevolucionId,
+                EstudianteId= Convert.ToInt32(estudianteSeleccionado),
                 LibroId = Convert.ToInt32(libroSeleccionado),
                 NombreLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
-              
+
                 FechaDevueltaLibro = devoluciones.FechaDevueltaLibro,
 
 
             });
 
-     //  }
-       // else
-       // {
-       //    toast.ShowError("Debe llenar los campos anteriores");
-      //  }
+        }
+        else {
+
+            toast.ShowError("Debe llenar los campos anteriores");
+        }
 
     }
 
@@ -267,7 +267,7 @@
         {
             try
             {
-                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudiante.EstudianteId));
+                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudianteSeleccionado));
             }
             catch (Exception ex)
             {
@@ -296,7 +296,7 @@
         {
             try
             {
-                libro = LibroBLL.Buscar(Convert.ToInt32(libro.LibroId));
+                libro = LibroBLL.Buscar(Convert.ToInt32(libroSeleccionado));
             }
             catch (Exception ex)
             {

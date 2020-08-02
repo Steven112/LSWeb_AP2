@@ -3,6 +3,7 @@ using LibraryServicesWeb_AP2.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -36,9 +37,10 @@ namespace LibraryServicesWeb_AP2.BLL
                     {
                         book.Disponibilidad = false;
                     }
-                    contexto.Prestamos.Add(prestamo);
-                    paso = contexto.SaveChanges() > 0;
+                    
                 }
+                contexto.Prestamos.Add(prestamo);
+                paso = contexto.SaveChanges() > 0;
 
             }
             catch (Exception)
@@ -59,40 +61,39 @@ namespace LibraryServicesWeb_AP2.BLL
             var anterior = Buscar(prestamo.PrestamoId);
             try
             {
-
                 foreach (var item in anterior.PrestamosDetalles)
                 {
-                    var aux = contexto.Libros.Find(item.LibroId);
-                    if (!prestamo.PrestamosDetalles.Exists(d => d.PrestamoId== item.PrestamoId))
+                    if (!prestamo.PrestamosDetalles.Exists(o => o.DetalleId == item.DetalleId))
                     {
-                        if (aux != null)
-                        {
-                            aux.Disponibilidad = true;
-                        }
-
+                        var libro = LibroBLL.Buscar(item.LibroId);
+                        libro.Disponibilidad=true;
+                        LibroBLL.Modificar(libro);
                         contexto.Entry(item).State = EntityState.Deleted;
                     }
                 }
+
                 foreach (var item in prestamo.PrestamosDetalles)
                 {
-
-                    var aux = contexto.Libros.Find(item.LibroId);
-                    if (item.PrestamoId == 0)
+                    if (item.DetalleId == 0)
                     {
                         contexto.Entry(item).State = EntityState.Added;
-                        if (aux != null)
-                        {
-                            aux.Disponibilidad = false;
-                        }
-
+                        var book = LibroBLL.Buscar(item.LibroId);
+                        book.Disponibilidad=false;
+                        LibroBLL.Modificar(book);
                     }
                     else
-
+                    {
                         contexto.Entry(item).State = EntityState.Modified;
+                        var libro = LibroBLL.Buscar(item.LibroId);
+                        libro.Disponibilidad=false;
+                        LibroBLL.Modificar(libro);
 
+                    }
                 }
+
                 contexto.Entry(prestamo).State = EntityState.Modified;
-                paso = contexto.SaveChanges() > 0;
+                paso = (contexto.SaveChanges() > 0);
+
 
             }
             catch (Exception)
@@ -108,31 +109,24 @@ namespace LibraryServicesWeb_AP2.BLL
 
         public static bool Eliminar(int id)
         {
+             Contexto contexto = new Contexto();
             bool paso = false;
-            Contexto contexto = new Contexto();
-            Prestamo prestamo = new Prestamo();
+            
             try
             {
-                var envio = contexto.Prestamos.Find(id);
+                Prestamo prestamo = PrestamosBLL.Buscar(id);
 
-                if (envio != null)
+                 
+               
+                foreach (var item in prestamo.PrestamosDetalles) //Afecta el inventario
                 {
-
-                    foreach (var item in prestamo.PrestamosDetalles)
-                    {
-                        var aux = contexto.Libros.Find(item.LibroId);
-                        if (!prestamo.PrestamosDetalles.Exists(d => d.PrestamoId == item.PrestamoId))
-                        {
-                            if (aux != null)
-                            {
-                                aux.Disponibilidad = true;
-                            }
-                            contexto.Entry(item).State = EntityState.Deleted;
-                        }
-                    }
-                    contexto.Prestamos.Remove(envio);
-                    paso = contexto.SaveChanges() > 0;
+                    var libro = LibroBLL.Buscar(item.LibroId);
+                    libro.Disponibilidad = true;
+                   LibroBLL.Modificar(libro);
                 }
+
+                contexto.Prestamos.Remove(prestamo);
+                paso = (contexto.SaveChanges() > 0);
             }
             catch (Exception)
             {

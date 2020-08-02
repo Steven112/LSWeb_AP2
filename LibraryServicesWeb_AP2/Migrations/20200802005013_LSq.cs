@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class DB : Migration
+    public partial class LSq : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,6 +160,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                     DetalleId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PrestamoId = table.Column<int>(nullable: false),
+                    EstudianteId = table.Column<int>(nullable: false),
                     LibroId = table.Column<int>(nullable: false),
                     TituloLibro = table.Column<string>(nullable: true),
                     FechaPrestamo = table.Column<DateTime>(nullable: false),
@@ -168,6 +169,12 @@ namespace LibraryServicesWeb_AP2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PrestamosDetalle", x => x.DetalleId);
+                    table.ForeignKey(
+                        name: "FK_PrestamosDetalle_Estudiantes_EstudianteId",
+                        column: x => x.EstudianteId,
+                        principalTable: "Estudiantes",
+                        principalColumn: "EstudianteId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PrestamosDetalle_Libros_LibroId",
                         column: x => x.LibroId,
@@ -195,17 +202,17 @@ namespace LibraryServicesWeb_AP2.Migrations
             migrationBuilder.InsertData(
                 table: "Libros",
                 columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro" },
-                values: new object[] { 1, 1, true, 1, new DateTime(2020, 7, 31, 22, 18, 1, 626, DateTimeKind.Local).AddTicks(4391), "789653266", "Odisea" });
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 8, 1, 20, 50, 12, 982, DateTimeKind.Local).AddTicks(8928), "789653266", "Odisea" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(5139), "Administrador", "admin", "Enel Almonte" });
+                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9458), "Administrador", "admin", "Enel Almonte" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 2, "8499866985", "Natael123", "stivennunez@gmail.com", new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(6197), "Administrador", "StevenN", "Steven Nunez" });
+                values: new object[] { 2, "8499866985", "Natael123", "stivennunez@gmail.com", new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9885), "Administrador", "StevenN", "Steven Nunez" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",
@@ -221,6 +228,11 @@ namespace LibraryServicesWeb_AP2.Migrations
                 name: "IX_DevolucionDetalles_LibroId",
                 table: "DevolucionDetalles",
                 column: "LibroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrestamosDetalle_EstudianteId",
+                table: "PrestamosDetalle",
+                column: "EstudianteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PrestamosDetalle_LibroId",

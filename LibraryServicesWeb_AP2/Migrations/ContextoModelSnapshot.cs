@@ -198,7 +198,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 7, 31, 22, 18, 1, 626, DateTimeKind.Local).AddTicks(4391),
+                            FechaImpresion = new DateTime(2020, 8, 1, 20, 50, 12, 982, DateTimeKind.Local).AddTicks(8928),
                             ISBN = "789653266",
                             NombreLibro = "Odisea"
                         });
@@ -230,6 +230,9 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("EstudianteId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("FechaDevolucion")
                         .HasColumnType("TEXT");
 
@@ -246,6 +249,8 @@ namespace LibraryServicesWeb_AP2.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("DetalleId");
+
+                    b.HasIndex("EstudianteId");
 
                     b.HasIndex("LibroId");
 
@@ -303,7 +308,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "admin",
                             Email = "Enel@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(5139),
+                            FechaInsercion = new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9458),
                             Nivel = "Administrador",
                             NombreUsuario = "admin",
                             Nombres = "Enel Almonte"
@@ -314,7 +319,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "Natael123",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 7, 31, 22, 18, 1, 628, DateTimeKind.Local).AddTicks(6197),
+                            FechaInsercion = new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9885),
                             Nivel = "Administrador",
                             NombreUsuario = "StevenN",
                             Nombres = "Steven Nunez"
@@ -344,6 +349,12 @@ namespace LibraryServicesWeb_AP2.Migrations
 
             modelBuilder.Entity("LibraryServicesWeb_AP2.Models.PrestamosDetalle", b =>
                 {
+                    b.HasOne("LibraryServicesWeb_AP2.Models.Estudiante", "estudiante")
+                        .WithMany()
+                        .HasForeignKey("EstudianteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LibraryServicesWeb_AP2.Models.Libro", "libro")
                         .WithMany()
                         .HasForeignKey("LibroId")

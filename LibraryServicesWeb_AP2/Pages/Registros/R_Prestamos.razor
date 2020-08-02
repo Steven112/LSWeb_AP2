@@ -105,6 +105,7 @@
                     <thead class="thead-light ">
                         <tr>
                             <th scope="col">DetalleId</th>
+                            <th scope="col">PrestamoId</th>
                             <th scope="col">Estudiante</th>
                             <th scope="col">Libro Id</th>
                             <th scope="col">Titulo Libro</th>
@@ -119,7 +120,8 @@
                         {
                             <tr>
                                 <td>@item.DetalleId</td>
-                                <td>@contexto.Estudiantes.Find(prestamos.EstudianteId).Matricula</td>
+                                <td>@item.PrestamoId</td>
+                                <td>@item.EstudianteId </td>
                                 <td>@item.LibroId</td>
                                 <td>@item.TituloLibro</td>
                                 <td>@prestamos.FechaPrestamo</td>
@@ -203,12 +205,15 @@ else
     }
 
     private void AgregarDetalle()
+
     {
-        estudianteSeleccionado =Convert.ToString( prestamos.EstudianteId);
+        estudianteSeleccionado = Convert.ToString(prestamos.EstudianteId);
         if (libroSeleccionado!="0" && estudianteSeleccionado!="0")
         {
             prestamos.PrestamosDetalles.Add(new PrestamosDetalle
             {
+                PrestamoId= prestamos.PrestamoId,
+                EstudianteId= prestamos.EstudianteId,
                 LibroId = Convert.ToInt32(libroSeleccionado),
                 TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
                 FechaPrestamo = prestamos.FechaPrestamo,
@@ -325,7 +330,7 @@ else
         {
             try
             {
-                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudiante.EstudianteId));
+                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudianteSeleccionado));
             }
             catch (Exception ex)
             {
