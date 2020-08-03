@@ -15,7 +15,7 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         {
             bool paso;
             Estudiante estudiante = new Estudiante ();
-            estudiante.EstudianteId = 2;
+            estudiante.EstudianteId = 10;
             estudiante.Nombres = "Jenry";
             estudiante.Apellidos = "Cacerez";
             estudiante.Celular = "829-638-2495";
@@ -35,7 +35,7 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         {
             bool paso;
             Estudiante estudiante = new Estudiante();
-            estudiante.EstudianteId= 2;
+            estudiante.EstudianteId= 10;
             estudiante.Nombres = "Jenry";
             estudiante.Apellidos = "Cacerez";
             estudiante.Celular = "829-638-2495";
@@ -51,14 +51,14 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         [TestMethod()]
         public void EliminarTest()
         {
-            var paso = EstudiantesBLL.Eliminar(2);
+            var paso = EstudiantesBLL.Eliminar(10);
             Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            var paso = EstudiantesBLL.Buscar(2);
+            var paso = EstudiantesBLL.Buscar(10);
             Assert.IsNotNull(paso);
         }
 

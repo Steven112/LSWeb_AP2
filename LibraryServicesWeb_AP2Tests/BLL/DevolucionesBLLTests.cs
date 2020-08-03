@@ -14,8 +14,13 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         public void GuardarTest()
         {
             bool paso;
+
+            DevolucionDetalles devolucionDetalles = new DevolucionDetalles(1, 1, 1, 1, "Oidsea", DateTime.Now);
+            List<DevolucionDetalles> list = new List<DevolucionDetalles>();
+
+            list.Add(devolucionDetalles);
             Devoluciones devoluciones = new Devoluciones();
-            devoluciones.DevolucionId = 1;
+            devoluciones.DevolucionId = 10;
             devoluciones.FechaDevueltaLibro = DateTime.Now;
 
             paso = DevolucionesBLL.Guardar(devoluciones);
@@ -25,12 +30,14 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         [TestMethod()]
         public void ModificarTest()
         {
-            bool paso;
+            bool paso = false;
+            DevolucionDetalles devolucionDetalles = new DevolucionDetalles(1, 1, 1, 1, "Oidsea version 1", DateTime.Now);
+            List<DevolucionDetalles> list = new List<DevolucionDetalles>();
+
+            list.Add(devolucionDetalles);
             Devoluciones devoluciones = new Devoluciones();
-            devoluciones.DevolucionId = 1;
+            devoluciones.DevolucionId = 10;
             devoluciones.FechaDevueltaLibro = DateTime.Now;
-
-
             paso = DevolucionesBLL.Modificar(devoluciones);
             Assert.AreEqual(paso, true);
         }
@@ -38,14 +45,14 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         [TestMethod()]
         public void EliminarTest()
         {
-            var paso = DevolucionesBLL.Eliminar(1);
+            var paso = DevolucionesBLL.Eliminar(10);
             Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            var paso = DevolucionesBLL.Buscar(1);
+            var paso = DevolucionesBLL.Buscar(10);
             Assert.IsNotNull(paso);
         }
 
@@ -61,7 +68,7 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         [TestMethod()]
         public void ExisteTest()
         {
-            var existe = DevolucionesBLL.Existe(1);
+            var existe = DevolucionesBLL.Existe(10);
             Assert.IsNotNull(existe);
         }
 

@@ -78,15 +78,17 @@ namespace LibraryServicesWeb_AP2.Models
         {
             DetalleId = 0;
             DevolucionId = 0;
+            EstudianteId = 0;
             LibroId = 0;
             NombreLibro = string.Empty;
             FechaDevueltaLibro = DateTime.Now;
         }
 
-        public DevolucionDetalles(int detalleId, int devolucionId,  int libroId, string nombreLibro, DateTime fechaDevueltaLibro)
+        public DevolucionDetalles(int detalleId, int devolucionId, int estudianteId, int libroId, string nombreLibro, DateTime fechaDevueltaLibro)
         {
             DetalleId = detalleId;
             DevolucionId = devolucionId;
+            EstudianteId = estudianteId;
             LibroId = libroId;
             NombreLibro = nombreLibro;
             FechaDevueltaLibro = fechaDevueltaLibro;

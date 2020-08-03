@@ -15,7 +15,7 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         {
             bool paso ;
             Usuarios usuarios = new Usuarios();
-            usuarios.UsuarioId = 1;
+            usuarios.UsuarioId = 10;
             usuarios.Nombres = "Jenry";
             usuarios.NombreUsuario = "Jenry_Cacerez";
             usuarios.Nivel = "jefe";
@@ -36,18 +36,16 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         {
             bool paso;
             Usuarios usuarios = new Usuarios();
-            usuarios.UsuarioId = 1;
+            usuarios.UsuarioId = 10;
             usuarios.Nombres = "Jenry";
             usuarios.NombreUsuario = "Jenry_Cacerez";
             usuarios.Nivel = "jefe";
-            usuarios.Contraseña = "Jenry123";
+            usuarios.Contraseña = "Jenry12113";
             usuarios.Email = "Jenry@hotmail.com";
             usuarios.Celular = "Jenry";
             usuarios.Celular = "809-588-5061";
 
             usuarios.FechaInsercion = DateTime.Now;
-
-           
 
             paso = UsuariosBLL.Modificar(usuarios);
             Assert.AreEqual(paso, true);
@@ -56,14 +54,14 @@ namespace LibraryServicesWeb_AP2.BLL.Tests
         [TestMethod()]
         public void EliminarTest()
         {
-            var paso = UsuariosBLL.Eliminar(1);
+            var paso = UsuariosBLL.Eliminar(10);
             Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            var paso = UsuariosBLL.Buscar(1);
+            var paso = UsuariosBLL.Buscar(10);
             Assert.IsNotNull(paso);
         }
 

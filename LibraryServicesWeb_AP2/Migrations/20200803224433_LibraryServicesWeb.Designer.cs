@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryServicesWeb_AP2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200803080357_Bd")]
-    partial class Bd
+    [Migration("20200803224433_LibraryServicesWeb")]
+    partial class LibraryServicesWeb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,7 +200,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 8, 3, 4, 3, 56, 252, DateTimeKind.Local).AddTicks(6313),
+                            FechaImpresion = new DateTime(2020, 8, 3, 18, 44, 33, 101, DateTimeKind.Local).AddTicks(2351),
                             ISBN = "789653266",
                             NombreLibro = "Odisea"
                         });
@@ -310,7 +310,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "admin",
                             Email = "Enel@gmail.com",
-                            FechaInsercion = new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(8767),
+                            FechaInsercion = new DateTime(2020, 8, 3, 18, 44, 33, 102, DateTimeKind.Local).AddTicks(8038),
                             Nivel = "Administrador",
                             NombreUsuario = "admin",
                             Nombres = "Enel Almonte"
@@ -321,7 +321,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "Natael123",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(9217),
+                            FechaInsercion = new DateTime(2020, 8, 3, 18, 44, 33, 102, DateTimeKind.Local).AddTicks(8929),
                             Nivel = "Administrador",
                             NombreUsuario = "StevenN",
                             Nombres = "Steven Nunez"
