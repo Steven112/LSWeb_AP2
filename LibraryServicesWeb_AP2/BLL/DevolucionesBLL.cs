@@ -57,36 +57,39 @@ namespace LibraryServicesWeb_AP2.BLL
             var anterior = Buscar(devoluciones.DevolucionId);
             try
             {
-
                 foreach (var item in anterior.devolucionDetalles)
                 {
-                    var aux = contexto.Libros.Find(item.LibroId);
-                    if (!devoluciones.devolucionDetalles.Exists(d => d.DevolucionId == item.DevolucionId))
+                    if (!devoluciones.devolucionDetalles.Exists(o => o.DetalleId == item.DetalleId))
                     {
                         var libro = LibroBLL.Buscar(item.LibroId);
-                        libro.Disponibilidad = true;
+                        libro.Disponibilidad = false;//cambiado
                         LibroBLL.Modificar(libro);
                         contexto.Entry(item).State = EntityState.Deleted;
                     }
                 }
+
                 foreach (var item in devoluciones.devolucionDetalles)
                 {
-
-                    var aux = contexto.Libros.Find(item.LibroId);
-                    if (item.DevolucionId == 0)
+                    if (item.DetalleId == 0)
                     {
+                        contexto.Entry(item).State = EntityState.Added;
+                        var book = LibroBLL.Buscar(item.LibroId);
+                        book.Disponibilidad = true;//cambiado
+                        LibroBLL.Modificar(book);
+                    }
+                    else
+                    {
+                        contexto.Entry(item).State = EntityState.Modified;
                         var libro = LibroBLL.Buscar(item.LibroId);
-                        libro.Disponibilidad = false;
+                        libro.Disponibilidad = true;//cambiado
                         LibroBLL.Modificar(libro);
 
                     }
-                    else
-
-                        contexto.Entry(item).State = EntityState.Modified;
-
                 }
+
                 contexto.Entry(devoluciones).State = EntityState.Modified;
-                paso = contexto.SaveChanges() > 0;
+                paso = (contexto.SaveChanges() > 0);
+
 
             }
             catch (Exception)

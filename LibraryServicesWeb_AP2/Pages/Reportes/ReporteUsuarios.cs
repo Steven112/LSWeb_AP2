@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace LibraryServicesWeb_AP2.Pages.Reportes
 {
-    public class ReporteLibros
+    public class ReporteUsuarios
     {
-        int maxColumn =7 ;
+        int maxColumn = 7;
         Document document;
         PdfPTable pdfPTable = new PdfPTable(7);
         Font fontStyle;
         PdfPCell pdfPCell;
         Font fontFecha;
         MemoryStream memoryStream = new MemoryStream();
-        List<Libro> lista = new List<Libro>();
+        List<Usuarios> lista = new List<Usuarios>();
 
-        public byte[] Report(List<Libro> libros)
+        public byte[] Report(List<Usuarios> usuarios)
         {
-            lista= libros;
+            lista = usuarios;
             document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
             pdfPTable.WidthPercentage = 100;
             pdfPTable.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -71,7 +71,6 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             pdfPTable.CompleteRow();
 
         }
-
         private PdfPTable AddLogo()
         {
             int maxColumn = 1;
@@ -197,45 +196,43 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             foreach (var item in lista)
             {
                 acum++;
-                pdfPCell = new PdfPCell(new Phrase(item.LibroId.ToString(), fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.UsuarioId.ToString(), fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.NombreLibro, fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.Nombres, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.ISBN, fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.NombreUsuario, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                string categoria = contexto.Categorias.Find(item.CategoriaId).Descripcion;
-                pdfPCell = new PdfPCell(new Phrase(categoria, fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.Nivel, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                string editorial = contexto.Editorials.Find(item.EditorialId).Nombre;
-                pdfPCell = new PdfPCell(new Phrase(editorial, fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.Email, fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.FechaImpresion.ToString(), fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.FechaInsercion.ToString(), fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
                 pdfPTable.AddCell(pdfPCell);
 
-                pdfPCell = new PdfPCell(new Phrase(item.Disponibilidad.ToString(), fontStyle));
+                pdfPCell = new PdfPCell(new Phrase(item.Celular.ToString(), fontStyle));
                 pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfPCell.BackgroundColor = BaseColor.White;
@@ -299,5 +296,6 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
 
 
         }
+
     }
 }
