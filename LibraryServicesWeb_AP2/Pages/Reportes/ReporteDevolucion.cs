@@ -12,9 +12,9 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
 {
     public class ReporteDevolucion
     {
-        int maxColumn = 7;
+        int maxColumn = 2;
         Document document;
-        PdfPTable pdfPTable = new PdfPTable(7);
+        PdfPTable pdfPTable = new PdfPTable(2);
         Font fontStyle;
         PdfPCell pdfPCell;
         Font fontFecha;
@@ -74,7 +74,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
         {
             int maxColumn = 1;
             PdfPTable pdfPTable = new PdfPTable(maxColumn);
-            string imgCombine = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Images\logo.png"}";
+            string imgCombine = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Images\LOGOPRO2.png"}";
             Image img = Image.GetInstance(imgCombine);
 
             pdfPCell = new PdfPCell(img);
@@ -96,7 +96,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             PdfPTable pdfPTable = new PdfPTable(maxcolumn);
 
             fontFecha = FontFactory.GetFont("Calibri", 10f, 1);
-            fontStyle = FontFactory.GetFont("Calibri", 18f, 1);
+            fontStyle = FontFactory.GetFont("Calibri", 15f, 1);
 
             pdfPCell = new PdfPCell(new Phrase("Library Services", fontStyle));
             pdfPCell.Colspan = maxColumn;
@@ -107,7 +107,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
 
             pdfPTable.CompleteRow();
 
-            pdfPCell = new PdfPCell(new Phrase("Reporte Libros", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Reporte Devoluciones", fontStyle));
             pdfPCell.Colspan = maxColumn;
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.Border = 0;
@@ -153,14 +153,13 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
 
            
 
-            pdfPCell = new PdfPCell(new Phrase("Fecha Devolucion Libro", fontStyle));
+            pdfPCell = new PdfPCell(new Phrase("Fecha Devuelta Libro", fontStyle));
             pdfPCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfPCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfPCell.BackgroundColor = BaseColor.Gray;
             pdfPTable.AddCell(pdfPCell);
 
 
-            Contexto contexto = new Contexto();
             pdfPTable.CompleteRow();
             int acum = 0;
             foreach (var item in lista)

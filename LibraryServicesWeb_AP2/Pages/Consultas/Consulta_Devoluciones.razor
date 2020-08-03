@@ -2,146 +2,154 @@
 
 @using Models
 @using BLL
+@using LibraryServicesWeb_AP2.Pages.Reportes
 @inject IToastService toast
+@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
-<EditForm Model="Listado">
+    <EditForm Model="Listado">
 
-    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-.Result.User.Identity.IsAuthenticated)
-    {
-        <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
-        <div class="card bg-dark text-white">
-            <div class="card-header">
-                <h3><strong>Consulta Devolucines</strong></h3>
-            </div>
-            <div class="card-body">
-
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+   .Result.User.Identity.IsAuthenticated)
+        {
+            <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
+            <div class="card bg-dark text-white">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="input-group col-12">
-                            <div class="form-group col-3">
-                                <label><strong>Filtro: </strong></label>
-                                <select class="form-control " @bind="Filtro">
-                                    <option value=0>Todo</option>
-                                    <option value=1>Id</option>
-                                   
-                                    <option value=2>Fecha Devolucion</option>
+                    <h3><strong>Consulta Devolucines</strong></h3>
+                </div>
+                <div class="card-body">
 
-                                </select>
-                            </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="input-group col-12">
+                                <div class="form-group col-3">
+                                    <label><strong>Filtro: </strong></label>
+                                    <select class="form-control " @bind="Filtro">
+                                        <option value=0>Todo</option>
+                                        <option value=1>Id</option>
 
-                            <!-- Criterio -->
-                            <div class="form-group col-4">
-                                <label><strong>Criterio: </strong></label>
-                                <div class="input-group">
-                                    <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
-                                    <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
+                                        <option value=2>Fecha Devolucion</option>
+
+                                    </select>
                                 </div>
-                            </div>
 
-
-
-                            <!-- Filtrar por fecha -->
-                            <div class="form-group col-12">
-                                <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
-                            </div>
-
-
-                            <!-- Fecha desde-->
-                            <div class="form-group col-3">
-                                <label><strong>Desde</strong> </label>
-                                <div class="input-group">
-                                    <InputDate @bind-Value="@Desde" class="form-control" />
+                                <!-- Criterio -->
+                                <div class="form-group col-4">
+                                    <label><strong>Criterio: </strong></label>
+                                    <div class="input-group">
+                                        <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
+                                        <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
+                                    </div>
                                 </div>
-                            </div>
 
 
-                            <!-- Fecha Hasta-->
-                            <div class="form-group col-3">
-                                <label><strong>Hasta</strong> </label>
-                                <div class="input-group">
-                                    <InputDate @bind-Value="@Hasta" class="form-control" />
+
+                                <!-- Filtrar por fecha -->
+                                <div class="form-group col-12">
+                                    <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
                                 </div>
+
+
+                                <!-- Fecha desde-->
+                                <div class="form-group col-3">
+                                    <label><strong>Desde</strong> </label>
+                                    <div class="input-group">
+                                        <InputDate @bind-Value="@Desde" class="form-control" />
+                                    </div>
+                                </div>
+
+
+                                <!-- Fecha Hasta-->
+                                <div class="form-group col-3">
+                                    <label><strong>Hasta</strong> </label>
+                                    <div class="input-group">
+                                        <InputDate @bind-Value="@Hasta" class="form-control" />
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-0     col-md-0     col-lg-1     col-xl-2" />
                             </div>
-
-
-
-                            <div class="col-sm-0     col-md-0     col-lg-1     col-xl-2" />
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <table class="table" style="margin-top: 20px">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Id</th>
-                        
-                        <th scope="col">Fecha de Devolucion</th>
-
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody class=text-white>
-                    @if (ListadoPaginado.Count == 0)
-                    {
+                <table class="table" style="margin-top: 20px">
+                    <thead class="thead-light">
                         <tr>
-                            <th colspan="12" style="color:black; text-align: center">"No hay datos que mostrar"</th>
-                        </tr>
-                    }
-                    else
-                    {
+                            <th scope="col">Id</th>
 
-                        @foreach (var item in ListadoPaginado)
+                            <th scope="col">Fecha de Devolucion</th>
+
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class=text-white>
+                        @if (ListadoPaginado.Count == 0)
                         {
                             <tr>
-                                <td>@item.DevolucionId</td>
-                              
-                                <td>@item.FechaDevueltaLibro</td>
-                               
-                                <td><a class="btn btn-dark" href="@($"Prestamos/{item.DevolucionId}")">Ver</a></td>
+                                <th colspan="12" style="color:black; text-align: center">"No hay datos que mostrar"</th>
                             </tr>
                         }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="bg-dark text-white">
+                        else
+                        {
 
-            <div class="form-group col-2 col-md-2 ml-auto">
-                <label><strong>Imprimir </strong></label>
-                <button type="button" class="btn btn-danger btn-block"><span class="oi oi-print"></span> Imprimir</button>
+                            @foreach (var item in ListadoPaginado)
+                            {
+                                <tr>
+                                    <td>@item.DevolucionId</td>
+
+                                    <td>@item.FechaDevueltaLibro</td>
+
+                                    <td><a class="btn btn-dark" href="@($"Prestamos/{item.DevolucionId}")">Ver</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div class="form-row col-12 justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaAnterior">
-                            <span class="oi oi-media-skip"> Anterior</span>
-                        </a>
-                    </li>
+            <div class="bg-dark text-white">
 
-                    @for (int i = 1; i <= Paginas; i++)
-                    {
-                        <li class="page-item disabled"><a class="page-link">@i</a></li>
-                    }
+                <div class="form-group col-2 col-md-2 ml-auto">
+                    <button type="button" class="btn btn-warning btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                </div>
+            </div>
+            <div class="bg-dark text-white">
 
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaSiguiente">
-                            <span class="oi oi-media-skip"> Siguiente</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    }
-    else
-    {
-        <h1>No esta registrado</h1>
-        <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
-    }
-</EditForm>
+                <div class="form-group col-2 col-md-2 ml-auto">
+                    <label><strong>Imprimir </strong></label>
+                    <button type="button" class="btn btn-danger btn-block"><span class="oi oi-print"></span> Imprimir</button>
+                </div>
+            </div>
+            <div class="form-row col-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip"> Anterior</span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class="page-item disabled"><a class="page-link">@i</a></li>
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip"> Siguiente</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
+        }
+    </EditForm>
 
 
 @code {
@@ -170,6 +178,25 @@
         Hasta = DateTime.Now;
 
         IniciarPaginacion();
+    }
+
+    public async void GeneratePdf()
+    {
+
+        if (Listado.Count > 0)
+        {
+            ReporteDevolucion reporte = new ReporteDevolucion();
+            await js.InvokeVoidAsync(
+                "saveAsFile",
+                "ConsultasList.pdf",
+                Convert.ToBase64String(reporte.Report(Listado))
+                );
+        }
+        else
+        {
+            toast.ShowWarning("No hay datos para imprimir");
+        }
+
     }
 
     public void IniciarPaginacion()

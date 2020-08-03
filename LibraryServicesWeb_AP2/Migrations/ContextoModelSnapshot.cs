@@ -198,7 +198,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             CategoriaId = 1,
                             Disponibilidad = true,
                             EditorialId = 1,
-                            FechaImpresion = new DateTime(2020, 8, 1, 20, 50, 12, 982, DateTimeKind.Local).AddTicks(8928),
+                            FechaImpresion = new DateTime(2020, 8, 3, 4, 3, 56, 252, DateTimeKind.Local).AddTicks(6313),
                             ISBN = "789653266",
                             NombreLibro = "Odisea"
                         });
@@ -308,7 +308,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "admin",
                             Email = "Enel@gmail.com",
-                            FechaInsercion = new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9458),
+                            FechaInsercion = new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(8767),
                             Nivel = "Administrador",
                             NombreUsuario = "admin",
                             Nombres = "Enel Almonte"
@@ -319,7 +319,7 @@ namespace LibraryServicesWeb_AP2.Migrations
                             Celular = "8499866985",
                             Contraseña = "Natael123",
                             Email = "stivennunez@gmail.com",
-                            FechaInsercion = new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9885),
+                            FechaInsercion = new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(9217),
                             Nivel = "Administrador",
                             NombreUsuario = "StevenN",
                             Nombres = "Steven Nunez"

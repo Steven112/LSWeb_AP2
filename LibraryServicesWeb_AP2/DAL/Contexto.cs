@@ -20,7 +20,7 @@ namespace LibraryServicesWeb_AP2.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source= Data\TeacherControl.db");
+            optionsBuilder.UseSqlite(@"Data Source= C:\Users\stive\OneDrive\Escritorio\BD\TeachrControl.db");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

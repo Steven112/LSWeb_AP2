@@ -3,7 +3,9 @@
 @using LibraryServicesWeb_AP2.Models
 @using LibraryServicesWeb_AP2.BLL
 @using LibraryServicesWeb_AP2.DAL
+@using LibraryServicesWeb_AP2.Pages.Reportes
 @inject IToastService toast
+@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <style>
     body {
@@ -15,141 +17,149 @@
 .Result.User.Identity.IsAuthenticated)
 {
 
-<EditForm Model="prestamos" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    <a href="ContRegistros" class="btn btn-warning justify-content-lg-start">Menu Principal</a>
-    <div class="card bg-dark text-white">
-        <div class="card-header">
-            <h3>Registro de Prestamos</h3>
-        </div>
-        <div class="card-body">
-            <form>
-                @*PrestamoId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>PrestamoId</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="prestamos.PrestamoId" class="form-control col-4" />
-                                <ValidationMessage For="@(() => prestamos.PrestamoId)" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+    <EditForm Model="prestamos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <a href="ContRegistros" class="btn btn-warning justify-content-lg-start">Menu Principal</a>
+        <div class="card bg-dark text-white">
+            <div class="card-header">
+                <h3>Registro de Prestamos</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    @*PrestamoId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>PrestamoId</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="prestamos.PrestamoId" class="form-control col-4" />
+                                    <ValidationMessage For="@(() => prestamos.PrestamoId)" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                @*Estudiante*@
-                <div class="form-group">
-                    <label>Estudiante</label>
+                    @*Estudiante*@
                     <div class="form-group">
-                        <select class="form-control" @bind="prestamos.EstudianteId" @onclick="CargarEtudent">
-                            <option value="" disabled selected>Seleccione un Estudiante</option>
-                            @foreach (var item in CargarBoxEstudetn())
-                            {
-                                <option value="@item.EstudianteId">@item.Matricula </option>
-                            }
-                        </select>
-                    </div>
-                    <ValidationMessage For="@(()=>prestamos.EstudianteId)" />
-                </div>
-
-                
-
-                @*Detalle*@
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label>Tirulo Libro</label>
-                        <select class="form-control" @bind="libroSeleccionado" @onclick="Cargarlibro">
-                            <option value="" disabled selected>Seleccione un libro</option>
-                            @foreach (var item in CargarBoxlibros())
-                            {
-                                if (item.Disponibilidad == true)
+                        <label>Estudiante</label>
+                        <div class="form-group">
+                            <select class="form-control" @bind="prestamos.EstudianteId" @onclick="CargarEtudent">
+                                <option value="" disabled selected>Seleccione un Estudiante</option>
+                                @foreach (var item in CargarBoxEstudetn())
                                 {
-                                    <option value="@item.LibroId">@item.NombreLibro</option>
+                                    <option value="@item.EstudianteId">@item.Matricula </option>
                                 }
-
-
-
-
-                            }
-                        </select>
-
-                        <ValidationMessage For="@(()=>PrestamosDetalle.LibroId)" />
+                            </select>
+                        </div>
+                        <ValidationMessage For="@(()=>prestamos.EstudianteId)" />
                     </div>
 
-                    @*FechaPrestamo*@
-                    <div class="form-group col">
-                        <label>Fecha de Prestamos</label>
-                        <InputDate @bind-Value="prestamos.FechaPrestamo" class="form-control" />
-                        <ValidationMessage For="@(() => prestamos.FechaPrestamo)" />
-                    </div>
 
-                    @*FechaPrestamo*@
-                    <div class="form-group col">
-                        <label>Fecha de Devolucion</label>
-                        <div class="input-group">
-                            <InputDate @bind-Value="prestamos.FechaDevolucion" class="form-control" />
-                            <ValidationMessage For="@(() => prestamos.FechaDevolucion)" />
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
-                                    <i class="oi oi-plus" aria-hidden="true" /> Agregar
-                                </button>
+
+                    @*Detalle*@
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Tirulo Libro</label>
+                            <select class="form-control" @bind="libroSeleccionado" @onclick="Cargarlibro">
+                                <option value="" disabled selected>Seleccione un libro</option>
+                                @foreach (var item in CargarBoxlibros())
+                                {
+                                    if (item.Disponibilidad == true)
+                                    {
+                                        <option value="@item.LibroId">@item.NombreLibro</option>
+                                    }
+
+
+
+
+                                }
+                            </select>
+
+                            <ValidationMessage For="@(()=>PrestamosDetalle.LibroId)" />
+                        </div>
+
+                        @*FechaPrestamo*@
+                        <div class="form-group col">
+                            <label>Fecha de Prestamos</label>
+                            <InputDate @bind-Value="prestamos.FechaPrestamo" class="form-control" />
+                            <ValidationMessage For="@(() => prestamos.FechaPrestamo)" />
+                        </div>
+
+                        @*FechaPrestamo*@
+                        <div class="form-group col">
+                            <label>Fecha de Devolucion</label>
+                            <div class="input-group">
+                                <InputDate @bind-Value="prestamos.FechaDevolucion" class="form-control" />
+                                <ValidationMessage For="@(() => prestamos.FechaDevolucion)" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
+                                        <i class="oi oi-plus" aria-hidden="true" /> Agregar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @*TablaDetalle*@
-                <table class="table">
-                    <thead class="thead-light ">
-                        <tr>
-                            <th scope="col">DetalleId</th>
-                            <th scope="col">PrestamoId</th>
-                            <th scope="col">Estudiante</th>
-                            <th scope="col">Libro Id</th>
-                            <th scope="col">Titulo Libro</th>
-                            <th scope="col">Fecha de Prestamo</th>
-                            <th scope="col">Fecha de Devolucion</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody class=text-white>
-                        @foreach (var item in prestamos.PrestamosDetalles)
-                        {
+                    @*TablaDetalle*@
+                    <table class="table">
+                        <thead class="thead-light ">
                             <tr>
-                                <td>@item.DetalleId</td>
-                                <td>@item.PrestamoId</td>
-                                <td>@item.EstudianteId </td>
-                                <td>@item.LibroId</td>
-                                <td>@item.TituloLibro</td>
-                                <td>@prestamos.FechaPrestamo</td>
-                                <td>@prestamos.FechaDevolucion</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="@(() => EliminarDetalle(item))">
-                                        <span class="oi oi-x"></span>
-                                    </button>
-                                </td>
+                                <th scope="col">DetalleId</th>
+                                <th scope="col">PrestamoId</th>
+                                <th scope="col">Estudiante</th>
+                                <th scope="col">Libro Id</th>
+                                <th scope="col">Titulo Libro</th>
+                                <th scope="col">Fecha de Prestamo</th>
+                                <th scope="col">Fecha de Devolucion</th>
+
+
                             </tr>
-                        }
+                        </thead>
+                        <tbody class=text-white>
+                            @foreach (var item in prestamos.PrestamosDetalles)
+                            {
+                                <tr>
+                                    <td>@item.DetalleId</td>
+                                    <td>@item.PrestamoId</td>
+                                    <td>@item.EstudianteId </td>
+                                    <td>@item.LibroId</td>
+                                    <td>@item.TituloLibro</td>
+                                    <td>@prestamos.FechaPrestamo</td>
+                                    <td>@prestamos.FechaDevolucion</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="@(() => EliminarDetalle(item))">
+                                            <span class="oi oi-x"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
 
-                    </tbody>
-                </table>
 
+                        </tbody>
+                    </table>
+                    <div class="bg-dark text-white">
 
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success">Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+                        <div class="form-group col-2 col-md-2 ml-auto">
+                            <label><strong>Imprimir </strong></label>
+                            <button type="button" class="btn btn-danger btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo">Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success">Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-danger btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                </div>
             </div>
         </div>
-    </div>
 
-</EditForm>
+    </EditForm>
 }
 else
 {
@@ -167,6 +177,7 @@ else
     Libro libro = new Libro();
     Estudiante estudiante = new Estudiante();
     Contexto contexto = new Contexto();
+    private List<PrestamosDetalle> Listado { get; set; } = new List<PrestamosDetalle>();
 
 
     private string libroSeleccionado = "0";
@@ -208,12 +219,12 @@ else
 
     {
         estudianteSeleccionado = Convert.ToString(prestamos.EstudianteId);
-        if (libroSeleccionado!="0" && estudianteSeleccionado!="0")
+        if (libroSeleccionado != "0" && estudianteSeleccionado != "0")
         {
             prestamos.PrestamosDetalles.Add(new PrestamosDetalle
             {
-                PrestamoId= prestamos.PrestamoId,
-                EstudianteId= prestamos.EstudianteId,
+                PrestamoId = prestamos.PrestamoId,
+                EstudianteId = prestamos.EstudianteId,
                 LibroId = Convert.ToInt32(libroSeleccionado),
                 TituloLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
                 FechaPrestamo = prestamos.FechaPrestamo,
@@ -229,6 +240,18 @@ else
         }
 
     }
+    public async void GeneratePdf()
+    {
+
+        FacturaPrestamos reporteLibros = new FacturaPrestamos();
+        await js.InvokeVoidAsync(
+            "saveAsFile",
+            "FacturaList.pdf",
+            Convert.ToBase64String(reporteLibros.Report(Listado))
+            );
+
+
+    }
     public void EliminarDetalle(PrestamosDetalle prestamosDetalle)
     {
         prestamos.PrestamosDetalles.Remove(prestamosDetalle);
@@ -241,7 +264,7 @@ else
 
 
 
-        if (prestamos.PrestamosDetalles.Count>0)
+        if (prestamos.PrestamosDetalles.Count > 0)
         {
             guardo = PrestamosBLL.Guardar(prestamos);
 

@@ -43,7 +43,7 @@
                                 <label><strong>Criterio: </strong></label>
                                 <div class="input-group">
                                     <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
-                                    <p class="validation-message"> @Mensaje </p>
+                                    
                                     <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 <td>@item.LibroId</td>
                                 <td>@item.NombreLibro</td>
                                 <td>@item.ISBN</td>
-                                <td>@CategoriaBLL.Buscar(item.CategoriaId).Descripcion></td>
+                                <td>@CategoriaBLL.Buscar(item.CategoriaId).CategoriaId></td>
                                 <td>@EditorialBLL.Buscar(item.EditorialId).Nombre</td>
                                 <td>@item.FechaImpresion</td>
                                 <td>@item.Disponibilidad</td>
@@ -124,10 +124,9 @@
             </table>
         </div>
         <div class="bg-dark text-white">
-            
+
             <div class="form-group col-2 col-md-2 ml-auto">
-                <label><strong>Imprimir </strong></label>
-                <button type="button" class="btn btn-danger btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                <button type="button" class="btn btn-warning btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
             </div>
         </div>
         <div class="form-row col-12 justify-content-center">
@@ -163,7 +162,7 @@
 
 @code {
     public LibroBLL libroBLL = new LibroBLL();
-    private List<Libro> Listado { get; set; }=new List<Libro>();
+    private List<Libro> Listado { get; set; } = new List<Libro>();
     private List<Libro> ListadoPaginado { get; set; }
 
     private string Criterio = string.Empty;
@@ -171,7 +170,6 @@
     private bool FiltrarFecha = false;
     private DateTime Desde = DateTime.Now;
     private DateTime Hasta = DateTime.Now;
-    private string Mensaje = string.Empty;
 
 
     double Paginas = 0;
@@ -225,23 +223,31 @@
     public void FiltrarPorLaFecha()
     {
         if (FiltrarFecha == true && Listado.Count > 0)
-      {
+        {
             Listado = Listado.Where(p => p.FechaImpresion.Date >= Desde.Date && p.FechaImpresion.Date <= Hasta.Date).ToList();
             FiltrarFecha = false;
-       }
+        }
         IniciarPaginacion();
     }
 
 
-    
+
     public async void GeneratePdf()
     {
-        ReporteLibros reporteLibros = new ReporteLibros();
-        await js.InvokeVoidAsync(
-            "saveAsFile",
-            "LibroList.pdf",
-            Convert.ToBase64String(reporteLibros.Report(Listado))
-            );
+
+        if (Listado.Count > 0)
+        {
+            ReporteLibros reporteLibros = new ReporteLibros();
+            await js.InvokeVoidAsync(
+                "saveAsFile",
+                "LibroList.pdf",
+                Convert.ToBase64String(reporteLibros.Report(Listado))
+                );
+        }
+        else
+        {
+            toast.ShowWarning("No hay datos para imprimir");
+        }
 
 
     }
@@ -259,7 +265,7 @@
         {
             if (Criterio == "")
             {
-                Mensaje = "Agregue el criterio de busqueda.";
+                toast.ShowError("Agregue el criterio de busqueda.");
             }
             else
             {
@@ -268,31 +274,24 @@
                 {
                     case "1":
                         Listado = Listado.Where(e => e.LibroId.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "2":
                         Listado = Listado.Where(e => e.NombreLibro.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "3":
                         Listado = Listado.Where(e => e.ISBN.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "4":
                         Listado = Listado.Where(e => e.CategoriaId.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "5":
                         Listado = Listado.Where(e => e.EditorialId.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "6":
                         Listado = Listado.Where(e => e.FechaImpresion.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "7":
                         Listado = Listado.Where(e => e.Disponibilidad.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                 }
                 FiltrarPorLaFecha();

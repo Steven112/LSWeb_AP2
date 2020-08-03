@@ -2,6 +2,8 @@
 
 @using Models
 @using BLL
+@using LibraryServicesWeb_AP2.Pages.Reportes
+@inject IJSRuntime js
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -9,7 +11,7 @@
 
 <EditForm Model="Listado">
     @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-   .Result.User.Identity.IsAuthenticated)
+  .Result.User.Identity.IsAuthenticated)
     {
 
         <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
@@ -42,7 +44,6 @@
                                 <label><strong>Criterio: </strong></label>
                                 <div class="input-group">
                                     <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
-                                    <p class="validation-message"> @Mensaje </p>
                                     <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
                                 </div>
                             </div>
@@ -125,8 +126,7 @@
         <div class="bg-dark text-white">
 
             <div class="form-group col-2 col-md-2 ml-auto">
-                <label><strong>Imprimir </strong></label>
-                <button type="button" class="btn btn-danger btn-block"><span class="oi oi-print"></span> Imprimir</button>
+                <button type="button" class="btn btn-warning btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
             </div>
         </div>
         <div class="form-row col-12 justify-content-center">
@@ -170,7 +170,6 @@
     private bool FiltrarFecha = false;
     private DateTime Desde = DateTime.Now;
     private DateTime Hasta = DateTime.Now;
-    private string Mensaje = string.Empty;
 
 
     double Paginas = 0;
@@ -221,6 +220,26 @@
         }
     }
 
+    public async void GeneratePdf()
+    {
+
+        if (Listado.Count > 0)
+        {
+            ReporteEstudiantes reporte = new ReporteEstudiantes();
+            await js.InvokeVoidAsync(
+                "saveAsFile",
+                "EstudianteList.pdf",
+                Convert.ToBase64String(reporte.Report(Listado))
+                );
+        }
+        else
+        {
+            toast.ShowWarning("No hay datos para imprimir");
+        }
+
+
+    }
+
     public void FiltrarPorLaFecha()
     {
         if (FiltrarFecha == true && Listado.Count > 0)
@@ -231,19 +250,8 @@
         IniciarPaginacion();
     }
 
-    /*
-        public async void GeneratePdf()
-        {
-            ReporteLibros reporteLibros = new ReporteLibros();
-            await js.InvokeVoidAsync(
-                "saveAsFile",
-                "LibroList.pdf",
-                Convert.ToBase64String(reporteLibros.Report(Listado))
-                );
 
 
-        }
-        */
 
 
 
@@ -258,7 +266,7 @@
         {
             if (Criterio == "")
             {
-                Mensaje = "Agregue el criterio de busqueda.";
+                toast.ShowError("Agregue el criterio de busqueda.");
             }
             else
             {
@@ -267,31 +275,24 @@
                 {
                     case "1":
                         Listado = Listado.Where(e => e.EstudianteId.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "2":
                         Listado = Listado.Where(e => e.Nombres.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "3":
                         Listado = Listado.Where(e => e.Apellidos.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "4":
                         Listado = Listado.Where(e => e.Direccion.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "5":
                         Listado = Listado.Where(e => e.Email.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "6":
                         Listado = Listado.Where(e => e.Matricula.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                     case "7":
                         Listado = Listado.Where(e => e.FechaInsercion.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
                         break;
                 }
                 FiltrarPorLaFecha();

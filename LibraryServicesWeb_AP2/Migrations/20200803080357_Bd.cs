@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryServicesWeb_AP2.Migrations
 {
-    public partial class LSq : Migration
+    public partial class Bd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -202,17 +202,17 @@ namespace LibraryServicesWeb_AP2.Migrations
             migrationBuilder.InsertData(
                 table: "Libros",
                 columns: new[] { "LibroId", "CategoriaId", "Disponibilidad", "EditorialId", "FechaImpresion", "ISBN", "NombreLibro" },
-                values: new object[] { 1, 1, true, 1, new DateTime(2020, 8, 1, 20, 50, 12, 982, DateTimeKind.Local).AddTicks(8928), "789653266", "Odisea" });
+                values: new object[] { 1, 1, true, 1, new DateTime(2020, 8, 3, 4, 3, 56, 252, DateTimeKind.Local).AddTicks(6313), "789653266", "Odisea" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9458), "Administrador", "admin", "Enel Almonte" });
+                values: new object[] { 1, "8499866985", "admin", "Enel@gmail.com", new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(8767), "Administrador", "admin", "Enel Almonte" });
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "Celular", "Contraseña", "Email", "FechaInsercion", "Nivel", "NombreUsuario", "Nombres" },
-                values: new object[] { 2, "8499866985", "Natael123", "stivennunez@gmail.com", new DateTime(2020, 8, 1, 20, 50, 12, 983, DateTimeKind.Local).AddTicks(9885), "Administrador", "StevenN", "Steven Nunez" });
+                values: new object[] { 2, "8499866985", "Natael123", "stivennunez@gmail.com", new DateTime(2020, 8, 3, 4, 3, 56, 253, DateTimeKind.Local).AddTicks(9217), "Administrador", "StevenN", "Steven Nunez" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DevolucionDetalles_DevolucionId",

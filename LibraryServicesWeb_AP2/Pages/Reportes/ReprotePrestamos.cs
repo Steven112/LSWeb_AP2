@@ -81,7 +81,7 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
         {
             int maxColumn = 1;
             PdfPTable pdfPTable = new PdfPTable(maxColumn);
-            string imgCombine = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Images\logo.png"}";
+            string imgCombine = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\Images\LOGOPRO2.png"}";
             Image img = Image.GetInstance(imgCombine);
 
             pdfPCell = new PdfPCell(img);
@@ -102,8 +102,8 @@ namespace LibraryServicesWeb_AP2.Pages.Reportes
             int maxcolumn = 2;
             PdfPTable pdfPTable = new PdfPTable(maxcolumn);
 
-            fontFecha = FontFactory.GetFont("Calibri", 10f, 1);
-            fontStyle = FontFactory.GetFont("Calibri", 18f, 1);
+            fontFecha = FontFactory.GetFont("Calibri", 11f, 1);
+            fontStyle = FontFactory.GetFont("Calibri", 15f, 1);
 
             pdfPCell = new PdfPCell(new Phrase("Library Services", fontStyle));
             pdfPCell.Colspan = maxColumn;
