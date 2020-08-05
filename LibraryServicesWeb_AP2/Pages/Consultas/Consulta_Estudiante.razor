@@ -6,299 +6,304 @@
 @inject IJSRuntime js
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
 
 
 
-<EditForm Model="Listado">
-    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-  .Result.User.Identity.IsAuthenticated)
-    {
+    <EditForm Model="Listado">
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+     .Result.User.Identity.IsAuthenticated)
+        {
 
-        <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
-        <div class="card bg-dark text-white">
-            <div class="card-header">
-                <h3><strong>Consulta Estudiantes</strong></h3>
-            </div>
-            <div class="card-body">
-
+            <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
+            <div class="card bg-dark text-white">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="input-group col-12">
-                            <div class="form-group col-3">
-                                <label><strong>Filtro: </strong></label>
-                                <select class="form-control " @bind="Filtro">
-                                    <option value=0>Todo</option>
-                                    <option value=1>Id</option>
-                                    <option value=2>Nombre</option>
-                                    <option value=3>Apellido</option>
-                                    <option value=4>Direccion</option>
-                                    <option value=5>Email</option>
-                                    <option value=6>Matricula</option>
-                                    <option value=7>Fecha de Insercion</option>
+                    <h3><strong>Consulta Estudiantes</strong></h3>
+                </div>
+                <div class="card-body">
 
-                                </select>
-                            </div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="input-group col-12">
+                                <div class="form-group col-3">
+                                    <label><strong>Filtro: </strong></label>
+                                    <select class="form-control " @bind="Filtro">
+                                        <option value=0>Todo</option>
+                                        <option value=1>Id</option>
+                                        <option value=2>Nombre</option>
+                                        <option value=3>Apellido</option>
+                                        <option value=4>Direccion</option>
+                                        <option value=5>Email</option>
+                                        <option value=6>Matricula</option>
+                                        <option value=7>Fecha de Insercion</option>
 
-                            <!-- Criterio -->
-                            <div class="form-group col-4">
-                                <label><strong>Criterio: </strong></label>
-                                <div class="input-group">
-                                    <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
-                                    <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
+                                    </select>
                                 </div>
-                            </div>
 
-
-
-                            <!-- Filtrar por fecha -->
-                            <div class="form-group col-12">
-                                <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
-                            </div>
-
-
-                            <!-- Fecha desde-->
-                            <div class="form-group col-3">
-                                <label><strong>Desde</strong> </label>
-                                <div class="input-group">
-                                    <InputDate @bind-Value="@Desde" class="form-control" />
+                                <!-- Criterio -->
+                                <div class="form-group col-4">
+                                    <label><strong>Criterio: </strong></label>
+                                    <div class="input-group">
+                                        <InputText @bind-Value="@Criterio" class="form-control " placeholder="Criterio" />
+                                        <button type="button" class="btn btn-primary" @onclick="Buscar">Consultar</button>
+                                    </div>
                                 </div>
-                            </div>
 
 
-                            <!-- Fecha Hasta-->
-                            <div class="form-group col-3">
-                                <label><strong>Hasta</strong> </label>
-                                <div class="input-group">
-                                    <InputDate @bind-Value="@Hasta" class="form-control" />
+
+                                <!-- Filtrar por fecha -->
+                                <div class="form-group col-12">
+                                    <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
                                 </div>
+
+
+                                <!-- Fecha desde-->
+                                <div class="form-group col-3">
+                                    <label><strong>Desde</strong> </label>
+                                    <div class="input-group">
+                                        <InputDate @bind-Value="@Desde" class="form-control" />
+                                    </div>
+                                </div>
+
+
+                                <!-- Fecha Hasta-->
+                                <div class="form-group col-3">
+                                    <label><strong>Hasta</strong> </label>
+                                    <div class="input-group">
+                                        <InputDate @bind-Value="@Hasta" class="form-control" />
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-sm-0     col-md-0     col-lg-1     col-xl-2" />
                             </div>
-
-
-
-                            <div class="col-sm-0     col-md-0     col-lg-1     col-xl-2" />
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <table class="table" style="margin-top: 20px">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Direccion</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Matricula</th>
-                        <th scope="col">Fecha Insercion</th>
-
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody class=text-white>
-                    @if (ListadoPaginado.Count == 0)
-                    {
+                <table class="table" style="margin-top: 20px">
+                    <thead class="thead-light">
                         <tr>
-                            <th colspan="12" style="color:black; text-align: center">"No hay datos que mostrar"</th>
-                        </tr>
-                    }
-                    else
-                    {
+                            <th scope="col">Id</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Direccion</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Matricula</th>
+                            <th scope="col">Fecha Insercion</th>
 
-                        @foreach (var item in ListadoPaginado)
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class=text-white>
+                        @if (ListadoPaginado.Count == 0)
                         {
                             <tr>
-                                <td>@item.EstudianteId</td>
-                                <td>@item.Nombres</td>
-                                <td>@item.Apellidos</td>
-                                <td>@item.Direccion</td>
-                                <td>@item.Email</td>
-                                <td>@item.Matricula</td>
-                                <td>@item.FechaInsercion</td>
-
-                                <td><a class="btn btn-dark" href="@($"Estudiantes/{item.EstudianteId}")">Ver</a></td>
+                                <th colspan="12" style="color:black; text-align: center">"No hay datos que mostrar"</th>
                             </tr>
                         }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="bg-dark text-white">
+                        else
+                        {
 
-            <div class="form-group col-2 col-md-2 ml-auto">
-                <button type="button" class="btn btn-warning btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                            @foreach (var item in ListadoPaginado)
+                            {
+                                <tr>
+                                    <td>@item.EstudianteId</td>
+                                    <td>@item.Nombres</td>
+                                    <td>@item.Apellidos</td>
+                                    <td>@item.Direccion</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Matricula</td>
+                                    <td>@item.FechaInsercion</td>
+
+                                    <td><a class="btn btn-dark" href="@($"Estudiantes/{item.EstudianteId}")">Ver</a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div class="form-row col-12 justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaAnterior">
-                            <span class="oi oi-media-skip"> Anterior</span>
-                        </a>
-                    </li>
+            <div class="bg-dark text-white">
 
-                    @for (int i = 1; i <= Paginas; i++)
-                    {
-                        <li class="page-item disabled"><a class="page-link">@i</a></li>
-                    }
+                <div class="form-group col-2 col-md-2 ml-auto">
+                    <button type="button" class="btn btn-warning btn-block" @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir</button>
+                </div>
+            </div>
+            <div class="form-row col-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip"> Anterior</span>
+                            </a>
+                        </li>
 
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaSiguiente">
-                            <span class="oi oi-media-skip"> Siguiente</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    }
-    else
-    {
-        <h1>No esta registrado</h1>
-        <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
-    }
-</EditForm>
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class="page-item disabled"><a class="page-link">@i</a></li>
+                        }
 
-
-@code {
-    public EstudiantesBLL estudiantesBLL = new EstudiantesBLL();
-    private List<Estudiante> Listado { get; set; } = new List<Estudiante>();
-    private List<Estudiante> ListadoPaginado { get; set; }
-
-    private string Criterio = string.Empty;
-    private string Filtro = string.Empty;
-    private bool FiltrarFecha = false;
-    private DateTime Desde = DateTime.Now;
-    private DateTime Hasta = DateTime.Now;
-
-
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
-
-    Paginacion paginacion = new Paginacion();
-
-    protected override void OnInitialized()
-    {
-        Listado = EstudiantesBLL.GetList(e => true);
-        Filtro = "0";
-        Desde = DateTime.Now;
-        Hasta = DateTime.Now;
-
-        IniciarPaginacion();
-    }
-
-    public void IniciarPaginacion()
-    {
-        PaginaActual = 1;
-        Elementos = Listado.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
-        {
-            PaginaActual++;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    public async void GeneratePdf()
-    {
-
-        if (Listado.Count > 0)
-        {
-            ReporteEstudiantes reporte = new ReporteEstudiantes();
-            await js.InvokeVoidAsync(
-                "saveAsFile",
-                "EstudianteList.pdf",
-                Convert.ToBase64String(reporte.Report(Listado))
-                );
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip"> Siguiente</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         }
         else
         {
-            toast.ShowWarning("No hay datos para imprimir");
+            <h1>No esta registrado</h1>
+            <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
         }
+    </EditForm>
 
 
-    }
+    @code {
+        public EstudiantesBLL estudiantesBLL = new EstudiantesBLL();
+        private List<Estudiante> Listado { get; set; } = new List<Estudiante>();
+        private List<Estudiante> ListadoPaginado { get; set; }
 
-    public void FiltrarPorLaFecha()
-    {
-        if (FiltrarFecha == true && Listado.Count > 0)
-        {
-            Listado = Listado.Where(p => p.FechaInsercion.Date >= Desde.Date && p.FechaInsercion.Date <= Hasta.Date).ToList();
-            FiltrarFecha = false;
-        }
-        IniciarPaginacion();
-    }
-
+        private string Criterio = string.Empty;
+        private string Filtro = string.Empty;
+        private bool FiltrarFecha = false;
+        private DateTime Desde = DateTime.Now;
+        private DateTime Hasta = DateTime.Now;
 
 
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
 
+        Paginacion paginacion = new Paginacion();
 
-
-    private void Buscar()
-    {
-        if (Filtro == "0")
+        protected override void OnInitialized()
         {
             Listado = EstudiantesBLL.GetList(e => true);
-            FiltrarPorLaFecha();
+            Filtro = "0";
+            Desde = DateTime.Now;
+            Hasta = DateTime.Now;
+
+            IniciarPaginacion();
         }
-        else
+
+        public void IniciarPaginacion()
         {
-            if (Criterio == "")
+            PaginaActual = 1;
+            Elementos = Listado.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+        }
+
+        private void PaginaSiguiente()
+        {
+            if (PaginaActual < Paginas)
             {
-                toast.ShowError("Agregue el criterio de busqueda.");
+                PaginaActual++;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        public async void GeneratePdf()
+        {
+
+            if (Listado.Count > 0)
+            {
+                ReporteEstudiantes reporte = new ReporteEstudiantes();
+                await js.InvokeVoidAsync(
+                    "saveAsFile",
+                    "EstudianteList.pdf",
+                    Convert.ToBase64String(reporte.Report(Listado))
+                    );
             }
             else
             {
-                Listado = EstudiantesBLL.GetList(e => true);
-                switch (Filtro)
-                {
-                    case "1":
-                        Listado = Listado.Where(e => e.EstudianteId.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "2":
-                        Listado = Listado.Where(e => e.Nombres.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "3":
-                        Listado = Listado.Where(e => e.Apellidos.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "4":
-                        Listado = Listado.Where(e => e.Direccion.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "5":
-                        Listado = Listado.Where(e => e.Email.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "6":
-                        Listado = Listado.Where(e => e.Matricula.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "7":
-                        Listado = Listado.Where(e => e.FechaInsercion.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                }
-                FiltrarPorLaFecha();
+                toast.ShowWarning("No hay datos para imprimir");
             }
+
 
         }
 
+        public void FiltrarPorLaFecha()
+        {
+            if (FiltrarFecha == true && Listado.Count > 0)
+            {
+                Listado = Listado.Where(p => p.FechaInsercion.Date >= Desde.Date && p.FechaInsercion.Date <= Hasta.Date).ToList();
+                FiltrarFecha = false;
+            }
+            IniciarPaginacion();
+        }
+
+
+
+
+
+
+        private void Buscar()
+        {
+            if (Filtro == "0")
+            {
+                Listado = EstudiantesBLL.GetList(e => true);
+                FiltrarPorLaFecha();
+            }
+            else
+            {
+                if (Criterio == "")
+                {
+                    toast.ShowError("Agregue el criterio de busqueda.");
+                }
+                else
+                {
+                    Listado = EstudiantesBLL.GetList(e => true);
+                    switch (Filtro)
+                    {
+                        case "1":
+                            Listado = Listado.Where(e => e.EstudianteId.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "2":
+                            Listado = Listado.Where(e => e.Nombres.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "3":
+                            Listado = Listado.Where(e => e.Apellidos.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "4":
+                            Listado = Listado.Where(e => e.Direccion.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "5":
+                            Listado = Listado.Where(e => e.Email.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "6":
+                            Listado = Listado.Where(e => e.Matricula.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "7":
+                            Listado = Listado.Where(e => e.FechaInsercion.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                    }
+                    FiltrarPorLaFecha();
+                }
+
+            }
+
+        }
     }
-}

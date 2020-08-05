@@ -8,325 +8,331 @@
 @inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<EditForm Model="devoluciones" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    <a href="ContRegistros" class="btn btn-warning justify-content-lg-start">Menu Principal</a>
-    <div class="card bg-dark text-white">
-        <div class="card-header">
-            <h3> Registro Devoluciones</h3>
-        </div>
-        <div class="card-body">
-            <form>
-                @*DevolucionesId*@
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>DevolucionesId</label>
-                            <div class=" input-group">
-                                <InputNumber @bind-Value="devoluciones.DevolucionId" class="form-control col-4" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
+
+    <EditForm Model="devoluciones" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <a href="ContRegistros" class="btn btn-warning justify-content-lg-start">Menu Principal</a>
+        <div class="card bg-dark text-white">
+            <div class="card-header bg-dark">
+                <h3> Registro Devoluciones</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    @*DevolucionesId*@
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>DevolucionesId</label>
+                                <div class=" input-group">
+                                    <InputNumber @bind-Value="devoluciones.DevolucionId" class="form-control col-4" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    @*FechaDevolucion*@
-                    <div class="form-group col">
-                        <label>Fecha de Devuelta</label>
-                        <InputDate @bind-Value="devoluciones.FechaDevueltaLibro" class="form-control " />
-                        <ValidationMessage For="@(()=> devoluciones.FechaDevueltaLibro)" />
-                    </div>
-
-                    @*Estudiante*@
-                    <div class="form-group col ">
-                        <label>Estudiante</label>
-                        <div class="input-group">
-                            <select class="form-control" @bind="estudianteSeleccionado" @onclick="CargarEstudiante">
-                                <option value="" disabled selected>Seleccione un Estudiante</option>
-                                @foreach (var item in CargarBoxEstudiante())
-                                {
-                                    <option value="@item.EstudianteId">@item.Matricula </option>
-                                }
-                            </select>
+                    <div class="form-row">
+                        @*FechaDevolucion*@
+                        <div class="form-group col">
+                            <label>Fecha de Devuelta</label>
+                            <InputDate @bind-Value="devoluciones.FechaDevueltaLibro" class="form-control " />
+                            <ValidationMessage For="@(()=> devoluciones.FechaDevueltaLibro)" />
                         </div>
-                        <ValidationMessage For="@(()=>devolucionDetalles.EstudianteId)" />
-                    </div>
-                    @*Libro*@
 
-                    <div class="form-group col ">
-                        <label>Libro</label>
-                        <div class="input-group">
-                            <select class="form-control" @bind="libroSeleccionado" @onclick="CargarLibro">
-
-                                <option value="" disabled selected>Seleccione una Editorial</option>
-
-
-                                @foreach (var item in CargarBoxLibro())
-                                {
-                                    if (item.Disponibilidad == false)
+                        @*Estudiante*@
+                        <div class="form-group col ">
+                            <label>Estudiante</label>
+                            <div class="input-group">
+                                <select class="form-control" @bind="estudianteSeleccionado" @onclick="CargarEstudiante">
+                                    <option value="" disabled selected>Seleccione un Estudiante</option>
+                                    @foreach (var item in CargarBoxEstudiante())
                                     {
-                                        <option value="@item.LibroId">@item.NombreLibro</option>
+                                        <option value="@item.EstudianteId">@item.Matricula </option>
                                     }
-                                }
+                                </select>
+                            </div>
+                            <ValidationMessage For="@(()=>devolucionDetalles.EstudianteId)" />
+                        </div>
+                        @*Libro*@
 
-                            </select>
+                        <div class="form-group col ">
+                            <label>Libro</label>
+                            <div class="input-group">
+                                <select class="form-control" @bind="libroSeleccionado" @onclick="CargarLibro">
+
+                                    <option value="" disabled selected>Seleccione una Editorial</option>
 
 
-                            <ValidationMessage For="@(()=>devolucionDetalles.LibroId)" />
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
-                                    <i class="oi oi-plus" aria-hidden="true" /> Agregar
-                                </button>
+                                    @foreach (var item in CargarBoxLibro())
+                                    {
+                                        if (item.Disponibilidad == false)
+                                        {
+                                            <option value="@item.LibroId">@item.NombreLibro</option>
+                                        }
+                                    }
+
+                                </select>
+
+
+                                <ValidationMessage For="@(()=>devolucionDetalles.LibroId)" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="AgregarDetalle">
+                                        <i class="oi oi-plus" aria-hidden="true" /> Agregar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                @*TablaDetalle*@
-                <table class="table">
-                    <thead class="thead-light ">
-                        <tr>
-                            <th scope="col">DetalleId</th>
-                            <th scope="col">DevolucionId</th>
-                            <th scope="col">Estudiante</th>
-                            <th scope="col">Libro Id</th>
-                            <th scope="col">Titulo Libro</th>
-                            <th scope="col">Fecha de Devolucion</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody class=text-white>
-                        @foreach (var item in devoluciones.devolucionDetalles)
-                        {
+                    @*TablaDetalle*@
+                    <table class="table">
+                        <thead class="thead-light ">
                             <tr>
-                                <td>@item.DetalleId</td>
-                                <td>@item.DevolucionId</td>
-                                <td>@EstudiantesBLL.Buscar(item.EstudianteId).Matricula</td>
-                                <td>@item.LibroId</td>
-                                <td>@item.NombreLibro</td>
-                                <td>@devoluciones.FechaDevueltaLibro</td>
-                                <td>
-                                    <button type="button" class="btn btn-danger" @onclick="@(() => EliminarDetalle(item))">
-                                        <span class="oi oi-x"></span>
-                                    </button>
-                                </td>
+                                <th scope="col">DetalleId</th>
+                                <th scope="col">DevolucionId</th>
+                                <th scope="col">Estudiante</th>
+                                <th scope="col">Libro Id</th>
+                                <th scope="col">Titulo Libro</th>
+                                <th scope="col">Fecha de Devolucion</th>
+
+
                             </tr>
-                        }
+                        </thead>
+                        <tbody class=text-white>
+                            @foreach (var item in devoluciones.devolucionDetalles)
+                            {
+                                <tr>
+                                    <td>@item.DetalleId</td>
+                                    <td>@item.DevolucionId</td>
+                                    <td>@EstudiantesBLL.Buscar(item.EstudianteId).Matricula</td>
+                                    <td>@item.LibroId</td>
+                                    <td>@item.NombreLibro</td>
+                                    <td>@devoluciones.FechaDevueltaLibro</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @onclick="@(() => EliminarDetalle(item))">
+                                            <span class="oi oi-x"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
 
 
 
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><span class="oi oi-plus"></span> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success"><span class="oi oi-circle-check"></span> Guardar</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><span class="oi oi-plus"></span> Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success"><span class="oi oi-circle-check"></span> Guardar</button>
 
-                @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-                {
-                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><span class="oi oi-delete"></span> Eliminar</button>
+                    @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+                    {
+                        <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><span class="oi oi-delete"></span> Eliminar</button>
 
-                }
-                <button type="button" class="btn btn-lg btn-warning " @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir Factura</button>
+                    }
+                    <button type="button" class="btn btn-lg btn-warning " @onclick="GeneratePdf"><span class="oi oi-print"></span> Imprimir Factura</button>
 
 
+                </div>
             </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
 
 
 
-@code {
-    [Parameter]
-    public int DevolucionesId { get; set; }
-    Devoluciones devoluciones = new Devoluciones();
-    DevolucionDetalles devolucionDetalles = new DevolucionDetalles();
-    Libro libro = new Libro();
-    Estudiante estudiante = new Estudiante();
-    Contexto contexto = new Contexto();
+    @code {
+        [Parameter]
+        public int DevolucionesId { get; set; }
+        Devoluciones devoluciones = new Devoluciones();
+        DevolucionDetalles devolucionDetalles = new DevolucionDetalles();
+        Libro libro = new Libro();
+        Estudiante estudiante = new Estudiante();
+        Contexto contexto = new Contexto();
 
-    private string libroSeleccionado = "0";
-    private string estudianteSeleccionado = "0";
-
-
-    protected override void OnInitialized()
-    {
-        Nuevo();
-        Buscar();
-        if (DevolucionesId != 0)
-        {
-
-            devoluciones.DevolucionId = DevolucionesId;
-            Buscar();
-        }
-    }
-    public void Nuevo()
-    {
-        devoluciones = new Devoluciones();
-    }
+        private string libroSeleccionado = "0";
+        private string estudianteSeleccionado = "0";
 
 
-    private void Buscar()
-    {
-        if (devoluciones.DevolucionId > 0)
-        {
-            var encontrado = DevolucionesBLL.Buscar(devoluciones.DevolucionId);
-
-            if (encontrado != null)
-                this.devoluciones = encontrado;
-            else
-                toast.ShowError("No encontrado");
-        }
-    }
-
-    public void Guardar()
-    {
-        bool guardo;
-        if (devoluciones.devolucionDetalles.Count > 0)
-        {
-            guardo = DevolucionesBLL.Guardar(devoluciones);
-
-            if (guardo)
-            {
-                Nuevo();
-                toast.ShowSuccess("Guardado correctamente");
-            }
-            else
-                toast.ShowError("No fue posible guardar");
-
-        }
-        else
-        {
-            toast.ShowError("No fue posible guardar, debe agregar un detalle");
-        }
-
-    }
-    public async void GeneratePdf()
-    {
-
-        FacturaDevoluciones reporteLibros = new FacturaDevoluciones();
-        await js.InvokeVoidAsync(
-            "saveAsFile",
-            "FacturaList.pdf",
-            Convert.ToBase64String(reporteLibros.Report(devoluciones.devolucionDetalles))
-            );
-
-
-    }
-    private void AgregarDetalle()
-    {
-
-        if (libroSeleccionado != "0" && estudianteSeleccionado != "0")
-        {
-            devoluciones.devolucionDetalles.Add(new DevolucionDetalles
-            {
-                DevolucionId = devoluciones.DevolucionId,
-                EstudianteId = Convert.ToInt32(estudianteSeleccionado),
-                LibroId = Convert.ToInt32(libroSeleccionado),
-                NombreLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
-
-                FechaDevueltaLibro = devoluciones.FechaDevueltaLibro,
-
-
-            });
-
-        }
-        else
-        {
-
-            toast.ShowError("Debe llenar los campos anteriores");
-        }
-
-    }
-
-    public void Eliminar()
-    {
-        bool elimino;
-
-        elimino = DevolucionesBLL.Eliminar(devoluciones.DevolucionId);
-
-        if (elimino)
+        protected override void OnInitialized()
         {
             Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
+            Buscar();
+            if (DevolucionesId != 0)
+            {
+
+                devoluciones.DevolucionId = DevolucionesId;
+                Buscar();
+            }
         }
-        else
-            toast.ShowError("No fue posible eliminar");
-    }
-
-    public void EliminarDetalle(DevolucionDetalles devolucionDetalles)
-    {
-        devoluciones.devolucionDetalles.Remove(devolucionDetalles);
-    }
-
-    private List<Estudiante> CargarBoxEstudiante()
-    {
-        List<Estudiante> lista = new List<Estudiante>();
-        try
+        public void Nuevo()
         {
-            lista = EstudiantesBLL.GetList(P => true);
+            devoluciones = new Devoluciones();
+        }
+
+
+        private void Buscar()
+        {
+            if (devoluciones.DevolucionId > 0)
+            {
+                var encontrado = DevolucionesBLL.Buscar(devoluciones.DevolucionId);
+
+                if (encontrado != null)
+                    this.devoluciones = encontrado;
+                else
+                    toast.ShowError("No encontrado");
+            }
+        }
+
+        public void Guardar()
+        {
+            bool guardo;
+            if (devoluciones.devolucionDetalles.Count > 0)
+            {
+                guardo = DevolucionesBLL.Guardar(devoluciones);
+
+                if (guardo)
+                {
+                    Nuevo();
+                    toast.ShowSuccess("Guardado correctamente");
+                }
+                else
+                    toast.ShowError("No fue posible guardar");
+
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar, debe agregar un detalle");
+            }
 
         }
-        catch (Exception ex)
+        public async void GeneratePdf()
         {
-            toast.ShowError(ex.ToString(), "Error");
-        }
-        return lista;
-    }
 
-    private void CargarEstudiante()
-    {
-        if (estudiante.EstudianteId > 0)
+            FacturaDevoluciones reporteLibros = new FacturaDevoluciones();
+            await js.InvokeVoidAsync(
+                "saveAsFile",
+                "FacturaList.pdf",
+                Convert.ToBase64String(reporteLibros.Report(devoluciones.devolucionDetalles))
+                );
+
+
+        }
+        private void AgregarDetalle()
         {
+
+            if (libroSeleccionado != "0" && estudianteSeleccionado != "0")
+            {
+                devoluciones.devolucionDetalles.Add(new DevolucionDetalles
+                {
+                    DevolucionId = devoluciones.DevolucionId,
+                    EstudianteId = Convert.ToInt32(estudianteSeleccionado),
+                    LibroId = Convert.ToInt32(libroSeleccionado),
+                    NombreLibro = contexto.Libros.Find(Convert.ToInt32(libroSeleccionado)).NombreLibro,
+
+                    FechaDevueltaLibro = devoluciones.FechaDevueltaLibro,
+
+
+                });
+
+            }
+            else
+            {
+
+                toast.ShowError("Debe llenar los campos anteriores");
+            }
+
+        }
+
+        public void Eliminar()
+        {
+            bool elimino;
+
+            elimino = DevolucionesBLL.Eliminar(devoluciones.DevolucionId);
+
+            if (elimino)
+            {
+                Nuevo();
+                toast.ShowSuccess("Eliminado correctamente");
+            }
+            else
+                toast.ShowError("No fue posible eliminar");
+        }
+
+        public void EliminarDetalle(DevolucionDetalles devolucionDetalles)
+        {
+            devoluciones.devolucionDetalles.Remove(devolucionDetalles);
+        }
+
+        private List<Estudiante> CargarBoxEstudiante()
+        {
+            List<Estudiante> lista = new List<Estudiante>();
             try
             {
-                estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudianteSeleccionado));
+                lista = EstudiantesBLL.GetList(P => true);
+
             }
             catch (Exception ex)
             {
                 toast.ShowError(ex.ToString(), "Error");
             }
+            return lista;
         }
-    }
-    private List<Libro> CargarBoxLibro()
-    {
-        List<Libro> lista = new List<Libro>();
-        try
-        {
-            lista = LibroBLL.GetList(P => true);
 
-        }
-        catch (Exception ex)
+        private void CargarEstudiante()
         {
-            toast.ShowError(ex.ToString(), "Error");
+            if (estudiante.EstudianteId > 0)
+            {
+                try
+                {
+                    estudiante = EstudiantesBLL.Buscar(Convert.ToInt32(estudianteSeleccionado));
+                }
+                catch (Exception ex)
+                {
+                    toast.ShowError(ex.ToString(), "Error");
+                }
+            }
         }
-        return lista;
-    }
-
-    private void CargarLibro()
-    {
-        if (libro.LibroId > 0)
+        private List<Libro> CargarBoxLibro()
         {
+            List<Libro> lista = new List<Libro>();
             try
             {
-                libro = LibroBLL.Buscar(Convert.ToInt32(libroSeleccionado));
+                lista = LibroBLL.GetList(P => true);
+
             }
             catch (Exception ex)
             {
                 toast.ShowError(ex.ToString(), "Error");
             }
+            return lista;
         }
-    }
-    public void disponiblility()
-    {
-        libro.Disponibilidad = true;
-    }
 
-}
+        private void CargarLibro()
+        {
+            if (libro.LibroId > 0)
+            {
+                try
+                {
+                    libro = LibroBLL.Buscar(Convert.ToInt32(libroSeleccionado));
+                }
+                catch (Exception ex)
+                {
+                    toast.ShowError(ex.ToString(), "Error");
+                }
+            }
+        }
+        public void disponiblility()
+        {
+            libro.Disponibilidad = true;
+        }
+
+    }

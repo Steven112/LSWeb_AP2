@@ -7,9 +7,15 @@
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
+
     <EditForm Model="Listado">
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-    .Result.User.Identity.IsAuthenticated)
+   .Result.User.Identity.IsAuthenticated)
         {
 
             <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
@@ -157,143 +163,143 @@
         }
     </EditForm>
 
-@code {
-    public UsuariosBLL usuariosBLL = new UsuariosBLL();
-    private List<Usuarios> Listado { get; set; } = new List<Usuarios>();
-    private List<Usuarios> ListadoPaginado { get; set; }
+    @code {
+        public UsuariosBLL usuariosBLL = new UsuariosBLL();
+        private List<Usuarios> Listado { get; set; } = new List<Usuarios>();
+        private List<Usuarios> ListadoPaginado { get; set; }
 
-    private string Criterio = string.Empty;
-    private string Filtro = string.Empty;
-    private bool FiltrarFecha = false;
-    private DateTime Desde = DateTime.Now;
-    private DateTime Hasta = DateTime.Now;
-
-
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
-
-    Paginacion paginacion = new Paginacion();
-
-    protected override void OnInitialized()
-    {
-        Listado = UsuariosBLL.GetList(e => true);
-        Filtro = "0";
-        Desde = DateTime.Now;
-        Hasta = DateTime.Now;
-
-        IniciarPaginacion();
-    }
-
-    public void IniciarPaginacion()
-    {
-        PaginaActual = 1;
-        Elementos = Listado.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
-        {
-            PaginaActual++;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    public void FiltrarPorLaFecha()
-    {
-        if (FiltrarFecha == true && Listado.Count > 0)
-        {
-            Listado = Listado.Where(p => p.FechaInsercion.Date >= Desde.Date && p.FechaInsercion.Date <= Hasta.Date).ToList();
-            FiltrarFecha = false;
-        }
-        IniciarPaginacion();
-    }
+        private string Criterio = string.Empty;
+        private string Filtro = string.Empty;
+        private bool FiltrarFecha = false;
+        private DateTime Desde = DateTime.Now;
+        private DateTime Hasta = DateTime.Now;
 
 
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
 
-    public async void GeneratePdf()
-    {
+        Paginacion paginacion = new Paginacion();
 
-        if (Listado.Count > 0)
-        {
-            ReporteUsuarios reporte = new ReporteUsuarios();
-            await js.InvokeVoidAsync(
-                "saveAsFile",
-                "UsuarioList.pdf",
-                Convert.ToBase64String(reporte.Report(Listado))
-                );
-        }
-        else
-        {
-            toast.ShowWarning("No hay datos para imprimir");
-        }
-
-
-    }
-
-    private void Buscar()
-    {
-        if (Filtro == "0")
+        protected override void OnInitialized()
         {
             Listado = UsuariosBLL.GetList(e => true);
-            FiltrarPorLaFecha();
+            Filtro = "0";
+            Desde = DateTime.Now;
+            Hasta = DateTime.Now;
+
+            IniciarPaginacion();
         }
-        else
+
+        public void IniciarPaginacion()
         {
-            if (Criterio == "")
+            PaginaActual = 1;
+            Elementos = Listado.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+        }
+
+        private void PaginaSiguiente()
+        {
+            if (PaginaActual < Paginas)
             {
-                toast.ShowError("Agregue el criterio de busqueda.");
+                PaginaActual++;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        public void FiltrarPorLaFecha()
+        {
+            if (FiltrarFecha == true && Listado.Count > 0)
+            {
+                Listado = Listado.Where(p => p.FechaInsercion.Date >= Desde.Date && p.FechaInsercion.Date <= Hasta.Date).ToList();
+                FiltrarFecha = false;
+            }
+            IniciarPaginacion();
+        }
+
+
+
+        public async void GeneratePdf()
+        {
+
+            if (Listado.Count > 0)
+            {
+                ReporteUsuarios reporte = new ReporteUsuarios();
+                await js.InvokeVoidAsync(
+                    "saveAsFile",
+                    "UsuarioList.pdf",
+                    Convert.ToBase64String(reporte.Report(Listado))
+                    );
             }
             else
             {
+                toast.ShowWarning("No hay datos para imprimir");
+            }
+
+
+        }
+
+        private void Buscar()
+        {
+            if (Filtro == "0")
+            {
                 Listado = UsuariosBLL.GetList(e => true);
-                switch (Filtro)
-                {
-                    case "1":
-                        Listado = Listado.Where(e => e.UsuarioId.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "2":
-                        Listado = Listado.Where(e => e.Nombres.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "3":
-                        Listado = Listado.Where(e => e.NombreUsuario.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "4":
-                        Listado = Listado.Where(e => e.Nivel.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "5":
-                        Listado = Listado.Where(e => e.Email.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "6":
-                        Listado = Listado.Where(e => e.Celular.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "7":
-                        Listado = Listado.Where(e => e.FechaInsercion.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                }
                 FiltrarPorLaFecha();
+            }
+            else
+            {
+                if (Criterio == "")
+                {
+                    toast.ShowError("Agregue el criterio de busqueda.");
+                }
+                else
+                {
+                    Listado = UsuariosBLL.GetList(e => true);
+                    switch (Filtro)
+                    {
+                        case "1":
+                            Listado = Listado.Where(e => e.UsuarioId.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "2":
+                            Listado = Listado.Where(e => e.Nombres.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "3":
+                            Listado = Listado.Where(e => e.NombreUsuario.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "4":
+                            Listado = Listado.Where(e => e.Nivel.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "5":
+                            Listado = Listado.Where(e => e.Email.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "6":
+                            Listado = Listado.Where(e => e.Celular.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "7":
+                            Listado = Listado.Where(e => e.FechaInsercion.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                    }
+                    FiltrarPorLaFecha();
+                }
+
             }
 
         }
 
     }
-
-}

@@ -7,6 +7,12 @@
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
+
 
     <EditForm Model="Listado">
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
@@ -117,7 +123,7 @@
             <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
         }
     </EditForm>
-  
+
 
     @code {
         public CategoriaBLL categoriaBLL = new CategoriaBLL();
@@ -216,11 +222,11 @@
                     {
                         case "1":
                             Listado = Listado.Where(e => e.CategoriaId.ToString().Contains(Criterio.ToString())).ToList();
-                            
+
                             break;
                         case "2":
                             Listado = Listado.Where(e => e.Descripcion.ToString().Contains(Criterio.ToString())).ToList();
-                           
+
                             break;
 
                     }

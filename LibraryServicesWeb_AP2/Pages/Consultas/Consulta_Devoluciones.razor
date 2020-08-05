@@ -5,11 +5,17 @@
 @using LibraryServicesWeb_AP2.Pages.Reportes
 @inject IToastService toast
 @inject IJSRuntime js
-@inject AuthenticationStateProvider AuthenticationStateProvider
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
+
+    @inject AuthenticationStateProvider AuthenticationStateProvider
     <EditForm Model="Listado">
 
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-   .Result.User.Identity.IsAuthenticated)
+  .Result.User.Identity.IsAuthenticated)
         {
             <a href="ContConsulta" class="btn btn-warning justify-content-lg-start">Menu de Consultas</a>
             <div class="card bg-dark text-white">
@@ -152,127 +158,127 @@
     </EditForm>
 
 
-@code {
-    public DevolucionesBLL devolucionesBLL = new DevolucionesBLL();
-    private List<Devoluciones> Listado { get; set; }
-    private List<Devoluciones> ListadoPaginado { get; set; }
+    @code {
+        public DevolucionesBLL devolucionesBLL = new DevolucionesBLL();
+        private List<Devoluciones> Listado { get; set; }
+        private List<Devoluciones> ListadoPaginado { get; set; }
 
-    private string Criterio = string.Empty;
-    private string Filtro = string.Empty;
-    private bool FiltrarFecha = false;
-    private DateTime Desde = DateTime.Now;
-    private DateTime Hasta = DateTime.Now;
-
-
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
-
-    Paginacion paginacion = new Paginacion();
-
-    protected override void OnInitialized()
-    {
-        Listado = DevolucionesBLL.GetList(e => true);
-        Filtro = "0";
-        Desde = DateTime.Now;
-        Hasta = DateTime.Now;
-
-        IniciarPaginacion();
-    }
-
-    public async void GeneratePdf()
-    {
-
-        if (Listado.Count > 0)
-        {
-            ReporteDevolucion reporte = new ReporteDevolucion();
-            await js.InvokeVoidAsync(
-                "saveAsFile",
-                "ConsultasList.pdf",
-                Convert.ToBase64String(reporte.Report(Listado))
-                );
-        }
-        else
-        {
-            toast.ShowWarning("No hay datos para imprimir");
-        }
-
-    }
-
-    public void IniciarPaginacion()
-    {
-        PaginaActual = 1;
-        Elementos = Listado.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
-        {
-            PaginaActual++;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            ListadoPaginado = Listado
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    public void FiltrarPorLaFecha()
-    {
-        if (FiltrarFecha == true && Listado.Count > 0)
-        {
-            Listado = Listado.Where(p => p.FechaDevueltaLibro.Date >= Desde.Date && p.FechaDevueltaLibro.Date <= Hasta.Date).ToList();
-            FiltrarFecha = false;
-        }
-        IniciarPaginacion();
-    }
+        private string Criterio = string.Empty;
+        private string Filtro = string.Empty;
+        private bool FiltrarFecha = false;
+        private DateTime Desde = DateTime.Now;
+        private DateTime Hasta = DateTime.Now;
 
 
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
 
-    private void Buscar()
-    {
-        if (Filtro == "0")
+        Paginacion paginacion = new Paginacion();
+
+        protected override void OnInitialized()
         {
             Listado = DevolucionesBLL.GetList(e => true);
-            FiltrarPorLaFecha();
+            Filtro = "0";
+            Desde = DateTime.Now;
+            Hasta = DateTime.Now;
+
+            IniciarPaginacion();
         }
-        else
+
+        public async void GeneratePdf()
         {
-            if (Criterio == "")
+
+            if (Listado.Count > 0)
             {
-                toast.ShowError("Agregue un Cirterio de Busqueda");
+                ReporteDevolucion reporte = new ReporteDevolucion();
+                await js.InvokeVoidAsync(
+                    "saveAsFile",
+                    "ConsultasList.pdf",
+                    Convert.ToBase64String(reporte.Report(Listado))
+                    );
             }
             else
             {
-                Listado = DevolucionesBLL.GetList(e => true);
-                switch (Filtro)
-                {
-                    case "1":
-                        Listado = Listado.Where(e => e.DevolucionId.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-                    case "2":
-                        Listado = Listado.Where(e => e.FechaDevueltaLibro.ToString().Contains(Criterio.ToString())).ToList();
-                        break;
-
-                }
-                FiltrarPorLaFecha();
+                toast.ShowWarning("No hay datos para imprimir");
             }
 
         }
-    }
 
-}
+        public void IniciarPaginacion()
+        {
+            PaginaActual = 1;
+            Elementos = Listado.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+        }
+
+        private void PaginaSiguiente()
+        {
+            if (PaginaActual < Paginas)
+            {
+                PaginaActual++;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        public void FiltrarPorLaFecha()
+        {
+            if (FiltrarFecha == true && Listado.Count > 0)
+            {
+                Listado = Listado.Where(p => p.FechaDevueltaLibro.Date >= Desde.Date && p.FechaDevueltaLibro.Date <= Hasta.Date).ToList();
+                FiltrarFecha = false;
+            }
+            IniciarPaginacion();
+        }
+
+
+
+        private void Buscar()
+        {
+            if (Filtro == "0")
+            {
+                Listado = DevolucionesBLL.GetList(e => true);
+                FiltrarPorLaFecha();
+            }
+            else
+            {
+                if (Criterio == "")
+                {
+                    toast.ShowError("Agregue un Cirterio de Busqueda");
+                }
+                else
+                {
+                    Listado = DevolucionesBLL.GetList(e => true);
+                    switch (Filtro)
+                    {
+                        case "1":
+                            Listado = Listado.Where(e => e.DevolucionId.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "2":
+                            Listado = Listado.Where(e => e.FechaDevueltaLibro.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+
+                    }
+                    FiltrarPorLaFecha();
+                }
+
+            }
+        }
+
+    }

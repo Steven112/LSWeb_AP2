@@ -7,6 +7,13 @@
 @inject IToastService toast
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+    <style>
+        body {
+            background-color: dimgrey;
+        }
+    </style>
+
+
     <EditForm Model="Listado">
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
         {
@@ -123,118 +130,118 @@
             <a href="Usuarios" class="btn btn-primary">Ir al Registro</a>
         }
     </EditForm>
-       
- @code {
-     public EditorialBLL editorialBLL = new EditorialBLL();
-     private List<Editorial> Listado { get; set; } = new List<Editorial>();
-     private List<Editorial> ListadoPaginado { get; set; }
 
-     private string Criterio = string.Empty;
-     private string Filtro = string.Empty;
+    @code {
+        public EditorialBLL editorialBLL = new EditorialBLL();
+        private List<Editorial> Listado { get; set; } = new List<Editorial>();
+        private List<Editorial> ListadoPaginado { get; set; }
 
-
-     double Paginas = 0;
-     double Elementos = 0;
-     int PaginaActual = 0;
-
-     Paginacion paginacion = new Paginacion();
-
-     protected override void OnInitialized()
-     {
-         Listado = EditorialBLL.GetList(e => true);
-         Filtro = "0";
-
-         IniciarPaginacion();
-     }
-
-     public void IniciarPaginacion()
-     {
-         PaginaActual = 1;
-         Elementos = Listado.Count();
-         Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-         ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
-     }
-
-     private void PaginaSiguiente()
-     {
-         if (PaginaActual < Paginas)
-         {
-             PaginaActual++;
-             ListadoPaginado = Listado
-                 .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                 .Take(paginacion.Mostrar)
-                 .ToList();
-         }
-     }
-
-     private void PaginaAnterior()
-     {
-         if (PaginaActual > 1)
-         {
-             PaginaActual--;
-             ListadoPaginado = Listado
-                 .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                 .Take(paginacion.Mostrar)
-                 .ToList();
-         }
-     }
+        private string Criterio = string.Empty;
+        private string Filtro = string.Empty;
 
 
-     public async void GeneratePdf()
-     {
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
 
-         if (Listado.Count > 0)
-         {
-             Reporte_Editorial reporte = new Reporte_Editorial();
-             await js.InvokeVoidAsync(
-                 "saveAsFile",
-                 "CategoriaList.pdf",
-                 Convert.ToBase64String(reporte.Report(Listado))
-                 );
-         }
-         else
-         {
-             toast.ShowWarning("No hay datos para imprimir");
-         }
+        Paginacion paginacion = new Paginacion();
+
+        protected override void OnInitialized()
+        {
+            Listado = EditorialBLL.GetList(e => true);
+            Filtro = "0";
+
+            IniciarPaginacion();
+        }
+
+        public void IniciarPaginacion()
+        {
+            PaginaActual = 1;
+            Elementos = Listado.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+        }
+
+        private void PaginaSiguiente()
+        {
+            if (PaginaActual < Paginas)
+            {
+                PaginaActual++;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                ListadoPaginado = Listado
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
 
 
-     }
+        public async void GeneratePdf()
+        {
+
+            if (Listado.Count > 0)
+            {
+                Reporte_Editorial reporte = new Reporte_Editorial();
+                await js.InvokeVoidAsync(
+                    "saveAsFile",
+                    "CategoriaList.pdf",
+                    Convert.ToBase64String(reporte.Report(Listado))
+                    );
+            }
+            else
+            {
+                toast.ShowWarning("No hay datos para imprimir");
+            }
+
+
+        }
 
 
 
-     private void Buscar()
-     {
-         if (Filtro == "0")
-         {
-             Listado = EditorialBLL.GetList(e => true);
-         }
-         else
-         {
-             if (Criterio == "")
-             {
-                 toast.ShowError("Agregue el criterio de busqueda.");
-             }
-             else
-             {
-                 Listado = EditorialBLL.GetList(e => true);
-                 switch (Filtro)
-                 {
-                     case "1":
-                         Listado = Listado.Where(e => e.EditorialId.ToString().Contains(Criterio.ToString())).ToList();
-                         break;
-                     case "2":
-                         Listado = Listado.Where(e => e.Nombre.ToString().Contains(Criterio.ToString())).ToList();
-                         break;
-                     case "3":
-                         Listado = Listado.Where(e => e.Dirrecion.ToString().Contains(Criterio.ToString())).ToList();
-                         break;
+        private void Buscar()
+        {
+            if (Filtro == "0")
+            {
+                Listado = EditorialBLL.GetList(e => true);
+            }
+            else
+            {
+                if (Criterio == "")
+                {
+                    toast.ShowError("Agregue el criterio de busqueda.");
+                }
+                else
+                {
+                    Listado = EditorialBLL.GetList(e => true);
+                    switch (Filtro)
+                    {
+                        case "1":
+                            Listado = Listado.Where(e => e.EditorialId.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "2":
+                            Listado = Listado.Where(e => e.Nombre.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
+                        case "3":
+                            Listado = Listado.Where(e => e.Dirrecion.ToString().Contains(Criterio.ToString())).ToList();
+                            break;
 
-                 }
+                    }
 
-             }
+                }
 
-         }
+            }
 
-     }
+        }
 
-}
+    }
